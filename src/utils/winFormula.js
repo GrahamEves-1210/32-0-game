@@ -19,14 +19,18 @@ let _cache = null
 
 function getBenchmarks() {
   if (_cache) return _cache
+  // Perfect: greedy pick — best available player per position, no duplicates
+  const used = new Set()
   let perfectScore = 0
-  let floorScore = 0
+  let floorScore   = 0
   for (const pos of POSITIONS) {
     const candidates = ALL_PLAYERS.filter(p => p.positions.includes(pos))
     if (!candidates.length) continue
-    const scores = candidates.map(playerScore)
-    perfectScore += Math.max(...scores)
-    floorScore   += Math.min(...scores)
+    const sorted = [...candidates].sort((a, b) => playerScore(b) - playerScore(a))
+    const best = sorted.find(p => !used.has(p.id)) ?? sorted[0]
+    perfectScore += playerScore(best)
+    used.add(best.id)
+    floorScore += Math.min(...candidates.map(playerScore))
   }
   _cache = { perfectScore, floorScore }
   return _cache
@@ -35,18 +39,16 @@ function getBenchmarks() {
 export function calculateWins(lineup) {
   if (!lineup || lineup.length < 5) return 0
   const teamScore = lineup.reduce((s, p) => s + (p ? playerScore(p) : 0), 0)
-  const { perfectScore, floorScore } = getBenchmarks()
-  const ratio = Math.min(1, Math.max(0, (teamScore - floorScore) / (perfectScore - floorScore)))
-  // Power curve < 1 makes mid-tier lineups score higher (0.65 feels fair and achievable)
-  return Math.round(Math.pow(ratio, 0.55) * 32)
+  const { perfectScore } = getBenchmarks()
+  const ratio = Math.min(1, Math.max(0, teamScore / perfectScore))
+  return Math.round(Math.pow(ratio, 0.45) * 32)
 }
 
 export function getMatchPercentage(lineup) {
   if (!lineup || lineup.length < 5) return 0
   const teamScore = lineup.reduce((s, p) => s + (p ? playerScore(p) : 0), 0)
-  const { perfectScore, floorScore } = getBenchmarks()
-  const ratio = Math.min(1, Math.max(0, (teamScore - floorScore) / (perfectScore - floorScore)))
-  return Math.min(100, Math.round(Math.pow(ratio, 0.55) * 100))
+  const { perfectScore } = getBenchmarks()
+  return Math.min(100, Math.round((teamScore / perfectScore) * 1000) / 10)
 }
 
 export function getWinLabel(wins) {

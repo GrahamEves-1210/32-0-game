@@ -49,7 +49,7 @@ export default function WinResult({ lineup, onReset }) {
         {done && (
           <>
             <div className="result-label" style={{ color: label.color }}>{label.text}</div>
-            <div className="result-match">{matchPct}% of perfect lineup</div>
+            <div className="result-match">{matchPct.toFixed(1)}% of perfect lineup</div>
           </>
         )}
       </div>
