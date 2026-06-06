@@ -9,6 +9,7 @@ export default function App() {
   const [phase,       setPhase]       = useState('draft')
   const [finalLineup, setFinalLineup] = useState(null)
   const [resetKey,    setResetKey]    = useState(0)
+  const [showHeader,  setShowHeader]  = useState(true)
 
   function handleDraftComplete(lineup) {
     setFinalLineup(lineup)
@@ -19,20 +20,27 @@ export default function App() {
     setFinalLineup(null)
     setPhase('draft')
     setResetKey(k => k + 1)
+    setShowHeader(true)
   }
 
   const lineupArray = finalLineup ? Object.values(finalLineup).filter(Boolean) : []
 
   return (
     <div className="app">
-      <header className="app-header">
-        <div className="app-logo">32<span className="logo-dash">-</span>0</div>
-        <p className="app-subtitle">Men's College Hoops · Build the perfect lineup</p>
-      </header>
+      {showHeader && (
+        <header className="app-header">
+          <div className="app-logo">32<span className="logo-dash">-</span>0</div>
+          <p className="app-subtitle">Men's College Hoops · Build the perfect lineup</p>
+        </header>
+      )}
 
       <main className="app-main">
         {phase === 'draft' && (
-          <DraftPhase key={resetKey} onComplete={handleDraftComplete} />
+          <DraftPhase
+            key={resetKey}
+            onComplete={handleDraftComplete}
+            onFirstSpinDone={() => setShowHeader(false)}
+          />
         )}
 
         {phase === 'result' && (

@@ -14,13 +14,14 @@ function getInitials(name) {
   return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
 }
 
-export default function DraftPhase({ onComplete }) {
+export default function DraftPhase({ onComplete, onFirstSpinDone }) {
   const [lineup,        setLineup]        = useState({ PG: null, SG: null, SF: null, PF: null, C: null })
   const [focusedPlayer, setFocusedPlayer] = useState(null)
   const [pickNumber,    setPickNumber]    = useState(1)
   const [subPhase,      setSubPhase]      = useState('spin')
   const [currentConf,   setCurrentConf]   = useState(null)
   const [currentEra,    setCurrentEra]    = useState(null)
+  const [showStats,     setShowStats]     = useState(false)
 
   const filledCount = Object.values(lineup).filter(Boolean).length
   const players = currentConf && currentEra ? getPlayers(currentConf.id, currentEra.id) : []
@@ -33,6 +34,7 @@ export default function DraftPhase({ onComplete }) {
     setCurrentEra(era)
     setSubPhase('pool')
     setFocusedPlayer(null)
+    if (pickNumber === 1) onFirstSpinDone?.()
   }
 
   function handleSlotFill(pos, player) {
@@ -99,11 +101,23 @@ export default function DraftPhase({ onComplete }) {
            onClick={e => e.stopPropagation()}>
         <div className="draft-phase-main">
           {subPhase === 'spin' && (
-            <SpinScreen
-              conferences={CONFERENCES}
-              eras={ERAS}
-              onChoose={handleSpinDone}
-            />
+            <>
+              {pickNumber === 1 && (
+                <div className="stats-toggle-row">
+                  <button
+                    className={`stats-toggle-btn ${showStats ? 'stats-toggle-btn--on' : ''}`}
+                    onClick={() => setShowStats(s => !s)}
+                  >
+                    {showStats ? 'Stats: On' : 'Stats: Off'}
+                  </button>
+                </div>
+              )}
+              <SpinScreen
+                conferences={CONFERENCES}
+                eras={ERAS}
+                onChoose={handleSpinDone}
+              />
+            </>
           )}
 
           {subPhase === 'pool' && (
@@ -128,7 +142,7 @@ export default function DraftPhase({ onComplete }) {
                 focusedPlayer={focusedPlayer}
                 onFocus={setFocusedPlayer}
                 onRespin={handleRespin}
-                showStats={false}
+                showStats={showStats}
                 singlePick
               />
             </div>

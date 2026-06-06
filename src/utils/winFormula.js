@@ -8,11 +8,12 @@ function getGradeMultiplier(conferenceId) {
   return GRADE_MULTIPLIERS[conf?.grade] ?? 0.92
 }
 
-// pts×1 + ast×1.5 + reb×0.6 — weighted by conference grade + scoring bonus above 24 PPG
+// pts×1.15 + ast×1.5 + reb×0.6 — weighted by conference grade
+// scoring bonus applied after multiplier so elite C-grade scorers still punch through
 function playerScore(p) {
   const mult         = getGradeMultiplier(p.conference)
-  const scoringBonus = p.ppg > 24 ? (p.ppg - 24) * 0.2 : 0
-  return (p.ppg * 1.0 + p.apg * 1.5 + p.rpg * 0.6 + scoringBonus) * mult
+  const scoringBonus = p.ppg > 24 ? (p.ppg - 24) * 0.25 : 0
+  return (p.ppg * 1.15 + p.apg * 1.5 + p.rpg * 0.6) * mult + scoringBonus
 }
 
 let _cache = null
@@ -52,10 +53,10 @@ export function getMatchPercentage(lineup) {
 }
 
 export function getWinLabel(wins) {
-  if (wins >= 32) return { text: 'Perfect Season',           color: '#e0a800' }
-  if (wins >= 28) return { text: 'Championship Contender',   color: '#22c55e' }
+  if (wins >= 32) return { text: 'Championship Locks',       color: '#e0a800' }
+  if (wins >= 28) return { text: 'Championship Favorites',   color: '#22c55e' }
   if (wins >= 22) return { text: 'NCAA Tournament Bound',    color: '#38B6E8' }
   if (wins >= 16) return { text: 'Bubble Team',              color: '#8b5cf6' }
   if (wins >= 10) return { text: 'Rebuilding Year',          color: '#f97316' }
-  return            { text: 'Lottery Pick Season',           color: '#d93030' }
+  return            { text: 'Relegated',                     color: '#d93030' }
 }
