@@ -53,7 +53,7 @@ function mapPos(pos, rpg) {
   switch (pos) {
     case 'G':   return ['PG', 'SG']
     // 'F' from the API covers SF through C — use rebounds to split
-    case 'F':   return rpg >= 7.5 ? ['PF', 'C'] : ['SF', 'PF']
+    case 'F':   return rpg >= 5.0 ? ['PF', 'C'] : ['SF', 'PF']
     case 'C':   return ['C',  'PF']
     case 'G-F': return ['SG', 'SF']
     case 'F-G': return ['SF', 'SG']
