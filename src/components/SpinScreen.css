@@ -1,0 +1,253 @@
+.spin-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  padding: 16px 0 48px;
+}
+
+.spin-instruction {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+/* ── Dual reels ── */
+.reels-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.reels-x {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 26px;
+  color: var(--text-muted);
+  user-select: none;
+  margin-top: 22px;
+}
+
+.reel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.reel-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+}
+
+.reel-window {
+  width: 230px;
+  height: 104px;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.reel--spinning .reel-window {
+  border-color: var(--orange);
+}
+
+.reel-content {
+  text-align: center;
+  padding: 0 12px;
+}
+
+.reel--spinning .reel-content {
+  opacity: 0.85;
+}
+
+.reel--landed .reel-content {
+  animation: reel-land 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes reel-land {
+  0%   { transform: scale(1.18); opacity: 0.5; }
+  60%  { transform: scale(0.97); opacity: 1; }
+  100% { transform: scale(1);    opacity: 1; }
+}
+
+.reel-main {
+  display: block;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--orange);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.reel-sub {
+  display: block;
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-top: 5px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* ── Basketball spin button ── */
+.btn-spin-main {
+  background: none;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 8px;
+  transition: transform 0.15s;
+}
+
+/* Wrapper is what rotates — its center is the axis */
+.btn-ball-wrap {
+  display: block;
+  width: 72px;
+  height: 72px;
+  position: relative;
+  transform-origin: 50% calc(50% - 2px);
+}
+
+/* Emoji absolutely centered inside the wrapper */
+.btn-ball-icon {
+  font-size: 68px;
+  line-height: 1;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: block;
+}
+
+.btn-spin-text {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  transition: color 0.15s;
+}
+
+.btn-spin-main:hover:not(:disabled) {
+  transform: scale(1.06);
+}
+
+.btn-spin-main:hover:not(:disabled) .btn-ball-wrap {
+  animation: bball-spin 1.4s linear infinite;
+}
+
+.btn-spin-main:hover:not(:disabled) .btn-spin-text {
+  color: var(--orange);
+}
+
+/* Rolling state — fast spin */
+.btn-spin-main--rolling {
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-spin-main--rolling .btn-ball-wrap {
+  animation: bball-spin 0.28s linear infinite;
+}
+
+.btn-spin-main--rolling .btn-spin-text {
+  color: var(--text-muted);
+}
+
+@keyframes bball-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── Result card ── */
+.spin-result-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  max-width: 500px;
+  width: 100%;
+  animation: fade-up 0.3s ease;
+}
+
+.src-conf-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.src-grade-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.src-grade-badge {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1.5px solid;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.src-era-label {
+  font-size: 13px;
+  color: var(--text-dim);
+  letter-spacing: 0.06em;
+}
+
+.src-schools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+}
+
+.src-school-chip {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.btn-draft {
+  background: var(--orange);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 14px 44px;
+  border-radius: var(--radius);
+  letter-spacing: 0.06em;
+  transition: background 0.15s, transform 0.1s;
+  margin-top: 4px;
+}
+
+.btn-draft:hover {
+  background: var(--orange-dim);
+  transform: scale(1.02);
+}

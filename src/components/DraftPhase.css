@@ -1,0 +1,123 @@
+.draft-phase {
+  width: 100%;
+}
+
+/* ── Pick tracker header ── */
+.draft-phase-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.pick-tracker {
+  display: flex;
+  gap: 8px;
+}
+
+.pick-dot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: var(--surface2);
+  position: relative;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.pick-dot--done {
+  border-color: var(--orange);
+  background: color-mix(in srgb, var(--orange) 18%, var(--surface2));
+}
+
+
+.pick-dot-pos {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--text-dim);
+}
+
+.pick-dot-initials {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--orange);
+  line-height: 1;
+}
+
+.pick-label {
+  font-size: 13px;
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+/* ── Two-column body ── */
+.draft-phase-body {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 20px;
+  align-items: start;
+}
+
+.draft-phase-body--full {
+  grid-template-columns: 1fr;
+}
+
+@media (max-width: 768px) {
+  .draft-phase-body {
+    grid-template-columns: 1fr;
+  }
+}
+
+.draft-phase-main {
+  min-width: 0;
+}
+
+.draft-phase-sidebar {
+  /* sticky so it stays visible while user scrolls the pool */
+}
+
+/* ── Pool sub-phase ── */
+.draft-pool-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.draft-pool-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.draft-badge {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.draft-badge--era {
+  color: var(--orange);
+  border-color: var(--orange);
+}
+
+.draft-note {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-style: italic;
+}

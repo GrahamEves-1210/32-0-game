@@ -1,0 +1,108 @@
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 16px 80px;
+}
+
+.app-header {
+  text-align: center;
+  padding: 32px 0 24px;
+}
+
+.app-logo {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 72px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+  letter-spacing: -2px;
+}
+
+.logo-dash {
+  color: var(--orange);
+}
+
+.app-subtitle {
+  color: var(--text-dim);
+  font-size: 13px;
+  margin-top: 6px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.draft-note {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-left: auto;
+  font-style: italic;
+}
+
+.app-main {
+  width: 100%;
+  max-width: 1100px;
+}
+
+/* Draft layout */
+.draft-layout {
+  width: 100%;
+}
+
+.draft-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.draft-badge {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.draft-badge--era {
+  color: var(--orange);
+  border-color: var(--orange);
+}
+
+.draft-body {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .draft-body {
+    grid-template-columns: 1fr;
+  }
+  /* pool first so user picks a player, then scrolls down to see highlighted slots */
+}
+
+/* Reset button */
+.btn-reset {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  transition: all 0.15s;
+  z-index: 100;
+}
+
+.btn-reset:hover {
+  color: var(--text);
+  border-color: var(--text-dim);
+}
