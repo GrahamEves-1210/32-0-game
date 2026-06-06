@@ -26,7 +26,7 @@ export const ALL_PLAYERS = [
   p('mardy-collins','Mardy Collins','Temple','a10','era1',2005,17.7,6.2,3.7,["PG","SG"]),
   p('michael-lee','Michael Lee','St. Bonaventure','a10','era1',2008,17.5,8,1.4,["PF","C"]),
   p('pat-calathes','Pat Calathes','Saint Joseph\'s','a10','era1',2008,17.5,7.5,2.7,["SG","SF"]),
-  p('jj-redick','JJ Redick','Duke','acc','era1',2006,26.8,2,2.6,["SF","PF"]),
+  p('jj-redick','JJ Redick','Duke','acc','era1',2006,26.8,2,2.6,["SG","SF"]),
   p('tyler-hansbrough','Tyler Hansbrough','North Carolina','acc','era1',2008,22.6,10.2,0.9,["PF","C"]),
   p('toney-douglas','Toney Douglas','Florida State','acc','era1',2009,21.5,3.9,2.9,["PG","SG"]),
   p('tyrese-rice','Tyrese Rice','Boston College','acc','era1',2008,21,3.3,5,["PG","SG"]),
