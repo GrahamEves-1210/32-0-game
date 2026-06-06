@@ -1334,7 +1334,7 @@ export const ALL_PLAYERS = [
   p('taurean-prince','Taurean Prince','Baylor','big12','era3',2016,15.9,6.1,2.3,["SF","PF"]),
   p('barry-brown-jr','Barry Brown Jr.','Kansas State','big12','era3',2018,15.9,3.2,3.2,["PG","SG"]),
   p('kristian-doolittle','Kristian Doolittle','Oklahoma','big12','era3',2020,15.8,8.9,2,["PF","C"]),
-  p('tyrese-haliburton','Tyrese Haliburton','Iowa State','big12','era3',2020,15.2,5.9,6.5,["SF"]),
+  p('tyrese-haliburton','Tyrese Haliburton','Iowa State','big12','era3',2020,15.2,5.9,6.5,["PG","SG"]),
   p('deonte-burton-2','Deonte Burton','Iowa State','big12','era3',2017,15.1,6.2,1.8,["PG","SG"]),
   p('kerwin-roach','Kerwin Roach','Texas','big12','era3',2019,15.1,4.4,3.3,["PG","SG"]),
   p('naz-mitrou-long','Naz Mitrou-Long','Iowa State','big12','era3',2017,15.1,4.6,2.7,["PG","SG"]),

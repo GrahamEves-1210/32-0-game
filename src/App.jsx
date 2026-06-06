@@ -27,7 +27,7 @@ export default function App() {
 
   return (
     <div className="app">
-      {showHeader && (
+      {(showHeader || phase === 'result') && (
         <header className="app-header">
           <div className="app-logo">32<span className="logo-dash">-</span>0</div>
           <p className="app-subtitle">Men's College Hoops · Build the perfect lineup</p>

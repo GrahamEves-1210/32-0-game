@@ -52,7 +52,8 @@ function getEra(season) {
 // Manual position overrides for players the API misclassifies
 // Key: "name|school" (exact strings from the API)
 const POS_OVERRIDES = {
-  'JJ Redick|Duke': ['SG', 'SF'],
+  'JJ Redick|Duke':         ['SG', 'SF'],
+  'Tyrese Haliburton|Iowa State': ['PG', 'SG'],
 }
 
 function mapPos(pos, rpg, name, school) {
