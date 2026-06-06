@@ -1,9 +1,9 @@
 export const ERAS = [
-  { id: 'era1', label: '1995–2010', short: '95–10', start: 1995, end: 2010, static: true },
+  { id: 'era1', label: '2005–2010', short: '05–10', start: 2005, end: 2010, static: true },
   { id: 'era2', label: '2011–2015', short: '11–15', start: 2011, end: 2015, static: true },
   { id: 'era3', label: '2016–2020', short: '16–20', start: 2016, end: 2020, static: true },
-  { id: 'era4', label: '2021–2025', short: '21–25', start: 2021, end: 2025, static: true },
-  { id: 'era5', label: '2026', short: '2026', start: 2026, end: 2026, static: false },
+  { id: 'era4', label: '2021–2024', short: '21–24', start: 2021, end: 2024, static: true },
+  { id: 'era5', label: '2025–2026', short: '25–26', start: 2025, end: 2026, static: false },
 ]
 
 // A = major (blue) · B = mid-major (green) · C = low-major (gold)

@@ -1,10 +1,15 @@
 import { useEffect, useState } from 'react'
 import { calculateWins, getWinLabel, getMatchPercentage } from '../utils/winFormula'
 import { getSchoolColor } from '../data/schoolColors'
+import { CONFERENCES, getGradeColor } from '../data/conferences'
 import './WinResult.css'
 
 const POSITIONS = ['PG', 'SG', 'SF', 'PF', 'C']
 const POS_COLOR = { PG: '#3b82f6', SG: '#8b5cf6', SF: '#22c55e', PF: '#f59e0b', C: '#ef4444' }
+
+function getGrade(conferenceId) {
+  return CONFERENCES.find(c => c.id === conferenceId)?.grade ?? '?'
+}
 
 export default function WinResult({ lineup, onReset }) {
   const finalWins  = calculateWins(lineup)
@@ -53,6 +58,7 @@ export default function WinResult({ lineup, onReset }) {
       <div className="result-roster">
         <div className="result-roster-header">
           <span>Player</span>
+          <span className="rr-stat-head rr-cfg-head">CFG</span>
           <span className="rr-stat-head">PPG</span>
           <span className="rr-stat-head">RPG</span>
           <span className="rr-stat-head">APG</span>
@@ -61,7 +67,9 @@ export default function WinResult({ lineup, onReset }) {
         {POSITIONS.map((pos, i) => {
           const player = lineup[i]
           if (!player) return null
-          const sc = getSchoolColor(player.school)
+          const sc    = getSchoolColor(player.school)
+          const grade = getGrade(player.conference)
+          const gc    = getGradeColor(grade)
           return (
             <div key={pos} className="result-roster-row">
               <span className="rr-pos" style={{ color: POS_COLOR[pos] }}>{pos}</span>
@@ -72,6 +80,7 @@ export default function WinResult({ lineup, onReset }) {
                 </span>
                 <span className="rr-year">{player.season}</span>
               </div>
+              <span className="rr-cfg-val" style={{ color: gc }}>{grade}</span>
               <span className="rr-stat">{player.ppg.toFixed(1)}</span>
               <span className="rr-stat">{player.rpg.toFixed(1)}</span>
               <span className="rr-stat">{player.apg.toFixed(1)}</span>
@@ -81,6 +90,7 @@ export default function WinResult({ lineup, onReset }) {
 
         <div className="result-team-totals">
           <span className="rtt-label">Team Totals</span>
+          <span />
           <span className="rtt-val">{totalPPG.toFixed(1)}</span>
           <span className="rtt-val">{totalRPG.toFixed(1)}</span>
           <span className="rtt-val">{totalAPG.toFixed(1)}</span>

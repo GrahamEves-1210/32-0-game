@@ -36,14 +36,16 @@ export function calculateWins(lineup) {
   const teamScore = lineup.reduce((s, p) => s + (p ? playerScore(p) : 0), 0)
   const { perfectScore, floorScore } = getBenchmarks()
   const ratio = Math.min(1, Math.max(0, (teamScore - floorScore) / (perfectScore - floorScore)))
-  return Math.round(ratio * 32)
+  // Power curve < 1 makes mid-tier lineups score higher (0.65 feels fair and achievable)
+  return Math.round(Math.pow(ratio, 0.65) * 32)
 }
 
 export function getMatchPercentage(lineup) {
   if (!lineup || lineup.length < 5) return 0
   const teamScore = lineup.reduce((s, p) => s + (p ? playerScore(p) : 0), 0)
-  const { perfectScore } = getBenchmarks()
-  return Math.min(100, Math.round((teamScore / perfectScore) * 100))
+  const { perfectScore, floorScore } = getBenchmarks()
+  const ratio = Math.min(1, Math.max(0, (teamScore - floorScore) / (perfectScore - floorScore)))
+  return Math.min(100, Math.round(Math.pow(ratio, 0.65) * 100))
 }
 
 export function getWinLabel(wins) {

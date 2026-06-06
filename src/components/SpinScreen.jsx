@@ -23,6 +23,19 @@ function Reel({ label, current, accentKey, subKey, spinning, landed, accentColor
   )
 }
 
+const GRADE_WEIGHTS = { A: 3, B: 2, C: 1 }
+
+function weightedRandomConf(conferences) {
+  const weights = conferences.map(c => GRADE_WEIGHTS[c.grade] ?? 1)
+  const total   = weights.reduce((s, w) => s + w, 0)
+  let r = Math.random() * total
+  for (let i = 0; i < conferences.length; i++) {
+    r -= weights[i]
+    if (r <= 0) return i
+  }
+  return conferences.length - 1
+}
+
 export default function SpinScreen({ conferences, eras, onChoose }) {
   const [spinning, setSpinning] = useState(false)
   const [confIdx,  setConfIdx]  = useState(0)
@@ -38,11 +51,11 @@ export default function SpinScreen({ conferences, eras, onChoose }) {
     setLanded(false)
     setSpinning(true)
 
-    const finalConf = Math.floor(Math.random() * conferences.length)
+    const finalConf = weightedRandomConf(conferences)
     const finalEra  = Math.floor(Math.random() * eras.length)
 
     intervalRef.current = setInterval(() => {
-      setConfIdx(Math.floor(Math.random() * conferences.length))
+      setConfIdx(weightedRandomConf(conferences))
       setEraIdx(Math.floor(Math.random() * eras.length))
     }, 80)
 
@@ -130,7 +143,7 @@ export default function SpinScreen({ conferences, eras, onChoose }) {
           </div>
 
           <button className="btn-draft" onClick={() => onChoose(results.conference, results.era)}>
-            Build Your Lineup →
+            Pick Your Player →
           </button>
         </div>
       )}
