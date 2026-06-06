@@ -41,9 +41,11 @@ export function calculateWins(lineup) {
   if (!lineup || lineup.length < 5) return 0
   const teamScore = lineup.reduce((s, p) => s + (p ? playerScore(p) : 0), 0)
   const { perfectScore } = getBenchmarks()
-  const ratio = Math.min(1, Math.max(0, teamScore / perfectScore))
+  // Scale benchmark to 85% — the true perfect requires an impossible assembly;
+  // this lets elite realistic lineups reach 30-32 rather than clustering at 28.
+  const ratio = Math.min(1, Math.max(0, teamScore / (perfectScore * 0.85)))
   const raw   = Math.pow(ratio, 0.45)
-  return Math.max(0, Math.round((raw - 0.25) / 0.75 * 32))
+  return Math.max(0, Math.round((raw - 0.20) / 0.80 * 32))
 }
 
 export function getMatchPercentage(lineup) {

@@ -52,15 +52,17 @@ function getEra(season) {
 // Manual position overrides for players the API misclassifies
 // Key: "name|school" (exact strings from the API)
 const POS_OVERRIDES = {
-  'JJ Redick|Duke':         ['SG', 'SF'],
+  'JJ Redick|Duke':               ['SG', 'SF'],
   'Tyrese Haliburton|Iowa State': ['PG', 'SG'],
+  'Brandon Miller|Alabama':       ['SF', 'PF'],
 }
 
-function mapPos(pos, rpg, name, school) {
+function mapPos(pos, rpg, apg, name, school) {
   const override = POS_OVERRIDES[`${name}|${school}`]
   if (override) return override
   switch (pos) {
-    case 'G':   return ['PG', 'SG']
+    // Split guards by assist rate: high-APG = PG type, low-APG = SG/wing type
+    case 'G':   return apg >= 3.5 ? ['PG', 'SG'] : ['SG', 'SF']
     // 'F' from the API covers SF through C — use rebounds to split
     case 'F':   return rpg >= 7.5 ? ['PF', 'C'] : ['SF', 'PF']
     case 'C':   return ['C',  'PF']
@@ -125,7 +127,7 @@ async function main() {
       const apg = r1(p.assists / p.games)
       if (ppg < 3.0) continue
 
-      const record = { name: p.name, school: p.team, conference: confId, era, season, ppg, rpg, apg, positions: mapPos(p.position, rpg, p.name, p.team) }
+      const record = { name: p.name, school: p.team, conference: confId, era, season, ppg, rpg, apg, positions: mapPos(p.position, rpg, apg, p.name, p.team) }
       const key    = `${p.name}|${p.team}|${era}`
 
       // Coverage pool: all players >= 3 PPG (used only to fill missing positions)
