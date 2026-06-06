@@ -78,8 +78,7 @@ export default function WinResult({ lineup, onReset }) {
                 <span className="rr-school" style={{ color: sc || 'var(--text-muted)' }}>
                   {player.school}
                 </span>
-                <span className="rr-year">{player.season}</span>
-              </div>
+                </div>
               <span className="rr-cfg-val" style={{ color: gc }}>{grade}</span>
               <span className="rr-stat">{player.ppg.toFixed(1)}</span>
               <span className="rr-stat">{player.rpg.toFixed(1)}</span>

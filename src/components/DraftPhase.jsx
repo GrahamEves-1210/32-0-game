@@ -64,13 +64,20 @@ export default function DraftPhase({ onComplete }) {
         <div className="draft-phase-header">
           <div className="pick-tracker">
             {POSITIONS.map(pos => {
-              const player = lineup[pos]
-              const done   = player !== null
+              const player    = lineup[pos]
+              const done      = player !== null
+              const available = !done && focusedPlayer?.positions.includes(pos)
               return (
                 <div
                   key={pos}
-                  className={['pick-dot', done ? 'pick-dot--done' : ''].join(' ')}
+                  className={[
+                    'pick-dot',
+                    done      ? 'pick-dot--done'      : '',
+                    available ? 'pick-dot--available' : '',
+                  ].join(' ')}
                   title={done ? player.name : pos}
+                  onClick={available ? () => handleSlotFill(pos, focusedPlayer) : undefined}
+                  style={available ? { cursor: 'pointer' } : {}}
                 >
                   {done
                     ? <span className="pick-dot-initials">{getInitials(player.name)}</span>

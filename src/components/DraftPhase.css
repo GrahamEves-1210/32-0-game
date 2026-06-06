@@ -35,6 +35,21 @@
   background: color-mix(in srgb, var(--orange) 18%, var(--surface2));
 }
 
+.pick-dot--available {
+  border-color: var(--orange);
+  background: color-mix(in srgb, var(--orange) 20%, var(--surface2));
+  animation: dot-pulse 1s ease-in-out infinite;
+}
+
+.pick-dot--available:active {
+  transform: scale(0.92);
+}
+
+@keyframes dot-pulse {
+  0%, 100% { box-shadow: 0 0 0 0   rgba(56, 182, 232, 0.5); }
+  50%       { box-shadow: 0 0 0 5px rgba(56, 182, 232, 0); }
+}
+
 
 .pick-dot-pos {
   font-family: 'Barlow Condensed', sans-serif;
@@ -120,4 +135,33 @@
   font-size: 12px;
   color: var(--text-muted);
   font-style: italic;
+}
+
+@media (max-width: 480px) {
+  .draft-phase-header {
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .pick-dot {
+    width: 36px;
+    height: 36px;
+  }
+
+  .pick-dot-pos {
+    font-size: 10px;
+  }
+
+  .pick-dot-initials {
+    font-size: 10px;
+  }
+
+  .pick-tracker {
+    gap: 5px;
+  }
+
+  .draft-badge {
+    font-size: 12px;
+    padding: 4px 10px;
+  }
 }

@@ -251,3 +251,43 @@
   background: var(--orange-dim);
   transform: scale(1.02);
 }
+
+@media (max-width: 520px) {
+  .spin-screen {
+    gap: 20px;
+    padding: 12px 0 32px;
+  }
+
+  .reels-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .reels-x {
+    margin-top: 0;
+    font-size: 20px;
+  }
+
+  .reel-window {
+    width: 280px;
+    height: 90px;
+  }
+
+  .reel-main {
+    font-size: 30px;
+  }
+
+  .spin-result-card {
+    padding: 20px 16px;
+  }
+
+  .src-schools {
+    max-height: 120px;
+    overflow-y: auto;
+  }
+
+  .btn-draft {
+    width: 100%;
+    padding: 14px;
+  }
+}

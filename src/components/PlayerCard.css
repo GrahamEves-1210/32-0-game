@@ -152,3 +152,47 @@
   color: var(--green);
   flex-shrink: 0;
 }
+
+
+@media (max-width: 480px) {
+  .player-row {
+    padding: 9px 12px;
+    gap: 8px;
+  }
+
+  .pr-name {
+    font-size: 14px;
+  }
+
+  .pr-school {
+    font-size: 13px;
+  }
+
+  .pr-year {
+    font-size: 13px;
+  }
+
+  .pr-positions {
+    display: none;
+  }
+
+  .pr-year {
+    display: none;
+  }
+
+  .pr-stats {
+    gap: 10px;
+  }
+
+  .pr-stat {
+    min-width: 28px;
+  }
+
+  .pr-val {
+    font-size: 15px;
+  }
+
+  .pr-lbl {
+    font-size: 8px;
+  }
+}

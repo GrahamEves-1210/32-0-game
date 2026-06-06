@@ -106,3 +106,29 @@
   color: var(--text);
   border-color: var(--text-dim);
 }
+
+@media (max-width: 480px) {
+  .app {
+    padding: 0 10px 60px;
+  }
+
+  .app-header {
+    padding: 20px 0 16px;
+  }
+
+  .app-logo {
+    font-size: 52px;
+    letter-spacing: -1px;
+  }
+
+  .app-subtitle {
+    font-size: 11px;
+  }
+
+  .btn-reset {
+    top: 10px;
+    right: 10px;
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}

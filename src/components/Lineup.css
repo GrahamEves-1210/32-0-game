@@ -169,3 +169,30 @@
   color: var(--text-muted);
   padding: 6px;
 }
+
+@media (max-width: 768px) {
+  .lineup-wrap {
+    position: static;
+  }
+}
+
+@media (max-width: 480px) {
+  .lineup-wrap {
+    padding: 14px;
+    gap: 8px;
+  }
+
+  .lineup-slot {
+    min-height: 58px;
+    padding: 8px 10px;
+  }
+
+  .lineup-player-name {
+    font-size: 14px;
+  }
+
+  .btn-calculate {
+    font-size: 15px;
+    padding: 12px;
+  }
+}
