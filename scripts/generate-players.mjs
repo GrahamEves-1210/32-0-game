@@ -68,9 +68,9 @@ const MAJOR    = new Set(['acc','bigeast','big10','sec','big12','pac12'])
 const MIDMAJOR = new Set(['mwc','aac','a10','wcc','mvc','ivy'])
 
 function playerLimit(confId) {
-  if (MAJOR.has(confId))    return 25
-  if (MIDMAJOR.has(confId)) return 15
-  return 10
+  if (MAJOR.has(confId))    return 40
+  if (MIDMAJOR.has(confId)) return 20
+  return 12
 }
 
 // All 5 positions the game uses
@@ -122,8 +122,8 @@ async function main() {
       const prevCov = coveragePool.get(key)
       if (!prevCov || ppg > prevCov.ppg) coveragePool.set(key, record)
 
-      // Main pool: players >= 8 PPG
-      if (ppg < 8.0) continue
+      // Main pool: players >= 6 PPG
+      if (ppg < 6.0) continue
       const prev = bestPerEra.get(key)
       if (!prev || ppg > prev.ppg) bestPerEra.set(key, record)
     }
