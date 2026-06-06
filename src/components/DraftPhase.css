@@ -137,6 +137,17 @@
   font-style: italic;
 }
 
+@media (max-width: 768px) {
+  .draft-phase-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--bg);
+    padding: 10px 0 8px;
+    margin-bottom: 8px;
+  }
+}
+
 @media (max-width: 480px) {
   .draft-phase-header {
     gap: 10px;
