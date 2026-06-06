@@ -8,10 +8,11 @@ function getGradeMultiplier(conferenceId) {
   return GRADE_MULTIPLIERS[conf?.grade] ?? 0.92
 }
 
-// pts×1 + ast×2 + reb×0.9 — weighted by conference grade
+// pts×1 + ast×1.5 + reb×0.6 — weighted by conference grade + scoring bonus above 24 PPG
 function playerScore(p) {
-  const mult = getGradeMultiplier(p.conference)
-  return (p.ppg * 1.0 + p.apg * 2.0 + p.rpg * 0.9) * mult
+  const mult         = getGradeMultiplier(p.conference)
+  const scoringBonus = p.ppg > 24 ? (p.ppg - 24) * 0.2 : 0
+  return (p.ppg * 1.0 + p.apg * 1.5 + p.rpg * 0.6 + scoringBonus) * mult
 }
 
 let _cache = null
@@ -37,7 +38,7 @@ export function calculateWins(lineup) {
   const { perfectScore, floorScore } = getBenchmarks()
   const ratio = Math.min(1, Math.max(0, (teamScore - floorScore) / (perfectScore - floorScore)))
   // Power curve < 1 makes mid-tier lineups score higher (0.65 feels fair and achievable)
-  return Math.round(Math.pow(ratio, 0.65) * 32)
+  return Math.round(Math.pow(ratio, 0.55) * 32)
 }
 
 export function getMatchPercentage(lineup) {
@@ -45,7 +46,7 @@ export function getMatchPercentage(lineup) {
   const teamScore = lineup.reduce((s, p) => s + (p ? playerScore(p) : 0), 0)
   const { perfectScore, floorScore } = getBenchmarks()
   const ratio = Math.min(1, Math.max(0, (teamScore - floorScore) / (perfectScore - floorScore)))
-  return Math.min(100, Math.round(Math.pow(ratio, 0.65) * 100))
+  return Math.min(100, Math.round(Math.pow(ratio, 0.55) * 100))
 }
 
 export function getWinLabel(wins) {

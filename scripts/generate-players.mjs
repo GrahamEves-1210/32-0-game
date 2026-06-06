@@ -49,10 +49,11 @@ function getEra(season) {
   return 'era5'
 }
 
-function mapPos(pos) {
+function mapPos(pos, rpg) {
   switch (pos) {
     case 'G':   return ['PG', 'SG']
-    case 'F':   return ['SF', 'PF']
+    // 'F' from the API covers SF through C — use rebounds to split
+    case 'F':   return rpg >= 7.5 ? ['PF', 'C'] : ['SF', 'PF']
     case 'C':   return ['C',  'PF']
     case 'G-F': return ['SG', 'SF']
     case 'F-G': return ['SF', 'SG']
@@ -115,7 +116,7 @@ async function main() {
       const apg = r1(p.assists / p.games)
       if (ppg < 3.0) continue
 
-      const record = { name: p.name, school: p.team, conference: confId, era, season, ppg, rpg, apg, positions: mapPos(p.position) }
+      const record = { name: p.name, school: p.team, conference: confId, era, season, ppg, rpg, apg, positions: mapPos(p.position, rpg) }
       const key    = `${p.name}|${p.team}|${era}`
 
       // Coverage pool: all players >= 3 PPG (used only to fill missing positions)

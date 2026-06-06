@@ -23,7 +23,7 @@ function Reel({ label, current, accentKey, subKey, spinning, landed, accentColor
   )
 }
 
-const GRADE_WEIGHTS = { A: 3, B: 2, C: 1 }
+const GRADE_WEIGHTS = { A: 6, B: 4, C: 1 }
 const EMPTY_COMBOS  = new Set(['pac12|era5', 'aac|era1'])
 
 function weightedRandomConf(conferences) {
