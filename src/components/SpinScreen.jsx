@@ -24,6 +24,7 @@ function Reel({ label, current, accentKey, subKey, spinning, landed, accentColor
 }
 
 const GRADE_WEIGHTS = { A: 3, B: 2, C: 1 }
+const EMPTY_COMBOS  = new Set(['pac12|era5', 'aac|era1'])
 
 function weightedRandomConf(conferences) {
   const weights = conferences.map(c => GRADE_WEIGHTS[c.grade] ?? 1)
@@ -34,6 +35,15 @@ function weightedRandomConf(conferences) {
     if (r <= 0) return i
   }
   return conferences.length - 1
+}
+
+function pickValidCombo(conferences, eras) {
+  let ci, ei
+  do {
+    ci = weightedRandomConf(conferences)
+    ei = Math.floor(Math.random() * eras.length)
+  } while (EMPTY_COMBOS.has(`${conferences[ci].id}|${eras[ei].id}`))
+  return { ci, ei }
 }
 
 export default function SpinScreen({ conferences, eras, onChoose }) {
@@ -51,8 +61,7 @@ export default function SpinScreen({ conferences, eras, onChoose }) {
     setLanded(false)
     setSpinning(true)
 
-    const finalConf = weightedRandomConf(conferences)
-    const finalEra  = Math.floor(Math.random() * eras.length)
+    const { ci: finalConf, ei: finalEra } = pickValidCombo(conferences, eras)
 
     intervalRef.current = setInterval(() => {
       setConfIdx(weightedRandomConf(conferences))
@@ -115,37 +124,39 @@ export default function SpinScreen({ conferences, eras, onChoose }) {
           <span className="btn-spin-text">{spinning ? 'Rolling…' : 'SPIN'}</span>
         </button>
       ) : (
-        <div className="spin-result-card">
-          <div
-            className="src-conf-name"
-            style={{ color: getGradeColor(results.conference.grade) }}
-          >
-            {results.conference.fullName}
-          </div>
-
-          <div className="src-grade-row">
-            <span
-              className="src-grade-badge"
-              style={{
-                color: getGradeColor(results.conference.grade),
-                borderColor: getGradeColor(results.conference.grade),
-              }}
-            >
-              Conference Grade {results.conference.grade}
-            </span>
-            <span className="src-era-label">{results.era.label}</span>
-          </div>
-
-          <div className="src-schools">
-            {results.conference.schools.map(s => (
-              <span key={s} className="src-school-chip">{s}</span>
-            ))}
-          </div>
-
+        <>
           <button className="btn-draft" onClick={() => onChoose(results.conference, results.era)}>
             Pick Your Player →
           </button>
-        </div>
+
+          <div className="spin-result-card">
+            <div
+              className="src-conf-name"
+              style={{ color: getGradeColor(results.conference.grade) }}
+            >
+              {results.conference.fullName}
+            </div>
+
+            <div className="src-grade-row">
+              <span
+                className="src-grade-badge"
+                style={{
+                  color: getGradeColor(results.conference.grade),
+                  borderColor: getGradeColor(results.conference.grade),
+                }}
+              >
+                Conference Grade {results.conference.grade}
+              </span>
+              <span className="src-era-label">{results.era.label}</span>
+            </div>
+
+            <div className="src-schools">
+              {results.conference.schools.map(s => (
+                <span key={s} className="src-school-chip">{s}</span>
+              ))}
+            </div>
+          </div>
+        </>
       )}
     </div>
   )
