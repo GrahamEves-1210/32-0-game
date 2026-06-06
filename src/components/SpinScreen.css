@@ -282,8 +282,8 @@
   }
 
   .src-schools {
-    max-height: 120px;
-    overflow-y: auto;
+    max-height: none;
+    overflow-y: visible;
   }
 
   .btn-draft {
