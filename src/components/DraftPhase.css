@@ -51,6 +51,13 @@
   margin-left: 16px;
 }
 
+@media (max-width: 768px) {
+  .draft-header-right {
+    align-items: center;
+    margin-left: 0;
+  }
+}
+
 .pick-tracker {
   display: flex;
   gap: 8px;
@@ -233,9 +240,9 @@
 
   .draft-phase-header {
     flex-wrap: wrap;
-    justify-content: flex-start;
+    justify-content: center;
     gap: 6px 12px;
-    padding: 8px 16px 8px 8px;
+    padding: 8px 16px;
   }
 
   .pick-label {

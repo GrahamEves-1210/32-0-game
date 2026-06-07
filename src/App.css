@@ -201,9 +201,8 @@
 @media (max-width: 768px) {
   .btn-theme-toggle {
     top: 16px;
-    left: auto;
-    right: 16px;
-    left: unset;
+    right: auto;
+    left: 12px;
   }
 
   .btn-reset {

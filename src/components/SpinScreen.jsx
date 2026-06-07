@@ -95,7 +95,7 @@ export default function SpinScreen({ conferences, eras, onChoose }) {
         document.documentElement.scrollTop = 0
         document.body.scrollTop = 0
         onChoose(finalConference, finalEraObj)
-      }, 1600)
+      }, 1800)
     }, 1300)
   }
 
@@ -131,6 +131,7 @@ export default function SpinScreen({ conferences, eras, onChoose }) {
           accentKey="label"
           spinning={spinning}
           landed={landed}
+          accentColor='#38B6E8'
         />
       </div>
 
