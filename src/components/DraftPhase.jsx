@@ -41,6 +41,7 @@ export default function DraftPhase({ onComplete, onFirstSpinDone }) {
     const newLineup = { ...lineup, [pos]: player }
     setLineup(newLineup)
     setFocusedPlayer(null)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
 
     if (pickNumber >= 5) {
       onComplete(newLineup)
