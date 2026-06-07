@@ -126,8 +126,9 @@
   }
 
   .btn-reset {
-    top: 10px;
-    right: 10px;
+    top: auto;
+    bottom: 16px;
+    right: 16px;
     padding: 6px 12px;
     font-size: 12px;
   }
