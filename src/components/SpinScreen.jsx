@@ -66,7 +66,7 @@ export default function SpinScreen({ conferences, eras, onChoose }) {
     intervalRef.current = setInterval(() => {
       setConfIdx(weightedRandomConf(conferences))
       setEraIdx(Math.floor(Math.random() * eras.length))
-    }, 68)
+    }, 58)
 
     stopRef.current = setTimeout(() => {
       clearInterval(intervalRef.current)
@@ -75,7 +75,7 @@ export default function SpinScreen({ conferences, eras, onChoose }) {
       setSpinning(false)
       setLanded(true)
       setResults({ conference: conferences[finalConf], era: eras[finalEra] })
-    }, 1530)
+    }, 1300)
   }
 
   useEffect(() => () => {

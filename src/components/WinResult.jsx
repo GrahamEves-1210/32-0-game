@@ -79,7 +79,7 @@ export default function WinResult({ lineup, onReset }) {
           const grade = getGrade(player.conference)
           const gc    = getGradeColor(grade)
           return (
-            <div key={pos} className="result-roster-row">
+            <div key={pos} className="result-roster-row" style={{ background: `color-mix(in srgb, ${grade === 'A' ? '#60a5fa' : gc} ${grade === 'A' ? 28 : 18}%, var(--surface))` }}>
               <span className="rr-pos" style={{ color: POS_COLOR[pos] }}>{pos}</span>
               <div className="rr-player">
                 <span className="rr-name">{player.name}</span>

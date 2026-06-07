@@ -5,6 +5,13 @@ const POS_COLOR = {
   PG: '#3b82f6', SG: '#8b5cf6', SF: '#22c55e', PF: '#f59e0b', C: '#ef4444',
 }
 
+function mergePos(positions) {
+  const key = positions.join('/')
+  if (key === 'PG/SG') return [{ label: 'G',  color: POS_COLOR.PG }]
+  if (key === 'SF/PF') return [{ label: 'F',  color: POS_COLOR.SF }]
+  return positions.map(p => ({ label: p, color: POS_COLOR[p] }))
+}
+
 export default function PlayerCard({ player, status, onClick, showStats = true }) {
   const schoolColor = getSchoolColor(player.school)
   const borderColor = schoolColor || 'var(--border)'
@@ -30,9 +37,14 @@ export default function PlayerCard({ player, status, onClick, showStats = true }
         </div>
       </div>
 
-      <div className="pr-positions">
+      <div className="pr-positions pr-positions--full">
         {player.positions.map(pos => (
           <span key={pos} className="pr-pos" style={{ '--c': POS_COLOR[pos] }}>{pos}</span>
+        ))}
+      </div>
+      <div className="pr-positions pr-positions--merged">
+        {mergePos(player.positions).map(({ label, color }) => (
+          <span key={label} className="pr-pos" style={{ '--c': color }}>{label}</span>
         ))}
       </div>
 

@@ -54,6 +54,12 @@ export default function App() {
       {phase === 'draft' && (
         <button className="btn-reset" onClick={handleReset}>↺ Start Over</button>
       )}
+
+      <footer className="app-footer">
+        <a href="https://www.82-0.com" target="_blank" rel="noopener noreferrer" className="footer-link">
+          Inspired by 82-0.com
+        </a>
+      </footer>
     </div>
   )
 }

@@ -96,6 +96,10 @@
   flex-shrink: 0;
 }
 
+.pr-positions--merged {
+  display: none;
+}
+
 .pr-pos {
   font-family: 'Barlow Condensed', sans-serif;
   font-size: 11px;
@@ -154,10 +158,10 @@
 }
 
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .player-row {
-    padding: 9px 12px;
-    gap: 8px;
+    padding: 7px 10px;
+    gap: 6px;
   }
 
   .pr-name {
@@ -169,20 +173,31 @@
   }
 
   .pr-year {
-    font-size: 13px;
+    display: none;
   }
 
+  .pr-sep:last-of-type {
+    display: none;
+  }
+
+  .pr-positions--full {
+    display: none;
+  }
+
+  .pr-positions--merged {
+    display: flex;
+  }
 
   .pr-stats {
-    gap: 10px;
+    gap: 8px;
   }
 
   .pr-stat {
-    min-width: 28px;
+    min-width: 26px;
   }
 
   .pr-val {
-    font-size: 15px;
+    font-size: 14px;
   }
 
   .pr-lbl {
