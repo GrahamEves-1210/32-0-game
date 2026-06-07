@@ -78,7 +78,6 @@ export default function PlayerCard({ player, status, onClick, showStats = true }
         </div>
       )}
 
-      {status === 'focused' && <div className="pr-hint">→ select a slot</div>}
       {status === 'in-lineup' && <div className="pr-check">✓</div>}
 
     </div>

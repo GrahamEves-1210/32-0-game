@@ -1,12 +1,16 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { CONFERENCES, ERAS, getGradeColor } from '../data/conferences'
 import { getPlayers } from '../data/players'
+import { getSchoolColor } from '../data/schoolColors'
 import SpinScreen from './SpinScreen'
 import PlayerPool from './PlayerPool'
-import Lineup from './Lineup'
 import './DraftPhase.css'
 
 const POSITIONS = ['PG', 'SG', 'SF', 'PF', 'C']
+
+const POS_COLOR = {
+  PG: '#3b82f6', SG: '#8b5cf6', SF: '#16a34a', PF: '#f59e0b', C: '#ef4444',
+}
 
 function getInitials(name) {
   const parts = name.trim().split(/\s+/)
@@ -22,6 +26,28 @@ export default function DraftPhase({ onComplete, onFirstSpinDone }) {
   const [currentConf,   setCurrentConf]   = useState(null)
   const [currentEra,    setCurrentEra]    = useState(null)
   const [showStats,     setShowStats]     = useState(() => localStorage.getItem('showStats') === 'true')
+  const [expandedPos,   setExpandedPos]   = useState(null)
+  const hoverTimer  = useRef(null)
+  const closeTimer  = useRef(null)
+
+  function handleDotMouseEnter(pos) {
+    clearTimeout(hoverTimer.current)
+    clearTimeout(closeTimer.current)
+    hoverTimer.current = setTimeout(() => setExpandedPos(pos), 300)
+  }
+
+  function handleDotMouseLeave() {
+    clearTimeout(hoverTimer.current)
+    closeTimer.current = setTimeout(() => setExpandedPos(null), 150)
+  }
+
+  function handlePopoverMouseEnter() {
+    clearTimeout(closeTimer.current)
+  }
+
+  function handlePopoverMouseLeave() {
+    closeTimer.current = setTimeout(() => setExpandedPos(null), 150)
+  }
 
   const filledCount = Object.values(lineup).filter(Boolean).length
   const players = currentConf && currentEra ? getPlayers(currentConf.id, currentEra.id) : []
@@ -41,6 +67,7 @@ export default function DraftPhase({ onComplete, onFirstSpinDone }) {
     const newLineup = { ...lineup, [pos]: player }
     setLineup(newLineup)
     setFocusedPlayer(null)
+    setExpandedPos(null)
     document.documentElement.scrollTop = 0
     document.body.scrollTop = 0
 
@@ -59,20 +86,29 @@ export default function DraftPhase({ onComplete, onFirstSpinDone }) {
     setCurrentConf(null)
     setCurrentEra(null)
     setFocusedPlayer(null)
+    setExpandedPos(null)
   }
 
   return (
-    <div className={`draft-phase${showChrome ? ' draft-phase--chrome' : ''}`} onClick={() => focusedPlayer && setFocusedPlayer(null)}>
+    <div
+      className={`draft-phase${showChrome ? ' draft-phase--chrome' : ''}`}
+      onClick={() => {
+        if (focusedPlayer) setFocusedPlayer(null)
+        if (expandedPos) setExpandedPos(null)
+      }}
+    >
 
       {showChrome && (
         <div className="draft-phase-header">
           <div className="draft-header-logo">32<span className="draft-header-logo-dash">-</span>0</div>
           <div className="draft-header-right">
+            <span className="pick-label">{`Pick ${pickNumber} of 5`}</span>
             <div className="pick-tracker">
               {POSITIONS.map(pos => {
                 const player    = lineup[pos]
                 const done      = player !== null
                 const available = !done && focusedPlayer?.positions.includes(pos)
+                const isOpen    = expandedPos === pos
                 return (
                   <div
                     key={pos}
@@ -80,10 +116,19 @@ export default function DraftPhase({ onComplete, onFirstSpinDone }) {
                       'pick-dot',
                       done      ? 'pick-dot--done'      : '',
                       available ? 'pick-dot--available' : '',
+                      isOpen    ? 'pick-dot--open'      : '',
                     ].join(' ')}
-                    title={done ? player.name : pos}
-                    onClick={available ? () => handleSlotFill(pos, focusedPlayer) : undefined}
-                    style={available ? { cursor: 'pointer' } : {}}
+                    title={done ? '' : pos}
+                    onClick={
+                      done
+                        ? (e) => { e.stopPropagation(); clearTimeout(hoverTimer.current); clearTimeout(closeTimer.current); setExpandedPos(p => p === pos ? null : pos) }
+                        : available
+                          ? (e) => { e.currentTarget.blur(); handleSlotFill(pos, focusedPlayer) }
+                          : undefined
+                    }
+                    onMouseEnter={done ? () => handleDotMouseEnter(pos) : undefined}
+                    onMouseLeave={done ? handleDotMouseLeave : undefined}
+                    style={done || available ? { cursor: 'pointer' } : {}}
                   >
                     {done
                       ? <span className="pick-dot-initials">{getInitials(player.name)}</span>
@@ -93,15 +138,39 @@ export default function DraftPhase({ onComplete, onFirstSpinDone }) {
                 )
               })}
             </div>
-            <span className="pick-label">
-              {`Pick ${pickNumber} of 5`}
-            </span>
           </div>
+
+          {expandedPos && lineup[expandedPos] && (() => {
+            const p = lineup[expandedPos]
+            const schoolColor = getSchoolColor(p.school)
+            return (
+              <div className="pick-dot-popover" onClick={e => e.stopPropagation()} onMouseEnter={handlePopoverMouseEnter} onMouseLeave={handlePopoverMouseLeave}>
+                <div className="pdp-name">{p.name}</div>
+                <div className="pdp-sub">
+                  <span className="pdp-school" style={{ color: schoolColor || 'var(--text-dim)' }}>{p.school}</span>
+                  <span className="pdp-sep">·</span>
+                  <span className="pdp-year">{p.season}</span>
+                  <span className="pdp-sep">·</span>
+                  {p.positions.map(pos => (
+                    <span key={pos} className="pdp-pos" style={{ '--c': POS_COLOR[pos] }}>{pos}</span>
+                  ))}
+                </div>
+                {showStats && (
+                  <div className="pdp-stats">
+                    <div className="pdp-stat"><span className="pdp-val">{p.ppg.toFixed(1)}</span><span className="pdp-lbl">PPG</span></div>
+                    <div className="pdp-stat"><span className="pdp-val">{p.rpg.toFixed(1)}</span><span className="pdp-lbl">RPG</span></div>
+                    <div className="pdp-stat"><span className="pdp-val">{p.apg.toFixed(1)}</span><span className="pdp-lbl">APG</span></div>
+                    <div className="pdp-stat"><span className="pdp-val">{((p.spg ?? 0) + (p.bpg ?? 0)).toFixed(1)}</span><span className="pdp-lbl">S+B</span></div>
+                    <div className="pdp-stat"><span className="pdp-val">{p.tspct ? (p.tspct * 100).toFixed(1) : '—'}</span><span className="pdp-lbl">TS%</span></div>
+                  </div>
+                )}
+              </div>
+            )
+          })()}
         </div>
       )}
 
-      <div className={`draft-phase-body${showChrome ? '' : ' draft-phase-body--full'}`}
-           onClick={e => e.stopPropagation()}>
+      <div className="draft-phase-body" onClick={e => e.stopPropagation()}>
         <div className="draft-phase-main">
           {subPhase === 'spin' && (
             <>
@@ -151,18 +220,6 @@ export default function DraftPhase({ onComplete, onFirstSpinDone }) {
             </div>
           )}
         </div>
-
-        {showChrome && (
-          <div className="draft-phase-sidebar">
-            <Lineup
-              lineup={lineup}
-              focusedPlayer={focusedPlayer}
-              onChange={handleSlotFill}
-              onCalculate={() => {}}
-              full={false}
-            />
-          </div>
-        )}
       </div>
     </div>
   )

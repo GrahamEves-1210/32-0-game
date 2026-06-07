@@ -40,6 +40,7 @@
   padding-right: 120px;
   border-bottom: 1px solid var(--border);
   border-radius: 0 0 16px 16px;
+  overflow: visible;
 }
 
 .draft-header-right {
@@ -75,11 +76,19 @@
   background: var(--surface2);
   position: relative;
   transition: border-color 0.2s, background 0.2s;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .pick-dot--done {
   border-color: var(--orange);
   background: color-mix(in srgb, var(--orange) 18%, var(--surface2));
+  cursor: pointer;
+}
+
+.pick-dot--open {
+  border-color: var(--orange);
+  box-shadow: 0 0 0 2px var(--orange);
 }
 
 .pick-dot--available {
@@ -143,30 +152,122 @@
   font-weight: 700;
 }
 
-/* ── Two-column body ── */
+/* ── Body ── */
 .draft-phase-body {
-  display: grid;
-  grid-template-columns: 1fr 320px;
-  gap: 20px;
-  align-items: start;
-}
-
-.draft-phase-body--full {
-  grid-template-columns: 1fr;
-}
-
-@media (max-width: 768px) {
-  .draft-phase-body {
-    grid-template-columns: 1fr;
-  }
+  display: block;
 }
 
 .draft-phase-main {
   min-width: 0;
 }
 
-.draft-phase-sidebar {
-  /* sticky so it stays visible while user scrolls the pool */
+/* ── Filled-dot popover ── */
+.pick-dot-popover {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 16px;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.18);
+  z-index: 300;
+  animation: pdp-in 0.16s ease forwards;
+  min-width: 220px;
+  max-width: 340px;
+}
+
+[data-theme="dark"] .pick-dot-popover {
+  background: #253f8a;
+  border-color: #4a68c0;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.4);
+}
+
+@keyframes pdp-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(-6px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+.pdp-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.pdp-sub {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin-top: 3px;
+}
+
+.pdp-school {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.pdp-sep {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.pdp-year {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  color: var(--text-dim);
+}
+
+.pdp-pos {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 5px;
+  border: 1.5px solid var(--c);
+  color: var(--c);
+  background: color-mix(in srgb, var(--c) 12%, transparent);
+}
+
+.pdp-stats {
+  display: flex;
+  gap: 14px;
+  margin-top: 8px;
+  padding-top: 7px;
+  border-top: 1px solid var(--border);
+}
+
+.pdp-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.pdp-val {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+}
+
+[data-theme="dark"] .pdp-val {
+  color: #ffffff;
+}
+
+.pdp-lbl {
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+[data-theme="dark"] .pdp-lbl {
+  color: #9ab4e8;
 }
 
 /* ── Pool sub-phase ── */

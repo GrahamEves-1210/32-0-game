@@ -40,7 +40,7 @@ export default function PlayerPool({ players, lineup, focusedPlayer, onFocus, on
   const sorted = [...players].sort((a, b) => {
     const sa = getStatus(a), sb = getStatus(b)
     if (order[sa] !== order[sb]) return order[sa] - order[sb]
-    return a.name.localeCompare(b.name)
+    return showStats ? b.ppg - a.ppg : a.name.localeCompare(b.name)
   })
 
   return (

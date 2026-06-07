@@ -3,8 +3,9 @@ import { getGradeColor } from '../data/conferences'
 import './SpinScreen.css'
 
 
-function Reel({ label, current, accentKey, subKey, spinning, landed, accentColor }) {
+function Reel({ label, current, accentKey, subKey, spinning, landed, accentColor, tick }) {
   const sub = subKey ? current?.[subKey] : null
+  const contentKey = spinning ? tick : (landed ? 'landed' : current?.[accentKey])
   return (
     <div className={`reel ${spinning ? 'reel--spinning' : ''} ${landed ? 'reel--landed' : ''}`}>
       <div className="reel-label">{label}</div>
@@ -12,7 +13,7 @@ function Reel({ label, current, accentKey, subKey, spinning, landed, accentColor
         className="reel-window"
         style={accentColor ? { borderColor: accentColor } : {}}
       >
-        <div key={landed ? 'landed' : current?.[accentKey]} className="reel-content">
+        <div key={contentKey} className="reel-content">
           <span className="reel-main" style={accentColor ? { color: accentColor } : {}}>
             {current?.[accentKey] ?? '?'}
           </span>
@@ -66,6 +67,7 @@ export default function SpinScreen({ conferences, eras, onChoose }) {
   const [eraIdx,   setEraIdx]   = useState(0)
   const [landed,   setLanded]   = useState(false)
   const [results,  setResults]  = useState(null)
+  const [tick,     setTick]     = useState(0)
   const intervalRef = useRef(null)
   const stopRef     = useRef(null)
 
@@ -80,6 +82,7 @@ export default function SpinScreen({ conferences, eras, onChoose }) {
     intervalRef.current = setInterval(() => {
       setConfIdx(weightedRandomConf(conferences))
       setEraIdx(Math.floor(Math.random() * eras.length))
+      setTick(t => t + 1)
     }, 80)
 
     stopRef.current = setTimeout(() => {
@@ -123,6 +126,7 @@ export default function SpinScreen({ conferences, eras, onChoose }) {
           spinning={spinning}
           landed={landed}
           accentColor={confColor}
+          tick={tick}
         />
         <div className="reels-x">×</div>
         <Reel
@@ -132,6 +136,7 @@ export default function SpinScreen({ conferences, eras, onChoose }) {
           spinning={spinning}
           landed={landed}
           accentColor='#38B6E8'
+          tick={tick}
         />
       </div>
 
