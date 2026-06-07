@@ -7,7 +7,7 @@ export const ERAS = [
 ]
 
 // A = major (blue) · B = mid-major (green) · C = low-major (gold)
-export const GRADE_COLORS = { A: '#3b82f6', B: '#22c55e', C: '#e0a800' }
+export const GRADE_COLORS = { A: '#2979ff', B: '#22c55e', C: '#e0a800' }
 export const GRADE_MULTIPLIERS = { A: 1.0, B: 0.78, C: 0.60 }
 
 export function getGradeColor(grade) {

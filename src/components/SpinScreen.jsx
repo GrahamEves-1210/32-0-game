@@ -91,7 +91,11 @@ export default function SpinScreen({ conferences, eras, onChoose }) {
       const finalConference = conferences[finalConf]
       const finalEraObj = eras[finalEra]
       setResults({ conference: finalConference, era: finalEraObj })
-      setTimeout(() => onChoose(finalConference, finalEraObj), 1600)
+      setTimeout(() => {
+        document.documentElement.scrollTop = 0
+        document.body.scrollTop = 0
+        onChoose(finalConference, finalEraObj)
+      }, 1600)
     }, 1300)
   }
 

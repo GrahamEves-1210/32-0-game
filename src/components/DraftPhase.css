@@ -246,6 +246,10 @@
     width: 46px;
     height: 46px;
   }
+
+  .draft-header-logo {
+    display: none;
+  }
 }
 
 @media (max-width: 480px) {

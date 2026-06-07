@@ -3,7 +3,9 @@
   border: 1.5px solid var(--border);
   border-left: 4px solid var(--border);
   border-radius: var(--radius-sm);
-  padding: 8px 16px;
+  padding: 4px 16px;
+  border-width: 2px;
+  border-left-width: 5px;
   cursor: pointer;
   transition: border-color 0.12s, background 0.12s, box-shadow 0.12s;
   outline: none;
@@ -42,9 +44,6 @@
 
 [data-theme="dark"] .player-row {
   background: #3255b0;
-  border-color: #5272c8;
-  border-width: 2px;
-  border-left-width: 5px;
   border-color: #6888d8;
 }
 
@@ -170,12 +169,13 @@
   display: flex;
   gap: 18px;
   flex-shrink: 0;
+  padding: 5px 10px;
+  border-radius: 10px;
+  background: rgba(0,0,0,0.04);
 }
 
 [data-theme="dark"] .pr-stats {
   background: rgba(255,255,255,0.1);
-  border-radius: 10px;
-  padding: 5px 10px;
 }
 
 .pr-stat {
@@ -219,16 +219,16 @@
 
 @media (max-width: 768px) {
   .player-row {
-    padding: 10px 10px;
+    padding: 4px 10px;
     gap: 6px;
   }
 
   .pr-name {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .pr-school {
-    font-size: 13px;
+    font-size: 11px;
   }
 
   .pr-year {
@@ -252,14 +252,22 @@
   }
 
   .pr-stat {
-    min-width: 26px;
+    min-width: 22px;
   }
 
   .pr-val {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .pr-lbl {
-    font-size: 8px;
+    font-size: 9px;
+  }
+
+  .player-row {
+    gap: 4px;
+  }
+
+  [data-theme="dark"] .pr-stats {
+    padding: 3px 6px;
   }
 }
