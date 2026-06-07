@@ -50,12 +50,16 @@ export default function DraftPhase({ onComplete, onFirstSpinDone }) {
   }
 
   useEffect(() => {
-    const lock = subPhase !== 'pool'
-    document.documentElement.style.overflowY = lock ? 'hidden' : ''
-    document.body.style.overflowY             = lock ? 'hidden' : ''
-    return () => {
-      document.documentElement.style.overflowY = ''
-      document.body.style.overflowY             = ''
+    if (subPhase !== 'pool') {
+      const prevent = (e) => e.preventDefault()
+      document.documentElement.style.overflowY = 'hidden'
+      document.body.style.overflowY             = 'hidden'
+      document.addEventListener('touchmove', prevent, { passive: false })
+      return () => {
+        document.documentElement.style.overflowY = ''
+        document.body.style.overflowY             = ''
+        document.removeEventListener('touchmove', prevent)
+      }
     }
   }, [subPhase])
 
