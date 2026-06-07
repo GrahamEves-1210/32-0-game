@@ -20,7 +20,7 @@ export default function PlayerPool({ players, lineup, focusedPlayer, onFocus, on
     const inLineup = Object.values(lineup).some(lp => lp?.id === player.id)
     if (inLineup) return 'in-lineup'
     if (focusedPlayer?.id === player.id) return 'focused'
-    // locked = all this player's positions are already filled by other players
+    // locked = all this player's positions are already filled
     const openSlots = player.positions.filter(pos => !lineup[pos])
     if (openSlots.length === 0) return 'locked'
     return 'idle'
@@ -36,12 +36,11 @@ export default function PlayerPool({ players, lineup, focusedPlayer, onFocus, on
     }
   }
 
-  // Push in-lineup and locked to bottom; within each group sort by PPG (stats on) or name
   const order = { idle: 0, focused: 0, 'in-lineup': 1, locked: 2 }
   const sorted = [...players].sort((a, b) => {
     const sa = getStatus(a), sb = getStatus(b)
     if (order[sa] !== order[sb]) return order[sa] - order[sb]
-    return showStats ? b.ppg - a.ppg : a.name.localeCompare(b.name)
+    return a.name.localeCompare(b.name)
   })
 
   return (

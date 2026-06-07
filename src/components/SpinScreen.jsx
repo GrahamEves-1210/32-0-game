@@ -10,7 +10,7 @@ function Reel({ label, current, accentKey, subKey, spinning, landed, accentColor
       <div className="reel-label">{label}</div>
       <div
         className="reel-window"
-        style={landed && accentColor ? { borderColor: accentColor } : {}}
+        style={accentColor ? { borderColor: accentColor } : {}}
       >
         <div key={landed ? 'landed' : current?.[accentKey]} className="reel-content">
           <span className="reel-main" style={accentColor ? { color: accentColor } : {}}>
@@ -80,7 +80,7 @@ export default function SpinScreen({ conferences, eras, onChoose }) {
     intervalRef.current = setInterval(() => {
       setConfIdx(weightedRandomConf(conferences))
       setEraIdx(Math.floor(Math.random() * eras.length))
-    }, 58)
+    }, 80)
 
     stopRef.current = setTimeout(() => {
       clearInterval(intervalRef.current)
@@ -88,7 +88,10 @@ export default function SpinScreen({ conferences, eras, onChoose }) {
       setEraIdx(finalEra)
       setSpinning(false)
       setLanded(true)
-      setResults({ conference: conferences[finalConf], era: eras[finalEra] })
+      const finalConference = conferences[finalConf]
+      const finalEraObj = eras[finalEra]
+      setResults({ conference: finalConference, era: finalEraObj })
+      setTimeout(() => onChoose(finalConference, finalEraObj), 1600)
     }, 1300)
   }
 
@@ -99,7 +102,7 @@ export default function SpinScreen({ conferences, eras, onChoose }) {
 
   const currentConf = conferences[confIdx]
   const currentEra  = eras[eraIdx]
-  const landedColor = landed ? getGradeColor(currentConf?.grade) : null
+  const confColor = getGradeColor(currentConf?.grade)
 
   return (
     <div className="spin-screen">
@@ -115,7 +118,7 @@ export default function SpinScreen({ conferences, eras, onChoose }) {
           subKey="fullName"
           spinning={spinning}
           landed={landed}
-          accentColor={landedColor}
+          accentColor={confColor}
         />
         <div className="reels-x">×</div>
         <Reel
@@ -135,42 +138,36 @@ export default function SpinScreen({ conferences, eras, onChoose }) {
           aria-label={spinning ? 'Spinning…' : 'Spin'}
         >
           <span className="btn-ball-wrap"><span className="btn-ball-icon">🏀</span></span>
-          <span className="btn-spin-text">{spinning ? 'Rolling…' : 'SPIN'}</span>
+          <span className="btn-spin-text">SPIN</span>
         </button>
       ) : (
-        <>
-          <button className="btn-draft" onClick={() => onChoose(results.conference, results.era)}>
-            Pick Your Player →
-          </button>
-
-          <div className="spin-result-card">
-            <div
-              className="src-conf-name"
-              style={{ color: getGradeColor(results.conference.grade) }}
-            >
-              {results.conference.fullName}
-            </div>
-
-            <div className="src-grade-row">
-              <span
-                className="src-grade-badge"
-                style={{
-                  color: getGradeColor(results.conference.grade),
-                  borderColor: getGradeColor(results.conference.grade),
-                }}
-              >
-                Conference Grade {results.conference.grade}
-              </span>
-              <span className="src-era-label">{results.era.label}</span>
-            </div>
-
-            <div className="src-schools">
-              {results.conference.schools.map(s => (
-                <span key={s} className="src-school-chip">{s}</span>
-              ))}
-            </div>
+        <div className="spin-result-card">
+          <div
+            className="src-conf-name"
+            style={{ color: getGradeColor(results.conference.grade) }}
+          >
+            {results.conference.fullName}
           </div>
-        </>
+
+          <div className="src-grade-row">
+            <span
+              className="src-grade-badge"
+              style={{
+                color: getGradeColor(results.conference.grade),
+                borderColor: getGradeColor(results.conference.grade),
+              }}
+            >
+              Conference Grade {results.conference.grade}
+            </span>
+            <span className="src-era-label">{results.era.label}</span>
+          </div>
+
+          <div className="src-schools">
+            {results.conference.schools.map(s => (
+              <span key={s} className="src-school-chip">{s}</span>
+            ))}
+          </div>
+        </div>
       )}
     </div>
   )

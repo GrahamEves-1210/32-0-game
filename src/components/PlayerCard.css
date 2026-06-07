@@ -1,22 +1,29 @@
 .player-row {
   background: var(--surface);
   border: 1.5px solid var(--border);
-  border-left: 4px solid var(--border); /* overridden per-card by inline style */
+  border-left: 4px solid var(--border);
   border-radius: var(--radius-sm);
-  padding: 11px 16px;
+  padding: 8px 16px;
   cursor: pointer;
   transition: border-color 0.12s, background 0.12s, box-shadow 0.12s;
   outline: none;
   display: flex;
   align-items: center;
   gap: 14px;
+  animation: card-in 0.22s ease forwards;
+}
+
+@keyframes card-in {
+  from { transform: translateY(6px); }
+  to   { transform: translateY(0); }
 }
 
 /* ── States ── */
 
 .player-row--idle:hover {
   background: var(--surface2);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+  border-color: var(--orange);
 }
 
 [data-theme="dark"] .pr-val {
@@ -34,12 +41,17 @@
 }
 
 [data-theme="dark"] .player-row {
-  background: #2a4898;
-  border-color: #4a68c0;
+  background: #3255b0;
+  border-color: #5272c8;
+  border-width: 2px;
+  border-left-width: 5px;
+  border-color: #6888d8;
 }
 
 [data-theme="dark"] .player-row--idle:hover {
-  background: #3255aa;
+  background: #3e65c0;
+  border-color: #7a9ae0;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.35);
 }
 
 [data-theme="dark"] .player-row--focused {
@@ -53,6 +65,11 @@
 .player-row--focused {
   background: color-mix(in srgb, var(--orange) 8%, var(--surface));
   box-shadow: 0 0 0 2px var(--orange), 0 4px 16px rgba(56, 182, 232, 0.20);
+}
+
+.player-row--focused .pr-school,
+.player-row--focused .pr-sep {
+  display: none;
 }
 
 .player-row--in-lineup {
@@ -133,13 +150,18 @@
 
 .pr-pos {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
-  padding: 2px 7px;
+  padding: 3px 8px;
   border-radius: 6px;
-  border: 1px solid var(--c);
+  border: 1.5px solid var(--c);
   color: var(--c);
   letter-spacing: 0.04em;
+  background: color-mix(in srgb, var(--c) 12%, transparent);
+}
+
+[data-theme="dark"] .pr-pos {
+  background: color-mix(in srgb, var(--c) 22%, transparent);
 }
 
 /* ── Stats ── */
@@ -148,6 +170,12 @@
   display: flex;
   gap: 18px;
   flex-shrink: 0;
+}
+
+[data-theme="dark"] .pr-stats {
+  background: rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 5px 10px;
 }
 
 .pr-stat {
@@ -191,7 +219,7 @@
 
 @media (max-width: 768px) {
   .player-row {
-    padding: 7px 10px;
+    padding: 10px 10px;
     gap: 6px;
   }
 

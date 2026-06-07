@@ -20,6 +20,14 @@
   letter-spacing: -2px;
 }
 
+.app-logo .logo-number {
+  text-shadow: 0 2px 14px rgba(13,32,32,0.2);
+}
+
+[data-theme="dark"] .app-logo .logo-number {
+  text-shadow: 0 2px 18px rgba(56,182,232,0.25);
+}
+
 .logo-dash {
   color: var(--orange);
 }
@@ -87,28 +95,69 @@
   /* pool first so user picks a player, then scrolls down to see highlighted slots */
 }
 
-/* Theme toggle */
+/* Theme toggle switch */
 .btn-theme-toggle {
   position: fixed;
   top: 16px;
   left: 16px;
   z-index: 200;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  color: var(--text-dim);
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  font-size: 16px;
+  width: 64px;
+  height: 32px;
+  border-radius: 999px;
+  background: #c8dff5;
+  border: 1.5px solid rgba(255,255,255,0.7);
+  padding: 0;
   display: flex;
   align-items: center;
-  justify-content: center;
-  transition: all 0.15s;
+  cursor: pointer;
+  transition: background 0.25s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
 }
 
-.btn-theme-toggle:hover {
-  color: var(--text);
-  border-color: var(--text-dim);
+.btn-theme-toggle--dark {
+  background: #1e3a7a;
+  border-color: rgba(255,255,255,0.2);
+}
+
+.toggle-knob {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+  left: 4px;
+  transition: left 0.25s cubic-bezier(0.34,1.3,0.64,1);
+}
+
+.btn-theme-toggle--dark .toggle-knob {
+  left: 36px;
+}
+
+.toggle-icon {
+  position: absolute;
+  font-size: 13px;
+  line-height: 1;
+  transition: opacity 0.2s;
+  pointer-events: none;
+}
+
+.toggle-icon--moon {
+  right: 6px;
+  opacity: 1;
+}
+
+.toggle-icon--sun {
+  left: 6px;
+  opacity: 0;
+}
+
+.btn-theme-toggle--dark .toggle-icon--moon {
+  opacity: 0;
+}
+
+.btn-theme-toggle--dark .toggle-icon--sun {
+  opacity: 1;
 }
 
 /* Reset button */
@@ -154,14 +203,15 @@
     top: 16px;
     left: auto;
     right: 16px;
+    left: unset;
   }
 
   .btn-reset {
     top: auto;
-    bottom: 20px;
-    right: 16px;
-    padding: 10px 18px;
-    font-size: 13px;
+    bottom: 12px;
+    right: 12px;
+    padding: 8px 14px;
+    font-size: 12px;
     background: var(--surface);
     border-color: var(--text-dim);
     color: var(--text);
@@ -188,10 +238,10 @@
 
   .btn-reset {
     top: auto;
-    bottom: 20px;
-    right: 16px;
-    padding: 10px 18px;
-    font-size: 13px;
+    bottom: 12px;
+    right: 12px;
+    padding: 8px 14px;
+    font-size: 12px;
     background: var(--surface);
     border-color: var(--text-dim);
     color: var(--text);

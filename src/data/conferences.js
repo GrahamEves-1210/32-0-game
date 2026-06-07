@@ -7,7 +7,7 @@ export const ERAS = [
 ]
 
 // A = major (blue) · B = mid-major (green) · C = low-major (gold)
-export const GRADE_COLORS = { A: '#103de0', B: '#22c55e', C: '#e0a800' }
+export const GRADE_COLORS = { A: '#3b82f6', B: '#22c55e', C: '#e0a800' }
 export const GRADE_MULTIPLIERS = { A: 1.0, B: 0.78, C: 0.60 }
 
 export function getGradeColor(grade) {
@@ -20,7 +20,7 @@ export const CONFERENCES = [
     schools: ['Duke','North Carolina','NC State','Virginia','Virginia Tech','Syracuse','Miami FL','Florida State','Georgia Tech','Wake Forest','Clemson','Louisville','Pittsburgh','Boston College','Notre Dame'],
   },
   {
-    id: 'bigeast', name: 'Big East', fullName: 'Big East Conference', grade: 'A', color: '#002147',
+    id: 'bigeast', name: 'Big East', fullName: 'Big East Conference', grade: 'A', color: '#1a4a8a',
     schools: ['UConn','Villanova','Georgetown','Marquette','St. John\'s','Seton Hall','Creighton','Providence','Xavier','Butler','DePaul'],
   },
   {

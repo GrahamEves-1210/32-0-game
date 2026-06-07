@@ -46,7 +46,7 @@ export default function WinResult({ lineup, onReset }) {
 
       {/* ── Record ── */}
       <div className={`result-wins-block ${done ? 'result-wins-block--done' : ''}`}>
-        <div className="result-wins-number">
+        <div className="result-wins-number" style={done ? { filter: `drop-shadow(0 0 18px ${label.color}44)` } : {}}>
           <span className="result-wins-val">{displayed}</span>
           <span className="result-wins-dash">-</span>
           <span className="result-wins-losses">{32 - displayed}</span>
@@ -82,8 +82,8 @@ export default function WinResult({ lineup, onReset }) {
           const gc    = getGradeColor(grade)
           return (
             <div key={pos} className="result-roster-row" style={{ background: isDark()
-                ? `color-mix(in srgb, ${grade === 'A' ? '#60a5fa' : gc} ${grade === 'A' ? 50 : grade === 'B' ? 32 : 18}%, #2a4898)`
-                : `color-mix(in srgb, ${grade === 'A' ? '#60a5fa' : gc} ${grade === 'A' ? 28 : 18}%, var(--surface))` }}>
+                ? `color-mix(in srgb, ${grade === 'A' ? '#60a5fa' : gc} ${grade === 'A' ? 50 : grade === 'B' ? 38 : 30}%, #2a4898)`
+                : `color-mix(in srgb, ${grade === 'A' ? '#60a5fa' : gc} ${grade === 'A' ? 28 : grade === 'B' ? 22 : 20}%, var(--surface))` }}>
               <span className="rr-pos" style={{ color: POS_COLOR[pos] }}>{pos}</span>
               <div className="rr-player">
                 <span className="rr-name">{player.name}</span>

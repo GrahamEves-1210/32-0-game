@@ -35,7 +35,7 @@ export default function App() {
     <div className="app">
       {(showHeader || phase === 'result') && (
         <header className="app-header">
-          <div className="app-logo">32<span className="logo-dash">-</span>0</div>
+          <div className="app-logo"><span className="logo-number">32<span className="logo-dash">-</span>0</span></div>
           <p className="app-subtitle">Men's College Hoops · Build the perfect lineup</p>
         </header>
       )}
@@ -57,8 +57,15 @@ export default function App() {
         )}
       </main>
 
-      <button className="btn-theme-toggle" onClick={() => setDarkMode(d => !d)} title="Toggle theme">
-        {darkMode ? '☀️' : '🌙'}
+      <button
+        className={`btn-theme-toggle ${darkMode ? 'btn-theme-toggle--dark' : ''}`}
+        onClick={() => setDarkMode(d => !d)}
+        title="Toggle theme"
+        aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+      >
+        <span className="toggle-icon toggle-icon--moon">🌙</span>
+        <span className="toggle-knob" />
+        <span className="toggle-icon toggle-icon--sun">☀️</span>
       </button>
 
       {phase === 'draft' && (

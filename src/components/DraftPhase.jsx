@@ -66,36 +66,37 @@ export default function DraftPhase({ onComplete, onFirstSpinDone }) {
 
       {showChrome && (
         <div className="draft-phase-header">
-          <div className="pick-tracker">
-            {POSITIONS.map(pos => {
-              const player    = lineup[pos]
-              const done      = player !== null
-              const available = !done && focusedPlayer?.positions.includes(pos)
-              return (
-                <div
-                  key={pos}
-                  className={[
-                    'pick-dot',
-                    done      ? 'pick-dot--done'      : '',
-                    available ? 'pick-dot--available' : '',
-                  ].join(' ')}
-                  title={done ? player.name : pos}
-                  onClick={available ? () => handleSlotFill(pos, focusedPlayer) : undefined}
-                  style={available ? { cursor: 'pointer' } : {}}
-                >
-                  {done
-                    ? <span className="pick-dot-initials">{getInitials(player.name)}</span>
-                    : <span className="pick-dot-pos">{pos}</span>
-                  }
-                </div>
-              )
-            })}
+          <div className="draft-header-logo">32<span className="draft-header-logo-dash">-</span>0</div>
+          <div className="draft-header-right">
+            <div className="pick-tracker">
+              {POSITIONS.map(pos => {
+                const player    = lineup[pos]
+                const done      = player !== null
+                const available = !done && focusedPlayer?.positions.includes(pos)
+                return (
+                  <div
+                    key={pos}
+                    className={[
+                      'pick-dot',
+                      done      ? 'pick-dot--done'      : '',
+                      available ? 'pick-dot--available' : '',
+                    ].join(' ')}
+                    title={done ? player.name : pos}
+                    onClick={available ? () => handleSlotFill(pos, focusedPlayer) : undefined}
+                    style={available ? { cursor: 'pointer' } : {}}
+                  >
+                    {done
+                      ? <span className="pick-dot-initials">{getInitials(player.name)}</span>
+                      : <span className="pick-dot-pos">{pos}</span>
+                    }
+                  </div>
+                )
+              })}
+            </div>
+            <span className="pick-label">
+              {`Pick ${pickNumber} of 5`}
+            </span>
           </div>
-          <span className="pick-label">
-            {subPhase === 'spin'
-              ? `Pick ${pickNumber} of 5`
-              : `Pick ${pickNumber} of 5 — ${currentConf?.name} · ${currentEra?.label}`}
-          </span>
         </div>
       )}
 
