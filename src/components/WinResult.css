@@ -308,12 +308,18 @@
     gap: 2px;
   }
 
+  .rr-player {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1px;
+  }
+
   .rr-name {
-    font-size: 14px;
+    font-size: 13px;
   }
 
   .rr-school {
-    font-size: 12px;
+    font-size: 11px;
   }
 
   .rr-year {

@@ -2915,6 +2915,20 @@ export const ALL_PLAYERS = [
   p('max-mackinnon-2','Max Mackinnon','Portland','wcc','era5',2025,14.5,4.8,3.2,0.7,0.3,0.59,["SG","SF"]),
   p('kjay-bradley-jr','Kjay Bradley Jr.','San Diego','wcc','era5',2025,14.5,2.7,3.5,1.7,0.2,0.525,["PG","SG"]),
   p('augustas-marciulionis','Augustas Marciulionis','Saint Mary\'s','wcc','era5',2025,14.2,3.1,5.9,1.3,0.1,0.558,["PG","SG"]),
+  // Notable NBA stars added manually — verified via sports-reference.com
+  p('chris-paul','Chris Paul','Wake Forest','acc','era1',2005,15.3,4.5,6.6,2.4,0.1,0.601,["PG"]),
+  p('derrick-rose','Derrick Rose','Memphis','cusa','era1',2008,14.9,4.5,4.7,1.3,0.2,0.538,["PG"]),
+  p('russell-westbrook','Russell Westbrook','UCLA','pac12','era1',2008,12.7,3.9,4.3,1.6,0.2,0.510,["PG","SG"]),
+  p('kawhi-leonard','Kawhi Leonard','San Diego State','mwc','era2',2011,15.5,10.6,2.5,1.4,0.9,0.512,["SF","PF"]),
+  p('bradley-beal','Bradley Beal','Florida','sec','era2',2012,14.8,6.7,2.2,1.4,0.9,0.540,["SG","SF"]),
+  p('victor-oladipo','Victor Oladipo','Indiana','big10','era2',2013,13.6,6.3,2.1,2.2,0.8,0.680,["SG","SF"]),
+  p('joel-embiid','Joel Embiid','Kansas','big12','era2',2014,11.2,8.1,1.4,0.9,2.6,0.680,["C"]),
+  p('devin-booker','Devin Booker','Kentucky','sec','era2',2015,10.0,2.0,1.1,0.7,0.1,0.601,["SG"]),
+  p('karl-anthony-towns','Karl-Anthony Towns','Kentucky','sec','era2',2015,10.3,6.7,1.1,0.5,2.5,0.627,["C","PF"]),
+  p('donovan-mitchell','Donovan Mitchell','Louisville','acc','era3',2017,15.6,4.9,2.7,2.1,0.3,0.541,["SG","SF"]),
+  p('bam-adebayo','Bam Adebayo','Kentucky','sec','era3',2017,13.0,8.0,1.1,0.9,1.5,0.620,["C","PF"]),
+  p('shai-gilgeous-alexander','Shai Gilgeous-Alexander','Kentucky','sec','era3',2018,14.4,4.1,5.1,1.6,0.5,0.567,["PG","SG"]),
+  p('tyrese-maxey','Tyrese Maxey','Kentucky','sec','era3',2020,14.0,4.3,3.2,0.9,0.4,0.536,["PG","SG"]),
 ]
 
 export function getPlayers(conferenceId, eraId) {

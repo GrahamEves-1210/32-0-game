@@ -25,7 +25,7 @@ export default function DraftPhase({ onComplete, onFirstSpinDone }) {
   const [subPhase,      setSubPhase]      = useState('spin')
   const [currentConf,   setCurrentConf]   = useState(null)
   const [currentEra,    setCurrentEra]    = useState(null)
-  const [showStats,     setShowStats]     = useState(() => localStorage.getItem('showStats') === 'true')
+  const [showStats,     setShowStats]     = useState(() => localStorage.getItem('showStats') !== 'false')
   const [expandedPos,   setExpandedPos]   = useState(null)
   const hoverTimer  = useRef(null)
   const closeTimer  = useRef(null)
