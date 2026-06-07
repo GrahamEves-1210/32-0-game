@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import DraftPhase from './components/DraftPhase'
 import WinResult from './components/WinResult'
 import './App.css'
@@ -10,6 +10,12 @@ export default function App() {
   const [finalLineup, setFinalLineup] = useState(null)
   const [resetKey,    setResetKey]    = useState(0)
   const [showHeader,  setShowHeader]  = useState(true)
+  const [darkMode,    setDarkMode]    = useState(() => localStorage.getItem('theme') !== 'light')
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light')
+    localStorage.setItem('theme', darkMode ? 'dark' : 'light')
+  }, [darkMode])
 
   function handleDraftComplete(lineup) {
     setFinalLineup(lineup)
@@ -50,6 +56,10 @@ export default function App() {
           />
         )}
       </main>
+
+      <button className="btn-theme-toggle" onClick={() => setDarkMode(d => !d)} title="Toggle theme">
+        {darkMode ? '☀️' : '🌙'}
+      </button>
 
       {phase === 'draft' && (
         <button className="btn-reset" onClick={handleReset}>↺ Start Over</button>

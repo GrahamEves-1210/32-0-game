@@ -87,6 +87,30 @@
   /* pool first so user picks a player, then scrolls down to see highlighted slots */
 }
 
+/* Theme toggle */
+.btn-theme-toggle {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 200;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+
+.btn-theme-toggle:hover {
+  color: var(--text);
+  border-color: var(--text-dim);
+}
+
 /* Reset button */
 .btn-reset {
   position: fixed;
@@ -123,6 +147,25 @@
 
 .footer-link:hover {
   color: var(--text-dim);
+}
+
+@media (max-width: 768px) {
+  .btn-theme-toggle {
+    top: 16px;
+    left: auto;
+    right: 16px;
+  }
+
+  .btn-reset {
+    top: auto;
+    bottom: 20px;
+    right: 16px;
+    padding: 10px 18px;
+    font-size: 13px;
+    background: var(--surface);
+    border-color: var(--text-dim);
+    color: var(--text);
+  }
 }
 
 @media (max-width: 480px) {

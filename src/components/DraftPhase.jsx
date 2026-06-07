@@ -41,7 +41,7 @@ export default function DraftPhase({ onComplete, onFirstSpinDone }) {
     const newLineup = { ...lineup, [pos]: player }
     setLineup(newLineup)
     setFocusedPlayer(null)
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    window.scrollTo({ top: 0, behavior: 'instant' })
 
     if (pickNumber >= 5) {
       onComplete(newLineup)
@@ -92,7 +92,7 @@ export default function DraftPhase({ onComplete, onFirstSpinDone }) {
           </div>
           <span className="pick-label">
             {subPhase === 'spin'
-              ? `Pick ${pickNumber} of 5 — Spin for your next player`
+              ? `Pick ${pickNumber} of 5`
               : `Pick ${pickNumber} of 5 — ${currentConf?.name} · ${currentEra?.label}`}
           </span>
         </div>

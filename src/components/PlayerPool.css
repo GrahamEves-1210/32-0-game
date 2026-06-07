@@ -29,6 +29,14 @@
   font-style: italic;
 }
 
+[data-theme="dark"] .pool-hint {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  padding: 2px 7px;
+  color: var(--text-dim);
+  font-weight: 700;
+}
+
 .pool-list {
   display: flex;
   flex-direction: column;

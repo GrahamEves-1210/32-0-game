@@ -5,11 +5,13 @@ import { CONFERENCES, getGradeColor } from '../data/conferences'
 import './WinResult.css'
 
 const POSITIONS = ['PG', 'SG', 'SF', 'PF', 'C']
-const POS_COLOR = { PG: '#3b82f6', SG: '#8b5cf6', SF: '#22c55e', PF: '#f59e0b', C: '#ef4444' }
+const POS_COLOR = { PG: '#3b82f6', SG: '#8b5cf6', SF: '#16a34a', PF: '#f59e0b', C: '#ef4444' }
 
 function getGrade(conferenceId) {
   return CONFERENCES.find(c => c.id === conferenceId)?.grade ?? '?'
 }
+
+const isDark = () => document.documentElement.getAttribute('data-theme') === 'dark'
 
 export default function WinResult({ lineup, onReset }) {
   const finalWins  = calculateWins(lineup)
@@ -79,7 +81,9 @@ export default function WinResult({ lineup, onReset }) {
           const grade = getGrade(player.conference)
           const gc    = getGradeColor(grade)
           return (
-            <div key={pos} className="result-roster-row" style={{ background: `color-mix(in srgb, ${grade === 'A' ? '#60a5fa' : gc} ${grade === 'A' ? 28 : 18}%, var(--surface))` }}>
+            <div key={pos} className="result-roster-row" style={{ background: isDark()
+                ? `color-mix(in srgb, ${grade === 'A' ? '#60a5fa' : gc} ${grade === 'A' ? 50 : grade === 'B' ? 32 : 18}%, #2a4898)`
+                : `color-mix(in srgb, ${grade === 'A' ? '#60a5fa' : gc} ${grade === 'A' ? 28 : 18}%, var(--surface))` }}>
               <span className="rr-pos" style={{ color: POS_COLOR[pos] }}>{pos}</span>
               <div className="rr-player">
                 <span className="rr-name">{player.name}</span>

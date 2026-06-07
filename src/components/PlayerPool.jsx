@@ -51,7 +51,7 @@ export default function PlayerPool({ players, lineup, focusedPlayer, onFocus, on
           Player Pool <span className="pool-count">({players.length})</span>
         </h3>
         {focusedPlayer ? (
-          <span className="pool-hint">Now click an open slot in your lineup →</span>
+          <span className="pool-hint">Click an open slot in your lineup</span>
         ) : (
           <span className="pool-hint">Click a player to select them</span>
         )}

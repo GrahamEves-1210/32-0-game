@@ -95,6 +95,23 @@
   background: color-mix(in srgb, var(--orange) 10%, var(--surface2));
 }
 
+/* ── Dark mode: brighter result row backgrounds ── */
+[data-theme="dark"] .rr-pos {
+  background: rgba(255, 255, 255, 0.45);
+  border-radius: 4px;
+  padding: 2px 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+[data-theme="dark"] .rr-school {
+  background: rgba(255, 255, 255, 0.45);
+  border-radius: 4px;
+  padding: 1px 5px;
+}
+
+
 /* ── Roster breakdown table ── */
 
 .result-roster {

@@ -2,7 +2,7 @@ import { getSchoolColor } from '../data/schoolColors'
 import './PlayerCard.css'
 
 const POS_COLOR = {
-  PG: '#3b82f6', SG: '#8b5cf6', SF: '#22c55e', PF: '#f59e0b', C: '#ef4444',
+  PG: '#3b82f6', SG: '#8b5cf6', SF: '#16a34a', PF: '#f59e0b', C: '#ef4444',
 }
 
 function mergePos(positions) {
