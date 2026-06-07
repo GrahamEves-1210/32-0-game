@@ -51,9 +51,12 @@ export default function DraftPhase({ onComplete, onFirstSpinDone }) {
 
   useEffect(() => {
     if (subPhase !== 'pool') {
-      const prevent = (e) => e.preventDefault()
+      window.scrollTo(0, 0)
+      document.documentElement.scrollTop       = 0
+      document.body.scrollTop                  = 0
       document.documentElement.style.overflowY = 'hidden'
       document.body.style.overflowY             = 'hidden'
+      const prevent = (e) => e.preventDefault()
       document.addEventListener('touchmove', prevent, { passive: false })
       return () => {
         document.documentElement.style.overflowY = ''
