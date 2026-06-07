@@ -55,6 +55,8 @@ const POS_OVERRIDES = {
   'JJ Redick|Duke':               ['SG', 'SF'],
   'Tyrese Haliburton|Iowa State': ['PG', 'SG'],
   'Brandon Miller|Alabama':       ['SF', 'PF'],
+  'Blake Griffin|Oklahoma':       ['PF', 'C'],
+  'Kevin Love|UCLA':              ['PF', 'C'],
 }
 
 function mapPos(pos, rpg, apg, name, school) {
@@ -130,7 +132,12 @@ async function main() {
       const tspct = Math.round((p.trueShootingPct ?? 0) * 1000) / 1000
       if (ppg < 3.0) continue
 
-      const record = { name: p.name, school: p.team, conference: confId, era, season, ppg, rpg, apg, spg, bpg, tspct, positions: mapPos(p.position, rpg, apg, p.name, p.team) }
+      let positions = mapPos(p.position, rpg, apg, p.name, p.team)
+      // True centers: dominant rebounders with elite efficiency — C only, not PF
+      if (positions.includes('C') && positions.includes('PF') && rpg > 10 && tspct > 0.65) {
+        positions = ['C']
+      }
+      const record = { name: p.name, school: p.team, conference: confId, era, season, ppg, rpg, apg, spg, bpg, tspct, positions }
       const key    = `${p.name}|${p.team}|${era}`
 
       // Coverage pool: all players >= 3 PPG (used only to fill missing positions)

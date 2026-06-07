@@ -143,13 +143,15 @@
   transition: color 0.15s;
 }
 
+/* Default — slow idle spin; hover/rolling only change the duration, not the animation itself */
+.btn-ball-wrap {
+  animation: bball-spin 3s linear infinite;
+}
+
 .btn-spin-main:hover:not(:disabled) {
   transform: scale(1.06);
 }
 
-.btn-spin-main:hover:not(:disabled) .btn-ball-wrap {
-  animation: bball-spin 1.4s linear infinite;
-}
 
 .btn-spin-main:hover:not(:disabled) .btn-spin-text {
   color: var(--orange);
@@ -162,7 +164,7 @@
 }
 
 .btn-spin-main--rolling .btn-ball-wrap {
-  animation: bball-spin 0.28s linear infinite;
+  animation-duration: 0.28s;
 }
 
 .btn-spin-main--rolling .btn-spin-text {
