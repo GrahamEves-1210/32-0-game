@@ -264,25 +264,30 @@
     font-size: 18px;
   }
 
-  /* Hide CFG on mobile — show PPG RPG APG S+B TS% */
-  .rr-cfg-val, .rr-cfg-head {
+  /* Hide CFG and TS% on mobile — show PPG RPG APG S+B */
+  .rr-cfg-val, .rr-cfg-head,
+  .rr-ts, .rr-ts-head {
     display: none;
+  }
+
+  .result-wrap {
+    padding: 16px 4px 60px;
   }
 
   .result-roster-header,
   .result-roster-row {
-    grid-template-columns: 24px 1fr 36px 36px 36px 36px 44px;
+    grid-template-columns: 24px 1fr 40px 40px 40px 40px;
     padding: 7px 8px;
     gap: 3px;
   }
 
   .result-roster-header {
     padding: 5px 8px;
-    grid-template-columns: 24px 1fr 36px 36px 36px 36px 44px;
+    grid-template-columns: 24px 1fr 40px 40px 40px 40px;
   }
 
   .result-team-totals {
-    grid-template-columns: 24px 1fr 36px 36px 36px 36px 44px;
+    grid-template-columns: 24px 1fr 40px 40px 40px 40px;
     padding: 8px 8px;
     gap: 3px;
   }
