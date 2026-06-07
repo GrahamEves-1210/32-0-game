@@ -21,7 +21,7 @@ export default function DraftPhase({ onComplete, onFirstSpinDone }) {
   const [subPhase,      setSubPhase]      = useState('spin')
   const [currentConf,   setCurrentConf]   = useState(null)
   const [currentEra,    setCurrentEra]    = useState(null)
-  const [showStats,     setShowStats]     = useState(false)
+  const [showStats,     setShowStats]     = useState(() => localStorage.getItem('showStats') === 'true')
 
   const filledCount = Object.values(lineup).filter(Boolean).length
   const players = currentConf && currentEra ? getPlayers(currentConf.id, currentEra.id) : []
@@ -106,7 +106,7 @@ export default function DraftPhase({ onComplete, onFirstSpinDone }) {
                 <div className="stats-toggle-row">
                   <button
                     className={`stats-toggle-btn ${showStats ? 'stats-toggle-btn--on' : ''}`}
-                    onClick={() => setShowStats(s => !s)}
+                    onClick={() => setShowStats(s => { localStorage.setItem('showStats', String(!s)); return !s })}
                   >
                     {showStats ? 'Stats: On' : 'Stats: Off'}
                   </button>
