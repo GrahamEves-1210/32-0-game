@@ -95,7 +95,7 @@ export default function WinResult({ lineup, onReset }) {
 
         <div className="result-team-totals">
           <span className="rtt-label">Team Totals</span>
-          <span />
+          <span className="rr-cfg-val" />
           <span className="rtt-val">{totalPPG.toFixed(1)}</span>
           <span className="rtt-val">{totalRPG.toFixed(1)}</span>
           <span className="rtt-val">{totalAPG.toFixed(1)}</span>
