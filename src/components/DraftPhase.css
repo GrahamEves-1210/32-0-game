@@ -250,12 +250,12 @@
   }
 
   .pick-dot {
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
   }
 
   .pick-tracker {
-    gap: 10px;
+    gap: 7px;
   }
 
   .draft-header-logo {
