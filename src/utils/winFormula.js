@@ -8,12 +8,14 @@ function getGradeMultiplier(conferenceId) {
   return GRADE_MULTIPLIERS[conf?.grade] ?? 0.92
 }
 
-// pts×1.15 + ast×1.5 + reb×0.6 — weighted by conference grade
+// pts×1.15 + ast×1.5 + reb×0.6 + (stl+blk)×0.5 + ts%×3 — weighted by conference grade
 // scoring bonus applied after multiplier so elite C-grade scorers still punch through
 function playerScore(p) {
   const mult         = getGradeMultiplier(p.conference)
   const scoringBonus = p.ppg > 24 ? (p.ppg - 24) * 0.25 : 0
-  return (p.ppg * 1.15 + p.apg * 1.5 + p.rpg * 0.6) * mult + scoringBonus
+  const stocks       = ((p.spg ?? 0) + (p.bpg ?? 0)) * 2
+  const efficiency   = (p.tspct ?? 0.52) * 6
+  return (p.ppg * 1.15 + p.apg * 1.5 + p.rpg * 0.6 + stocks + efficiency) * mult + scoringBonus
 }
 
 let _cache = null

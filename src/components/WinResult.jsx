@@ -35,6 +35,8 @@ export default function WinResult({ lineup, onReset }) {
   const totalPPG = lineup.reduce((s, p) => s + (p?.ppg ?? 0), 0)
   const totalRPG = lineup.reduce((s, p) => s + (p?.rpg ?? 0), 0)
   const totalAPG = lineup.reduce((s, p) => s + (p?.apg ?? 0), 0)
+  const totalSB  = lineup.reduce((s, p) => s + ((p?.spg ?? 0) + (p?.bpg ?? 0)), 0)
+  const avgTS    = lineup.filter(p => p?.tspct).reduce((s, p) => s + (p.tspct ?? 0), 0) / lineup.filter(p => p?.tspct).length
 
   return (
     <div className="result-wrap">
@@ -62,6 +64,8 @@ export default function WinResult({ lineup, onReset }) {
           <span className="rr-stat-head">PPG</span>
           <span className="rr-stat-head">RPG</span>
           <span className="rr-stat-head">APG</span>
+          <span className="rr-stat-head">S+B</span>
+          <span className="rr-stat-head rr-ts-head">TS%</span>
         </div>
 
         {POSITIONS.map((pos, i) => {
@@ -83,6 +87,8 @@ export default function WinResult({ lineup, onReset }) {
               <span className="rr-stat">{player.ppg.toFixed(1)}</span>
               <span className="rr-stat">{player.rpg.toFixed(1)}</span>
               <span className="rr-stat">{player.apg.toFixed(1)}</span>
+              <span className="rr-stat">{((player.spg ?? 0) + (player.bpg ?? 0)).toFixed(1)}</span>
+              <span className="rr-stat rr-ts">{player.tspct ? (player.tspct * 100).toFixed(1) : '—'}</span>
             </div>
           )
         })}
@@ -93,6 +99,8 @@ export default function WinResult({ lineup, onReset }) {
           <span className="rtt-val">{totalPPG.toFixed(1)}</span>
           <span className="rtt-val">{totalRPG.toFixed(1)}</span>
           <span className="rtt-val">{totalAPG.toFixed(1)}</span>
+          <span className="rtt-val">{totalSB.toFixed(1)}</span>
+          <span className="rtt-val rr-ts">{isNaN(avgTS) ? '—' : (avgTS * 100).toFixed(1)}</span>
         </div>
       </div>
 

@@ -50,6 +50,14 @@ export default function PlayerCard({ player, status, onClick, showStats = true }
             <span className="pr-val">{player.apg.toFixed(1)}</span>
             <span className="pr-lbl">APG</span>
           </div>
+          <div className="pr-stat">
+            <span className="pr-val">{((player.spg ?? 0) + (player.bpg ?? 0)).toFixed(1)}</span>
+            <span className="pr-lbl">S+B</span>
+          </div>
+          <div className="pr-stat">
+            <span className="pr-val">{player.tspct ? (player.tspct * 100).toFixed(1) : '—'}</span>
+            <span className="pr-lbl">TS%</span>
+          </div>
         </div>
       )}
 

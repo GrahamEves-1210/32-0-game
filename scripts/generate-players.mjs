@@ -122,12 +122,15 @@ async function main() {
       if (!confId) continue
       if (!p.games || p.games < 10) continue
 
-      const ppg = r1(p.points  / p.games)
-      const rpg = r1(p.rebounds.total / p.games)
-      const apg = r1(p.assists / p.games)
+      const ppg   = r1(p.points  / p.games)
+      const rpg   = r1(p.rebounds.total / p.games)
+      const apg   = r1(p.assists / p.games)
+      const spg   = r1((p.steals ?? 0) / p.games)
+      const bpg   = r1((p.blocks ?? 0) / p.games)
+      const tspct = Math.round((p.trueShootingPct ?? 0) * 1000) / 1000
       if (ppg < 3.0) continue
 
-      const record = { name: p.name, school: p.team, conference: confId, era, season, ppg, rpg, apg, positions: mapPos(p.position, rpg, apg, p.name, p.team) }
+      const record = { name: p.name, school: p.team, conference: confId, era, season, ppg, rpg, apg, spg, bpg, tspct, positions: mapPos(p.position, rpg, apg, p.name, p.team) }
       const key    = `${p.name}|${p.team}|${era}`
 
       // Coverage pool: all players >= 3 PPG (used only to fill missing positions)
@@ -221,7 +224,7 @@ async function main() {
     const pos    = JSON.stringify(p.positions)
     const name   = p.name.replace(/'/g, "\\'")
     const school = p.school.replace(/'/g, "\\'")
-    return `  p('${id}','${name}','${school}','${p.conference}','${p.era}',${p.season},${p.ppg},${p.rpg},${p.apg},${pos}),`
+    return `  p('${id}','${name}','${school}','${p.conference}','${p.era}',${p.season},${p.ppg},${p.rpg},${p.apg},${p.spg},${p.bpg},${p.tspct},${pos}),`
   })
 
   const out =
@@ -229,8 +232,8 @@ async function main() {
 // Stats = player's best single season within each era (min 10 games)
 // Re-generate: CBB_API_KEY=<key> node scripts/generate-players.mjs > src/data/players.js
 
-const p = (id, name, school, conference, era, season, ppg, rpg, apg, positions) =>
-  ({ id, name, school, conference, era, season, ppg, rpg, apg, positions })
+const p = (id, name, school, conference, era, season, ppg, rpg, apg, spg, bpg, tspct, positions) =>
+  ({ id, name, school, conference, era, season, ppg, rpg, apg, spg, bpg, tspct, positions })
 
 export const ALL_PLAYERS = [
 ${lines.join('\n')}

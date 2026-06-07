@@ -86,7 +86,7 @@
 .result-roster-header,
 .result-roster-row {
   display: grid;
-  grid-template-columns: 30px 1fr 30px 46px 46px 46px;
+  grid-template-columns: 28px 1fr 28px 44px 44px 44px 44px 50px;
   align-items: center;
   padding: 8px 12px;
   gap: 4px;
@@ -99,7 +99,7 @@
   color: var(--text-muted);
   border-bottom: 1px solid var(--border);
   padding: 6px 12px;
-  grid-template-columns: 30px 1fr 30px 46px 46px 46px;
+  grid-template-columns: 28px 1fr 28px 44px 44px 44px 44px 50px;
 }
 
 .result-roster-header span:first-child {
@@ -183,7 +183,7 @@
 
 .result-team-totals {
   display: grid;
-  grid-template-columns: 30px 1fr 30px 46px 46px 46px;
+  grid-template-columns: 28px 1fr 28px 44px 44px 44px 44px 50px;
   align-items: center;
   padding: 10px 12px;
   gap: 4px;
@@ -244,20 +244,24 @@
 
   .result-roster-header,
   .result-roster-row {
-    grid-template-columns: 26px 1fr 26px 40px 40px 40px;
+    grid-template-columns: 24px 1fr 24px 38px 38px 38px 38px;
     padding: 7px 8px;
     gap: 3px;
   }
 
   .result-roster-header {
     padding: 5px 8px;
-    grid-template-columns: 26px 1fr 26px 40px 40px 40px;
+    grid-template-columns: 24px 1fr 24px 38px 38px 38px 38px;
   }
 
   .result-team-totals {
-    grid-template-columns: 26px 1fr 26px 40px 40px 40px;
+    grid-template-columns: 24px 1fr 24px 38px 38px 38px 38px;
     padding: 8px 8px;
     gap: 3px;
+  }
+
+  .rr-ts, .rr-ts-head {
+    display: none;
   }
 
   .rr-name {
