@@ -41,7 +41,8 @@ export default function DraftPhase({ onComplete, onFirstSpinDone }) {
     const newLineup = { ...lineup, [pos]: player }
     setLineup(newLineup)
     setFocusedPlayer(null)
-    window.scrollTo({ top: 0, behavior: 'instant' })
+    document.documentElement.scrollTop = 0
+    document.body.scrollTop = 0
 
     if (pickNumber >= 5) {
       onComplete(newLineup)
@@ -61,7 +62,7 @@ export default function DraftPhase({ onComplete, onFirstSpinDone }) {
   }
 
   return (
-    <div className="draft-phase" onClick={() => focusedPlayer && setFocusedPlayer(null)}>
+    <div className={`draft-phase${showChrome ? ' draft-phase--chrome' : ''}`} onClick={() => focusedPlayer && setFocusedPlayer(null)}>
 
       {showChrome && (
         <div className="draft-phase-header">

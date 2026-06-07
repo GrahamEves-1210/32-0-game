@@ -26,6 +26,9 @@ function Reel({ label, current, accentKey, subKey, spinning, landed, accentColor
 const GRADE_WEIGHTS = { A: 6, B: 4, C: 1 }
 const EMPTY_COMBOS  = new Set(['pac12|era5', 'aac|era1'])
 
+// Boost only the exact conf+era combos that contain Steph, Ja, or Reggie Williams
+const COMBO_BOOSTS  = { 'southern|era1': 3, 'ovc|era3': 3, 'bigsouth|era1': 3 }
+
 function weightedRandomConf(conferences) {
   const weights = conferences.map(c => GRADE_WEIGHTS[c.grade] ?? 1)
   const total   = weights.reduce((s, w) => s + w, 0)
@@ -38,12 +41,23 @@ function weightedRandomConf(conferences) {
 }
 
 function pickValidCombo(conferences, eras) {
-  let ci, ei
-  do {
-    ci = weightedRandomConf(conferences)
-    ei = Math.floor(Math.random() * eras.length)
-  } while (EMPTY_COMBOS.has(`${conferences[ci].id}|${eras[ei].id}`))
-  return { ci, ei }
+  const pairs = []
+  for (const conf of conferences) {
+    for (const era of eras) {
+      const key = `${conf.id}|${era.id}`
+      if (EMPTY_COMBOS.has(key)) continue
+      const weight = COMBO_BOOSTS[key] ?? GRADE_WEIGHTS[conf.grade] ?? 1
+      pairs.push({ conf, era, weight })
+    }
+  }
+  const total = pairs.reduce((s, p) => s + p.weight, 0)
+  let r = Math.random() * total
+  for (const pair of pairs) {
+    r -= pair.weight
+    if (r <= 0) return { ci: conferences.indexOf(pair.conf), ei: eras.indexOf(pair.era) }
+  }
+  const last = pairs[pairs.length - 1]
+  return { ci: conferences.indexOf(last.conf), ei: eras.indexOf(last.era) }
 }
 
 export default function SpinScreen({ conferences, eras, onChoose }) {

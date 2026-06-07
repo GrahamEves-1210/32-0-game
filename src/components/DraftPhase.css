@@ -1,15 +1,26 @@
 .draft-phase {
   width: 100%;
-  padding-top: 16px;
+}
+
+.draft-phase--chrome {
+  padding-top: 90px;
 }
 
 /* ── Pick tracker header ── */
 .draft-phase-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 90;
+  background: color-mix(in srgb, #89bce8 15%, var(--bg));
+  padding: 7px 24px 10px;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 16px;
-  margin-bottom: 20px;
   flex-wrap: wrap;
+  border-bottom: 1px solid var(--border);
 }
 
 .pick-tracker {
@@ -188,17 +199,15 @@
 }
 
 @media (max-width: 768px) {
-  .draft-phase {
-    padding-top: 8px;
+  .draft-phase--chrome {
+    padding-top: 120px;
   }
 
   .draft-phase-header {
-    position: static;
     flex-direction: column;
     align-items: flex-start;
-    gap: 6px;
-    padding: 0 0 8px;
-    margin-bottom: 8px;
+    gap: 4px;
+    padding: 10px 16px 8px;
   }
 
   .pick-label {
