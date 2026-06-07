@@ -36,12 +36,12 @@ export default function PlayerPool({ players, lineup, focusedPlayer, onFocus, on
     }
   }
 
-  // Sort alphabetically by first name; push in-lineup and locked to bottom
+  // Push in-lineup and locked to bottom; within each group sort by PPG (stats on) or name
   const order = { idle: 0, focused: 0, 'in-lineup': 1, locked: 2 }
   const sorted = [...players].sort((a, b) => {
     const sa = getStatus(a), sb = getStatus(b)
     if (order[sa] !== order[sb]) return order[sa] - order[sb]
-    return a.name.localeCompare(b.name)
+    return showStats ? b.ppg - a.ppg : a.name.localeCompare(b.name)
   })
 
   return (
