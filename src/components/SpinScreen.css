@@ -303,23 +303,24 @@
   }
 
   .spin-result-card {
-    padding: 12px 12px;
-    gap: 8px;
+    padding: 10px 10px;
+    gap: 6px;
   }
 
   .src-conf-name {
-    font-size: 18px;
+    font-size: 16px;
   }
 
   .src-schools {
-    max-height: 60px;
-    overflow-y: auto;
-    gap: 4px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    justify-content: center;
   }
 
   .src-school-chip {
-    font-size: 10px;
-    padding: 2px 7px;
+    font-size: 9px;
+    padding: 2px 6px;
   }
 
   .btn-draft {
