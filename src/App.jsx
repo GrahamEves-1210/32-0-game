@@ -19,6 +19,17 @@ export default function App() {
     document.querySelectorAll('meta[name="theme-color"]').forEach(m => m.setAttribute('content', color))
   }, [darkMode])
 
+  useEffect(() => {
+    if (phase === 'result') {
+      document.documentElement.style.overflowY = 'hidden'
+      document.body.style.overflowY             = 'hidden'
+      return () => {
+        document.documentElement.style.overflowY = ''
+        document.body.style.overflowY             = ''
+      }
+    }
+  }, [phase])
+
   function handleDraftComplete(lineup) {
     setFinalLineup(lineup)
     setPhase('result')

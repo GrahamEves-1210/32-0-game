@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { CONFERENCES, ERAS, getGradeColor } from '../data/conferences'
 import { getPlayers } from '../data/players'
 import { getSchoolColor } from '../data/schoolColors'
@@ -49,6 +49,16 @@ export default function DraftPhase({ onComplete, onFirstSpinDone }) {
     closeTimer.current = setTimeout(() => setExpandedPos(null), 150)
   }
 
+  useEffect(() => {
+    const lock = subPhase !== 'pool'
+    document.documentElement.style.overflowY = lock ? 'hidden' : ''
+    document.body.style.overflowY             = lock ? 'hidden' : ''
+    return () => {
+      document.documentElement.style.overflowY = ''
+      document.body.style.overflowY             = ''
+    }
+  }, [subPhase])
+
   const filledCount = Object.values(lineup).filter(Boolean).length
   const players = currentConf && currentEra ? getPlayers(currentConf.id, currentEra.id) : []
 
@@ -64,6 +74,8 @@ export default function DraftPhase({ onComplete, onFirstSpinDone }) {
   }
 
   function handleSlotFill(pos, player) {
+    clearTimeout(hoverTimer.current)
+    clearTimeout(closeTimer.current)
     const newLineup = { ...lineup, [pos]: player }
     setLineup(newLineup)
     setFocusedPlayer(null)
@@ -82,6 +94,8 @@ export default function DraftPhase({ onComplete, onFirstSpinDone }) {
   }
 
   function handleRespin() {
+    clearTimeout(hoverTimer.current)
+    clearTimeout(closeTimer.current)
     setSubPhase('spin')
     setCurrentConf(null)
     setCurrentEra(null)
