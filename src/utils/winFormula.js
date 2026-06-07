@@ -12,7 +12,7 @@ function getGradeMultiplier(conferenceId) {
 // ast×1.5 + reb×0.6 + (stl+blk)×2 additive; scoring bonus applied after grade multiplier
 function playerScore(p) {
   const mult         = getGradeMultiplier(p.conference)
-  const scoringBonus = p.ppg > 24 ? (p.ppg - 24) * 0.25 : 0
+  const scoringBonus = p.ppg > 22 ? (p.ppg - 22) * 0.3 : 0
   const stocks       = ((p.spg ?? 0) + (p.bpg ?? 0)) * 2
   const tsMultiplier = (p.tspct ?? 0.55) / 0.55
   return (p.ppg * 1.15 * tsMultiplier + p.apg * 1.5 + p.rpg * 0.6 + stocks) * mult + scoringBonus
