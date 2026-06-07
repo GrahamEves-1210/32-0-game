@@ -98,7 +98,7 @@ export default function SpinScreen({ conferences, eras, onChoose }) {
         document.documentElement.scrollTop = 0
         document.body.scrollTop = 0
         onChoose(finalConference, finalEraObj)
-      }, 2000)
+      }, 1800)
     }, 1300)
   }
 

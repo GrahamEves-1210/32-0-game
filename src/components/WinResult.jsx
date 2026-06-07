@@ -46,7 +46,7 @@ export default function WinResult({ lineup, onReset }) {
 
       {/* ── Record ── */}
       <div className={`result-wins-block ${done ? 'result-wins-block--done' : ''}`}>
-        <div className="result-wins-number" style={done ? { filter: `drop-shadow(0 0 28px ${label.color}88) drop-shadow(0 0 10px ${label.color}44)` } : {}}>
+        <div className="result-wins-number" style={done ? { filter: `drop-shadow(0 0 24px ${label.color}66)` } : {}}>
           <span className="result-wins-val">{displayed}</span>
           <span className="result-wins-dash">-</span>
           <span className="result-wins-losses">{32 - displayed}</span>
