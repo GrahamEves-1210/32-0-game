@@ -244,23 +244,24 @@
 
   .result-roster-header,
   .result-roster-row {
-    grid-template-columns: 24px 1fr 24px 38px 38px 38px 38px;
+    grid-template-columns: 24px 1fr 38px 38px 38px 38px;
     padding: 7px 8px;
     gap: 3px;
   }
 
   .result-roster-header {
     padding: 5px 8px;
-    grid-template-columns: 24px 1fr 24px 38px 38px 38px 38px;
+    grid-template-columns: 24px 1fr 38px 38px 38px 38px;
   }
 
   .result-team-totals {
-    grid-template-columns: 24px 1fr 24px 38px 38px 38px 38px;
+    grid-template-columns: 24px 1fr 38px 38px 38px 38px;
     padding: 8px 8px;
     gap: 3px;
   }
 
-  .rr-ts, .rr-ts-head {
+  .rr-ts, .rr-ts-head,
+  .rr-cfg-val, .rr-cfg-head {
     display: none;
   }
 
@@ -278,10 +279,6 @@
 
   .rr-stat {
     font-size: 15px;
-  }
-
-  .rr-cfg-val {
-    font-size: 13px;
   }
 
   .rtt-val {
