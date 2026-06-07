@@ -15,6 +15,8 @@ export default function App() {
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light')
     localStorage.setItem('theme', darkMode ? 'dark' : 'light')
+    const color = darkMode ? '#0d1f4e' : '#cfe0f5'
+    document.querySelectorAll('meta[name="theme-color"]').forEach(m => m.setAttribute('content', color))
   }, [darkMode])
 
   function handleDraftComplete(lineup) {

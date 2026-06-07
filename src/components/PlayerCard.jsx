@@ -28,12 +28,17 @@ export default function PlayerCard({ player, status, onClick, showStats = true }
       <div className="pr-info">
         <div className="pr-name-line">
           <span className="pr-name">{player.name}</span>
-          <span className="pr-sep">·</span>
-          <span className="pr-school" style={{ color: schoolColor || 'var(--text-dim)' }}>
+          <span className="pr-sep pr-sep--desktop">·</span>
+          <span className="pr-school pr-school--desktop" style={{ color: schoolColor || 'var(--text-dim)' }}>
             {player.school}
           </span>
           <span className="pr-sep">·</span>
           <span className="pr-year">{player.season}</span>
+        </div>
+        <div className="pr-school-mobile">
+          <span className="pr-school" style={{ color: schoolColor || 'var(--text-dim)' }}>
+            {player.school}
+          </span>
         </div>
       </div>
 

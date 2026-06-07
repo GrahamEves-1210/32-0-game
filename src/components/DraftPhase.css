@@ -243,8 +243,12 @@
   }
 
   .pick-dot {
-    width: 46px;
-    height: 46px;
+    width: 56px;
+    height: 56px;
+  }
+
+  .pick-tracker {
+    gap: 10px;
   }
 
   .draft-header-logo {

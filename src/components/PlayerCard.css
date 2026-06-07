@@ -67,7 +67,8 @@
 }
 
 .player-row--focused .pr-school,
-.player-row--focused .pr-sep {
+.player-row--focused .pr-sep,
+.player-row--focused .pr-school-mobile {
   display: none;
 }
 
@@ -124,6 +125,10 @@
   overflow: hidden;
   text-overflow: ellipsis;
   flex-shrink: 1;
+}
+
+.pr-school-mobile {
+  display: none;
 }
 
 .pr-year {
@@ -227,7 +232,21 @@
     font-size: 16px;
   }
 
-  .pr-school {
+  .pr-school--desktop {
+    display: none;
+  }
+
+  .pr-sep--desktop {
+    display: none;
+  }
+
+  .pr-school-mobile {
+    display: block;
+    font-size: 11px;
+    margin-top: 1px;
+  }
+
+  .pr-school-mobile .pr-school {
     font-size: 11px;
   }
 
