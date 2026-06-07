@@ -73,6 +73,28 @@
   animation: fade-up 0.3s ease 0.2s both;
 }
 
+.result-stats-badge {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1.5px solid var(--border);
+  color: var(--text-muted);
+  background: var(--surface2);
+  animation: fade-up 0.3s ease 0.3s both;
+}
+
+.result-stats-badge[data-on="true"] {
+  border-color: var(--orange);
+  color: var(--orange);
+  background: color-mix(in srgb, var(--orange) 10%, var(--surface2));
+}
+
 /* ── Roster breakdown table ── */
 
 .result-roster {

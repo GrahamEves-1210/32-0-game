@@ -15,6 +15,7 @@ export default function WinResult({ lineup, onReset }) {
   const finalWins  = calculateWins(lineup)
   const label      = getWinLabel(finalWins)
   const matchPct   = getMatchPercentage(lineup)
+  const statsOn    = localStorage.getItem('showStats') === 'true'
   const [displayed, setDisplayed] = useState(0)
   const [done,      setDone]      = useState(false)
 
@@ -52,6 +53,9 @@ export default function WinResult({ lineup, onReset }) {
           <>
             <div className="result-label" style={{ color: label.color }}>{label.text}</div>
             <div className="result-match">{matchPct.toFixed(1)}% of perfect lineup</div>
+            <div className="result-stats-badge" data-on={statsOn}>
+              {statsOn ? 'Stats: On' : 'Stats: Off'}
+            </div>
           </>
         )}
       </div>
