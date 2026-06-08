@@ -42,6 +42,10 @@
   padding: 1px 5px;
 }
 
+[data-theme="light"] .player-row {
+  background: #fdfce2a8;
+}
+
 [data-theme="dark"] .player-row {
   background: #3255b0;
   border-color: #6888d8;
@@ -62,13 +66,13 @@
 }
 
 .player-row--focused {
-  background: color-mix(in srgb, var(--orange) 8%, var(--surface));
-  box-shadow: 0 0 0 2px var(--orange), 0 4px 16px rgba(56, 182, 232, 0.20);
+  background: color-mix(in srgb, var(--blue) 8%, var(--surface));
+  box-shadow: 0 0 0 2px var(--blue), 0 4px 16px rgba(0, 98, 255, 0.644);
+  border-color: var(--blue);
 }
 
-.player-row--focused .pr-school,
-.player-row--focused .pr-sep,
-.player-row--focused .pr-school-mobile {
+.player-row--focused .pr-school--desktop,
+.player-row--focused .pr-sep--desktop {
   display: none;
 }
 

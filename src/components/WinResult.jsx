@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { calculateWins, getWinLabel, getMatchPercentage } from '../utils/winFormula'
+import { calculateWins, getWinLabel, getMatchPercentage, getSpacingGrade, getConferenceDifficultyGrade, getOffensiveRating, getDefensiveRating } from '../utils/winFormula'
 import { getSchoolColor } from '../data/schoolColors'
 import { CONFERENCES, getGradeColor } from '../data/conferences'
 import './WinResult.css'
@@ -13,11 +13,18 @@ function getGrade(conferenceId) {
 
 const isDark = () => document.documentElement.getAttribute('data-theme') === 'dark'
 
-export default function WinResult({ lineup, onReset }) {
+const GRADE_COLOR = { A: '#22c55e', B: '#38B6E8', C: '#f59e0b', D: '#f97316', F: '#d93030', '?': '#888' }
+const ratingColor = r => r >= 80 ? '#22c55e' : r >= 60 ? '#38B6E8' : r >= 40 ? '#f59e0b' : r >= 20 ? '#f97316' : '#d93030'
+
+export default function WinResult({ lineup, onReset, onTournament }) {
   const finalWins  = calculateWins(lineup)
   const label      = getWinLabel(finalWins)
   const matchPct   = getMatchPercentage(lineup)
   const statsOn    = localStorage.getItem('showStats') === 'true'
+  const spacing    = getSpacingGrade(lineup)
+  const confDiff   = getConferenceDifficultyGrade(lineup)
+  const offRating  = getOffensiveRating(lineup)
+  const defRating  = getDefensiveRating(lineup)
   const [displayed, setDisplayed] = useState(0)
   const [done,      setDone]      = useState(false)
 
@@ -46,14 +53,26 @@ export default function WinResult({ lineup, onReset }) {
 
       {/* ── Record ── */}
       <div className={`result-wins-block ${done ? 'result-wins-block--done' : ''}`}>
-        <div className="result-wins-number" style={done ? { filter: `drop-shadow(0 0 24px ${label.color}66)` } : {}}>
-          <span className="result-wins-val">{displayed}</span>
-          <span className="result-wins-dash">-</span>
-          <span className="result-wins-losses">{32 - displayed}</span>
+        <div className={`result-scoreboard${done && finalWins >= 32 ? ' result-scoreboard--perfect' : ''}`}>
+          <div className="rsb-col">
+            <span className="rsb-label">WINS</span>
+            <span className="rsb-num rsb-num--wins">
+              <span className="rsb-seg-bg" aria-hidden="true">{String(displayed).replace(/\d/g,'8')}</span>
+              {displayed}
+            </span>
+          </div>
+          <span className="rsb-dash">—</span>
+          <div className="rsb-col">
+            <span className="rsb-label">LOSS</span>
+            <span className="rsb-num rsb-num--loss">
+              <span className="rsb-seg-bg" aria-hidden="true">{String(32 - displayed).replace(/\d/g,'8')}</span>
+              {32 - displayed}
+            </span>
+          </div>
         </div>
         {done && (
           <>
-            <div className="result-label" style={{ color: label.color }}>{label.text}</div>
+            <div className="result-label" style={{ color: !isDark() && label.color === '#4ade80' ? '#16a34a' : label.color }}>{label.text}</div>
             <div className="result-match">{matchPct.toFixed(1)}% of perfect lineup</div>
             <div className="result-stats-badge" data-on={statsOn}>
               {statsOn ? 'Stats: On' : 'Stats: Off'}
@@ -82,7 +101,11 @@ export default function WinResult({ lineup, onReset }) {
           const gc    = getGradeColor(grade)
           return (
             <div key={pos} className="result-roster-row" style={{ background: isDark()
-                ? `color-mix(in srgb, ${grade === 'A' ? '#60a5fa' : gc} ${grade === 'A' ? 50 : grade === 'B' ? 38 : 30}%, #2a4898)`
+                ? grade === 'A'
+                  ? 'color-mix(in srgb, #a8c8ff 35%, var(--surface2))'
+                  : grade === 'B'
+                  ? 'color-mix(in srgb, #86efac 30%, var(--surface2))'
+                  : 'color-mix(in srgb, #fde68a 55%, var(--surface2))'
                 : `color-mix(in srgb, ${grade === 'A' ? '#60a5fa' : gc} ${grade === 'A' ? 28 : grade === 'B' ? 22 : 20}%, var(--surface))` }}>
               <span className="rr-pos" style={{ color: POS_COLOR[pos] }}>{pos}</span>
               <div className="rr-player">
@@ -111,6 +134,34 @@ export default function WinResult({ lineup, onReset }) {
           <span className="rtt-val rr-ts">{isNaN(avgTS) ? '—' : (avgTS * 100).toFixed(1)}</span>
         </div>
       </div>
+
+      <div className="result-team-grades">
+        <div className="rtg-item">
+          <span className="rtg-label">OFF</span>
+          <span className="rtg-grade rtg-grade--num" style={{ color: ratingColor(offRating) }}>{offRating}</span>
+        </div>
+        <div className="rtg-divider" />
+        <div className="rtg-item">
+          <span className="rtg-label">DEF</span>
+          <span className="rtg-grade rtg-grade--num" style={{ color: ratingColor(defRating) }}>{defRating}</span>
+        </div>
+        <div className="rtg-divider" />
+        <div className="rtg-item">
+          <span className="rtg-label">Spacing</span>
+          <span className="rtg-grade" style={{ color: GRADE_COLOR[spacing.grade] }}>{spacing.grade}</span>
+        </div>
+        <div className="rtg-divider" />
+        <div className="rtg-item">
+          <span className="rtg-label">Conf. Difficulty</span>
+          <span className="rtg-grade" style={{ color: GRADE_COLOR[confDiff.grade] }}>{confDiff.grade}</span>
+        </div>
+      </div>
+
+      {finalWins >= 22 && (
+        <button className="btn-tournament" onClick={onTournament}>
+          🏀 Continue to Tournament
+        </button>
+      )}
 
       <button className="btn-play-again" onClick={onReset}>
         ↺ Play Again

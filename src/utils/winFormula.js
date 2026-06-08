@@ -8,17 +8,17 @@ function getGradeMultiplier(conferenceId) {
   return GRADE_MULTIPLIERS[conf?.grade] ?? 0.92
 }
 
-// TS% scales PPG as a multiplier (normalized to 55% avg) — efficient scorers are worth more per point
-// ast×1.5 + reb×0.6 + (stl+blk)×2 additive; scoring bonus applied after grade multiplier
+// TS% scales PPG as a multiplier; spacing (3PM/g) rewards floor spacers who open the offense
 function playerScore(p) {
   const mult         = getGradeMultiplier(p.conference)
   const scoringBonus = p.ppg > 22 ? (p.ppg - 22) * 0.3 : 0
-  const stocks       = ((p.spg ?? 0) + (p.bpg ?? 0)) * 2
+  const stocks       = ((p.spg ?? 0) + (p.bpg ?? 0)) * 2.6
   const tsMultiplier = (p.tspct ?? 0.55) / 0.55
-  return (p.ppg * 1.15 * tsMultiplier + p.apg * 1.5 + p.rpg * 0.6 + stocks) * mult + scoringBonus
+  const spacing      = (p.tpm ?? 0) * 0.7
+  return (p.ppg * 1.15 * tsMultiplier + p.apg * 1.5 + p.rpg * 0.6 + stocks + spacing) * mult + scoringBonus
 }
 
-let _cache = null
+let _cache = null // invalidated when playerScore formula changes
 
 function getBenchmarks() {
   if (_cache) return _cache
@@ -57,9 +57,80 @@ export function getMatchPercentage(lineup) {
   return Math.min(100, Math.round((teamScore / perfectScore) * 1000) / 10)
 }
 
+export function getSpacingGrade(lineup) {
+  const valid = lineup.filter(p => p != null)
+  if (!valid.length) return { grade: '?', avg: 0, total: 0 }
+  const total = valid.reduce((s, p) => s + (p.tpm ?? 0), 0)
+  const avg = total / valid.length
+  // Calibrated against realistic D1 lineups:
+  // avg includes C/PF positions who rarely shoot 3s, so per-player avg of 1.2+ is elite
+  const grade = avg >= 1.9 ? 'A' : avg >= 1.3 ? 'B' : avg >= 0.8 ? 'C' : avg >= 0.35 ? 'D' : 'F'
+  return { grade, avg, total }
+}
+
+export function getConferenceDifficultyGrade(lineup) {
+  const valid = lineup.filter(p => p != null)
+  if (!valid.length) return { grade: '?', avg: 0 }
+  const GRADE_VAL = { A: 3, B: 2, C: 1 }
+  const scores = valid.map(p => {
+    const conf = CONFERENCES.find(c => c.id === p.conference)
+    return GRADE_VAL[conf?.grade] ?? 1
+  })
+  const avg = scores.reduce((s, v) => s + v, 0) / scores.length
+  const rounded = Math.round(avg)
+  const grade = rounded >= 3 ? 'A' : rounded >= 2 ? 'B' : 'C'
+  return { grade, avg }
+}
+
+function offPlayerScore(p) {
+  return (p.ppg ?? 0) * ((p.tspct ?? 0.55) / 0.55) + (p.apg ?? 0) * 1.2 + (p.tpm ?? 0) * 2
+}
+
+function defPlayerScore(p) {
+  return (p.spg ?? 0) * 3 + (p.bpg ?? 0) * 2.5 + (p.rpg ?? 0) * 0.5
+}
+
+let _odCache = null
+
+function getOffDefBenchmarks() {
+  if (_odCache) return _odCache
+  let perfectOff = 0
+  let perfectDef = 0
+  const usedOff = new Set()
+  const usedDef = new Set()
+  for (const pos of POSITIONS) {
+    const candidates = ALL_PLAYERS.filter(p => p.positions.includes(pos))
+    if (!candidates.length) continue
+    const bestOff = [...candidates].sort((a, b) => offPlayerScore(b) - offPlayerScore(a)).find(p => !usedOff.has(p.id)) ?? candidates[0]
+    perfectOff += offPlayerScore(bestOff)
+    usedOff.add(bestOff.id)
+    const bestDef = [...candidates].sort((a, b) => defPlayerScore(b) - defPlayerScore(a)).find(p => !usedDef.has(p.id)) ?? candidates[0]
+    perfectDef += defPlayerScore(bestDef)
+    usedDef.add(bestDef.id)
+  }
+  _odCache = { perfectOff, perfectDef }
+  return _odCache
+}
+
+export function getOffensiveRating(lineup) {
+  const valid = lineup.filter(p => p != null)
+  if (!valid.length) return 0
+  const { perfectOff } = getOffDefBenchmarks()
+  const team = valid.reduce((s, p) => s + offPlayerScore(p), 0)
+  return Math.min(99, Math.max(1, Math.round((team / perfectOff) * 100)))
+}
+
+export function getDefensiveRating(lineup) {
+  const valid = lineup.filter(p => p != null)
+  if (!valid.length) return 0
+  const { perfectDef } = getOffDefBenchmarks()
+  const team = valid.reduce((s, p) => s + defPlayerScore(p), 0)
+  return Math.min(99, Math.max(1, Math.round((team / perfectDef) * 100)))
+}
+
 export function getWinLabel(wins) {
-  if (wins >= 32) return { text: 'Championship Locks',       color: '#e0a800' }
-  if (wins >= 28) return { text: 'Championship Favorites',   color: '#22c55e' }
+  if (wins >= 32) return { text: 'Cut the Net',              color: '#e0a800' }
+  if (wins >= 28) return { text: 'Championship Favorites',   color: '#4ade80' }
   if (wins >= 22) return { text: 'NCAA Tournament Bound',    color: '#38B6E8' }
   if (wins >= 16) return { text: 'Bubble Team',              color: '#8b5cf6' }
   if (wins >= 10) return { text: 'Rebuilding Year',          color: '#f97316' }

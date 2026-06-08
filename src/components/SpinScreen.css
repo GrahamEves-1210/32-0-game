@@ -66,6 +66,14 @@
 
 .reel--spinning .reel-window {
   border-color: var(--orange);
+  animation: reel-vibrate 0.08s linear infinite;
+}
+
+@keyframes reel-vibrate {
+  0%   { transform: translateX(0); }
+  25%  { transform: translateX(-0.4px); }
+  75%  { transform: translateX(0.4px); }
+  100% { transform: translateX(0); }
 }
 
 .reel-content {

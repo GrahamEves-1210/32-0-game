@@ -1,21 +1,23 @@
 import { useState, useEffect } from 'react'
 import DraftPhase from './components/DraftPhase'
 import WinResult from './components/WinResult'
+import TournamentPhase from './components/TournamentPhase'
+import { calculateWins } from './utils/winFormula'
 import './App.css'
 
-// Phases: 'draft' → 'result'
+// Phases: 'draft' → 'result' → 'tournament'
 
 export default function App() {
   const [phase,       setPhase]       = useState('draft')
   const [finalLineup, setFinalLineup] = useState(null)
   const [resetKey,    setResetKey]    = useState(0)
   const [showHeader,  setShowHeader]  = useState(true)
-  const [darkMode,    setDarkMode]    = useState(() => localStorage.getItem('theme') !== 'light')
+  const [darkMode,    setDarkMode]    = useState(() => localStorage.getItem('theme') === 'dark')
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light')
     localStorage.setItem('theme', darkMode ? 'dark' : 'light')
-    const color = darkMode ? '#0d1f4e' : '#cfe0f5'
+    const color = darkMode ? '#0d1f4e' : '#bdd8f5'
     document.querySelectorAll('meta[name="theme-color"]').forEach(m => m.setAttribute('content', color))
   }, [darkMode])
 
@@ -45,6 +47,10 @@ export default function App() {
     setShowHeader(true)
   }
 
+  function handleTournament() {
+    setPhase('tournament')
+  }
+
   const lineupArray = finalLineup ? Object.values(finalLineup).filter(Boolean) : []
 
   return (
@@ -67,6 +73,15 @@ export default function App() {
 
         {phase === 'result' && (
           <WinResult
+            lineup={lineupArray}
+            onReset={handleReset}
+            onTournament={handleTournament}
+          />
+        )}
+
+        {phase === 'tournament' && (
+          <TournamentPhase
+            wins={calculateWins(lineupArray)}
             lineup={lineupArray}
             onReset={handleReset}
           />

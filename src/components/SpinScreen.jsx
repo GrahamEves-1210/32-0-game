@@ -68,8 +68,9 @@ export default function SpinScreen({ conferences, eras, onChoose }) {
   const [landed,   setLanded]   = useState(false)
   const [results,  setResults]  = useState(null)
   const [tick,     setTick]     = useState(0)
-  const intervalRef = useRef(null)
-  const stopRef     = useRef(null)
+  const intervalRef    = useRef(null)
+  const stopRef        = useRef(null)
+  const transitionRef  = useRef(null)
 
   function spin() {
     if (spinning) return
@@ -94,7 +95,7 @@ export default function SpinScreen({ conferences, eras, onChoose }) {
       const finalConference = conferences[finalConf]
       const finalEraObj = eras[finalEra]
       setResults({ conference: finalConference, era: finalEraObj })
-      setTimeout(() => {
+      transitionRef.current = setTimeout(() => {
         document.documentElement.scrollTop = 0
         document.body.scrollTop = 0
         onChoose(finalConference, finalEraObj)
@@ -105,6 +106,7 @@ export default function SpinScreen({ conferences, eras, onChoose }) {
   useEffect(() => () => {
     clearInterval(intervalRef.current)
     clearTimeout(stopRef.current)
+    clearTimeout(transitionRef.current)
   }, [])
 
   const currentConf = conferences[confIdx]

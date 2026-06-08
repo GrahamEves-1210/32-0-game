@@ -130,6 +130,7 @@ async function main() {
       const spg   = r1((p.steals ?? 0) / p.games)
       const bpg   = r1((p.blocks ?? 0) / p.games)
       const tspct = Math.round((p.trueShootingPct ?? 0) * 1000) / 1000
+      const tpm   = r1((p.threePointFieldGoals?.made ?? 0) / p.games)
       if (ppg < 3.0) continue
 
       let positions = mapPos(p.position, rpg, apg, p.name, p.team)
@@ -137,7 +138,7 @@ async function main() {
       if (positions.includes('C') && positions.includes('PF') && rpg > 10 && tspct > 0.65) {
         positions = ['C']
       }
-      const record = { name: p.name, school: p.team, conference: confId, era, season, ppg, rpg, apg, spg, bpg, tspct, positions }
+      const record = { name: p.name, school: p.team, conference: confId, era, season, ppg, rpg, apg, spg, bpg, tspct, tpm, positions }
       const key    = `${p.name}|${p.team}|${era}`
 
       // Coverage pool: all players >= 3 PPG (used only to fill missing positions)
@@ -231,7 +232,7 @@ async function main() {
     const pos    = JSON.stringify(p.positions)
     const name   = p.name.replace(/'/g, "\\'")
     const school = p.school.replace(/'/g, "\\'")
-    return `  p('${id}','${name}','${school}','${p.conference}','${p.era}',${p.season},${p.ppg},${p.rpg},${p.apg},${p.spg},${p.bpg},${p.tspct},${pos}),`
+    return `  p('${id}','${name}','${school}','${p.conference}','${p.era}',${p.season},${p.ppg},${p.rpg},${p.apg},${p.spg},${p.bpg},${p.tspct},${p.tpm ?? 0},${pos}),`
   })
 
   const out =
@@ -239,8 +240,8 @@ async function main() {
 // Stats = player's best single season within each era (min 10 games)
 // Re-generate: CBB_API_KEY=<key> node scripts/generate-players.mjs > src/data/players.js
 
-const p = (id, name, school, conference, era, season, ppg, rpg, apg, spg, bpg, tspct, positions) =>
-  ({ id, name, school, conference, era, season, ppg, rpg, apg, spg, bpg, tspct, positions })
+const p = (id, name, school, conference, era, season, ppg, rpg, apg, spg, bpg, tspct, tpm, positions) =>
+  ({ id, name, school, conference, era, season, ppg, rpg, apg, spg, bpg, tspct, tpm, positions })
 
 export const ALL_PLAYERS = [
 ${lines.join('\n')}

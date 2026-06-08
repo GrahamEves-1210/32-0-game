@@ -6,10 +6,10 @@
 
 :root {
   /* Light theme (default) */
-  --bg: #cfe0f5;
-  --surface: #eef5fc;
-  --surface2: #ddeaf7;
-  --border: #a4c4e8;
+  --bg: #bdd8f5;
+  --surface: #e4f1fb;
+  --surface2: #cce3f7;
+  --border: #93bbdf;
   --orange: #38B6E8;
   --orange-dim: #2A94C5;
   --gold: #e0a800;
@@ -47,7 +47,7 @@ html, body, #root {
 
 body {
   font-family: 'Nunito', sans-serif;
-  background: var(--bg);
+  background-color: var(--bg);
   color: var(--text);
   -webkit-font-smoothing: antialiased;
 }
