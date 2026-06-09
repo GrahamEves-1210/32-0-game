@@ -92,10 +92,10 @@
 .rsb-num {
   font-family: 'DSEG7-Classic', monospace;
   font-style: italic;
-  font-size: 72px;
+  font-size: 60px;
   font-weight: 700;
   line-height: 1;
-  min-width: 90px;
+  min-width: 76px;
   text-align: center;
   position: relative;
 }

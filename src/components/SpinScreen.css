@@ -372,12 +372,6 @@
   transform: scale(1.02);
 }
 
-@media (max-width: 768px) {
-  .btn-spin-main {
-    margin-bottom: 52px;
-  }
-}
-
 @media (max-width: 520px) {
   .spin-screen {
     gap: 14px;
