@@ -64,6 +64,8 @@ button {
   letter-spacing: 0.03em;
   border: none;
   outline: none;
+  position: relative;
+  z-index: 10000;
 }
 
 ::-webkit-scrollbar {

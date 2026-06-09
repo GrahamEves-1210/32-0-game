@@ -100,50 +100,83 @@ function buildTimeline(pScore, oScore) {
 }
 
 function BracketSVG({ gameIdx }) {
-  const sw = 18, sh = 5, lw = 1.5
-  const lcx  = [0, 28, 56, 84]
-  const rcx  = [262, 234, 206, 178]
-  const chX  = 131
-  // R64 slot y-positions and derived midpoints
-  const y64  = [5, 19, 43, 57]
-  const pm1  = 14.5, pm2 = 52.5, rm = 33.5, cy = 31
+  const sw = 22, sh = 5, lw = 1.5
+  // Column left-edges: R64, R32, S16, E8, F4, CHAMP
+  const [c0,c1,c2,c3,c4,c5] = [0, 36, 72, 108, 142, 176]
 
-  const c = ri => gameIdx >= ri ? '#f97316' : 'var(--border)'
-  const S = (x, y, ri) => <rect x={x} y={y} width={sw} height={sh} rx={1} fill="none" stroke={c(ri)} strokeWidth={lw} />
-  const L = (x1,y1,x2,y2,ri) => <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={c(ri)} strokeWidth={lw} />
+  const lit = ri => gameIdx > ri ? '#f97316' : 'var(--border)'
+  const dim = 'var(--border)'
+  const s = y => y - sh / 2   // slot top-y from center-y
+
+  // ── YOUR path y-centers ────────────────────────────────────────────
+  const yR64    = 4.5    // R64 slot
+  const yP1     = 10.5   // pair-1 midpoint → R32 center
+  const yR32mid = 24.5   // R32 bracket midpoint → S16 center
+  const yS16mid = 39.5   // S16 bracket midpoint → E8 center  (24.5+54.5)/2
+  const yE8mid  = 52     // E8 bracket midpoint → F4 center   (39.5+64.5)/2
+
+  // ── OPP structure y-centers ────────────────────────────────────────
+  const yO1   = 16.5   // opp1 R64
+  const yO2   = 32.5   // opp2 R64 \
+  const yO3   = 44.5   // opp3 R64  } → OPP R32
+  const yP2   = 38.5   // pair-2 midpoint / OPP R32 center
+  const yOS16 = 54.5   // OPP S16 (single representative slot)
+  const yOE8  = 64.5   // OPP E8  (single representative slot)
 
   return (
-    <svg viewBox="0 0 280 68" width="100%" style={{display:'block'}} aria-hidden="true">
-      {/* ── LEFT SIDE ── */}
-      {y64.map((y, i) => <rect key={`ll${i}`} x={lcx[0]} y={y} width={sw} height={sh} rx={1} fill="none" stroke={c(0)} strokeWidth={lw} />)}
-      {L(lcx[0]+sw, 7.5,  lcx[0]+sw, 21.5, 0)}
-      {L(lcx[0]+sw, 45.5, lcx[0]+sw, 59.5, 0)}
-      {L(lcx[0]+sw, pm1,  lcx[1],    pm1,  1)}
-      {L(lcx[0]+sw, pm2,  lcx[1],    pm2,  1)}
-      {S(lcx[1], pm1-sh/2, 1)}{S(lcx[1], pm2-sh/2, 1)}
-      {L(lcx[1]+sw, pm1,  lcx[1]+sw, pm2,  1)}
-      {L(lcx[1]+sw, rm,   lcx[2],    rm,   2)}
-      {S(lcx[2], cy, 2)}
-      {L(lcx[2]+sw, rm,   lcx[3],    rm,   3)}
-      {S(lcx[3], cy, 3)}
-      {L(lcx[3]+sw, rm,   chX,       rm,   4)}
+    <svg viewBox="0 0 205 72" width="100%" style={{ display: 'block' }} aria-hidden="true">
 
-      {/* ── CHAMPIONSHIP ── */}
-      {S(chX, cy, 5)}
+      {/* ── YOUR advancing path (one step lights up per win) ── */}
 
-      {/* ── RIGHT SIDE ── */}
-      {y64.map((y, i) => <rect key={`rl${i}`} x={rcx[0]} y={y} width={sw} height={sh} rx={1} fill="none" stroke={c(0)} strokeWidth={lw} />)}
-      {L(rcx[0], 7.5,  rcx[0], 21.5, 0)}
-      {L(rcx[0], 45.5, rcx[0], 59.5, 0)}
-      {L(rcx[0],    pm1, rcx[1]+sw, pm1, 1)}
-      {L(rcx[0],    pm2, rcx[1]+sw, pm2, 1)}
-      {S(rcx[1], pm1-sh/2, 1)}{S(rcx[1], pm2-sh/2, 1)}
-      {L(rcx[1],    pm1,  rcx[1],    pm2,       1)}
-      {L(rcx[1],    rm,   rcx[2]+sw, rm,        2)}
-      {S(rcx[2], cy, 2)}
-      {L(rcx[2],    rm,   rcx[3]+sw, rm,        3)}
-      {S(rcx[3], cy, 3)}
-      {L(rcx[3],    rm,   chX+sw,    rm,        4)}
+      {/* Win 1 — R64: slot + upper pair-1 arm + R32 slot */}
+      <rect x={c0} y={s(yR64)} width={sw} height={sh} rx={1} fill="none" stroke={lit(0)} strokeWidth={lw} />
+      <line x1={c0+sw} y1={yR64}    x2={c0+sw} y2={yP1}     stroke={lit(0)} strokeWidth={lw} />
+      <line x1={c0+sw} y1={yP1}     x2={c1}    y2={yP1}     stroke={lit(0)} strokeWidth={lw} />
+      <rect x={c1} y={s(yP1)} width={sw} height={sh} rx={1} fill="none" stroke={lit(0)} strokeWidth={lw} />
+
+      {/* Win 2 — R32: upper R32 arm + S16 slot */}
+      <line x1={c1+sw} y1={yP1}     x2={c1+sw} y2={yR32mid} stroke={lit(1)} strokeWidth={lw} />
+      <line x1={c1+sw} y1={yR32mid} x2={c2}    y2={yR32mid} stroke={lit(1)} strokeWidth={lw} />
+      <rect x={c2} y={s(yR32mid)} width={sw} height={sh} rx={1} fill="none" stroke={lit(1)} strokeWidth={lw} />
+
+      {/* Win 3 — S16: upper S16 arm + E8 slot */}
+      <line x1={c2+sw} y1={yR32mid} x2={c2+sw} y2={yS16mid} stroke={lit(2)} strokeWidth={lw} />
+      <line x1={c2+sw} y1={yS16mid} x2={c3}    y2={yS16mid} stroke={lit(2)} strokeWidth={lw} />
+      <rect x={c3} y={s(yS16mid)} width={sw} height={sh} rx={1} fill="none" stroke={lit(2)} strokeWidth={lw} />
+
+      {/* Win 4 — E8: upper E8 arm + F4 slot */}
+      <line x1={c3+sw} y1={yS16mid} x2={c3+sw} y2={yE8mid}  stroke={lit(3)} strokeWidth={lw} />
+      <line x1={c3+sw} y1={yE8mid}  x2={c4}    y2={yE8mid}  stroke={lit(3)} strokeWidth={lw} />
+      <rect x={c4} y={s(yE8mid)} width={sw} height={sh} rx={1} fill="none" stroke={lit(3)} strokeWidth={lw} />
+
+      {/* Win 5+6 — F4 → CHAMP (2 single rounds) */}
+      <line x1={c4+sw} y1={yE8mid} x2={c5}    y2={yE8mid}  stroke={lit(4)} strokeWidth={lw} />
+      <rect x={c5} y={s(yE8mid)} width={sw} height={sh} rx={1} fill="none" stroke={lit(4)} strokeWidth={lw} />
+
+      {/* ── Opponent bracket structure (always dim) ── */}
+
+      {/* Opp1 R64 + lower pair-1 arm */}
+      <rect x={c0} y={s(yO1)} width={sw} height={sh} rx={1} fill="none" stroke={dim} strokeWidth={lw} />
+      <line x1={c0+sw} y1={yO1} x2={c0+sw} y2={yP1}  stroke={dim} strokeWidth={lw} />
+
+      {/* Opp2 + Opp3 R64 pair → OPP R32 */}
+      <rect x={c0} y={s(yO2)} width={sw} height={sh} rx={1} fill="none" stroke={dim} strokeWidth={lw} />
+      <rect x={c0} y={s(yO3)} width={sw} height={sh} rx={1} fill="none" stroke={dim} strokeWidth={lw} />
+      <line x1={c0+sw} y1={yO2}  x2={c0+sw} y2={yO3}  stroke={dim} strokeWidth={lw} />
+      <line x1={c0+sw} y1={yP2}  x2={c1}    y2={yP2}  stroke={dim} strokeWidth={lw} />
+      <rect x={c1} y={s(yP2)} width={sw} height={sh} rx={1} fill="none" stroke={dim} strokeWidth={lw} />
+
+      {/* Lower R32 bracket arm */}
+      <line x1={c1+sw} y1={yP2}  x2={c1+sw} y2={yR32mid} stroke={dim} strokeWidth={lw} />
+
+      {/* OPP S16 slot + lower S16 arm */}
+      <rect x={c2} y={s(yOS16)} width={sw} height={sh} rx={1} fill="none" stroke={dim} strokeWidth={lw} />
+      <line x1={c2+sw} y1={yOS16} x2={c2+sw} y2={yS16mid} stroke={dim} strokeWidth={lw} />
+
+      {/* OPP E8 slot + lower E8 arm */}
+      <rect x={c3} y={s(yOE8)} width={sw} height={sh} rx={1} fill="none" stroke={dim} strokeWidth={lw} />
+      <line x1={c3+sw} y1={yOE8}  x2={c3+sw} y2={yE8mid}  stroke={dim} strokeWidth={lw} />
+
     </svg>
   )
 }

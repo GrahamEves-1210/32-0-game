@@ -128,31 +128,33 @@ export default function SpinScreen({ conferences, eras, onChoose }) {
 
   return (
     <div className="spin-screen">
-      <h2 className="spin-instruction">
-        {results ? 'Your draw' : 'Spin to build your lineup'}
-      </h2>
+      <div className="spin-machine">
+        <h2 className="spin-instruction">
+          {results ? 'Your draw' : 'Spin to build your lineup'}
+        </h2>
 
-      <div className="reels-row">
-        <Reel
-          label="Conference"
-          current={currentConf}
-          accentKey="name"
-          subKey="fullName"
-          spinning={spinning}
-          landed={landed}
-          accentColor={confColor}
-          tick={tick}
-        />
-        <div className="reels-x">×</div>
-        <Reel
-          label="Era"
-          current={currentEra}
-          accentKey="label"
-          spinning={spinning}
-          landed={landed}
-          accentColor='#38B6E8'
-          tick={tick}
-        />
+        <div className="reels-row">
+          <Reel
+            label="Conference"
+            current={currentConf}
+            accentKey="name"
+            subKey="fullName"
+            spinning={spinning}
+            landed={landed}
+            accentColor={confColor}
+            tick={tick}
+          />
+          <div className="reels-x">×</div>
+          <Reel
+            label="Era"
+            current={currentEra}
+            accentKey="label"
+            spinning={spinning}
+            landed={landed}
+            accentColor='#38B6E8'
+            tick={tick}
+          />
+        </div>
       </div>
 
       {!results ? (
