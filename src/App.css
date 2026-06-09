@@ -223,7 +223,7 @@
 @media (max-width: 768px) {
   .app-footer {
     position: fixed;
-    bottom: 8px;
+    bottom: 23px;
     left: 0;
     right: 0;
     padding: 0;
@@ -268,7 +268,7 @@
 
 @media (max-width: 768px) {
   .online-counter {
-    bottom: 10px;
+    bottom: 25px;
     left: 10px;
     font-size: 11px;
   }
