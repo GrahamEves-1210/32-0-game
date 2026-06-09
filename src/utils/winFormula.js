@@ -14,7 +14,7 @@ function playerScore(p) {
   const scoringBonus = p.ppg > 22 ? (p.ppg - 22) * 0.3 : 0
   const stocks       = ((p.spg ?? 0) + (p.bpg ?? 0)) * 2.6
   const tsMultiplier = (p.tspct ?? 0.55) / 0.55
-  const spacing      = (p.tpm ?? 0) * 0.7
+  const spacing      = (p.tpm ?? 0) * 1.1
   return (p.ppg * 1.15 * tsMultiplier + p.apg * 1.5 + p.rpg * 0.6 + stocks + spacing) * mult + scoringBonus
 }
 
@@ -60,12 +60,12 @@ export function getMatchPercentage(lineup) {
 export function getSpacingGrade(lineup) {
   const valid = lineup.filter(p => p != null)
   if (!valid.length) return { grade: '?', avg: 0, total: 0 }
-  const total = valid.reduce((s, p) => s + (p.tpm ?? 0), 0)
-  const avg = total / valid.length
-  // Calibrated against realistic D1 lineups:
-  // avg includes C/PF positions who rarely shoot 3s, so per-player avg of 1.2+ is elite
-  const grade = avg >= 1.9 ? 'A' : avg >= 1.3 ? 'B' : avg >= 0.8 ? 'C' : avg >= 0.35 ? 'D' : 'F'
-  return { grade, avg, total }
+  const total  = valid.reduce((s, p) => s + (p.tpm ?? 0), 0)
+  const maxTpm = Math.max(...valid.map(p => p.tpm ?? 0))
+  // Weight the best shooter 1.5× extra so one elite floor-spacer meaningfully lifts the grade
+  const effective = (total + maxTpm * 1.5) / (valid.length + 1.5)
+  const grade = effective >= 2.2 ? 'A' : effective >= 1.5 ? 'B' : effective >= 0.9 ? 'C' : effective >= 0.4 ? 'D' : 'F'
+  return { grade, avg: total / valid.length, total }
 }
 
 export function getConferenceDifficultyGrade(lineup) {
@@ -125,7 +125,7 @@ export function getDefensiveRating(lineup) {
   if (!valid.length) return 0
   const { perfectDef } = getOffDefBenchmarks()
   const team = valid.reduce((s, p) => s + defPlayerScore(p), 0)
-  return Math.min(99, Math.max(1, Math.round((team / perfectDef) * 100)))
+  return Math.min(99, Math.max(1, Math.round((team / (perfectDef * 0.65)) * 100)))
 }
 
 export function getWinLabel(wins) {

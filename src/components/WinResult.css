@@ -519,8 +519,11 @@
 
 @media (max-width: 768px) {
   .result-wrap {
-    padding: 2px 8px 12px;
-    gap: 6px;
+    padding: 2px 8px 10px;
+    gap: 5px;
+    max-height: 100svh;
+    overflow: hidden;
+    justify-content: space-between;
   }
 
   .result-scoreboard {

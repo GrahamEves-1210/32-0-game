@@ -22,7 +22,16 @@ export default function App() {
     document.querySelectorAll('meta[name="theme-color"]').forEach(m => m.setAttribute('content', color))
   }, [darkMode])
 
-  useEffect(() => {}, [phase])
+  useEffect(() => {
+    if (phase !== 'draft') {
+      document.documentElement.style.overflow = 'hidden'
+      document.body.style.overflow = 'hidden'
+      return () => {
+        document.documentElement.style.overflow = ''
+        document.body.style.overflow = ''
+      }
+    }
+  }, [phase])
 
   function handleDraftComplete(lineup) {
     setFinalLineup(lineup)
