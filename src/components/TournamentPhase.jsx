@@ -108,8 +108,8 @@ function getGrade(conferenceId) {
   return CONFERENCES.find(c => c.id === conferenceId)?.grade ?? '?'
 }
 
-export default function TournamentPhase({ wins, lineup = [], onReset }) {
-  const [results]     = useState(() => simulateTournament(wins))
+export default function TournamentPhase({ wins, matchPct = 0, lineup = [], onReset, onChampion }) {
+  const [results]     = useState(() => simulateTournament(wins, matchPct))
   const [phase,       setPhase]      = useState(PHASE.SEEDING)
   const [gameIdx,     setGameIdx]    = useState(0)
   const [pScore,      setPScore]     = useState(0)
@@ -118,6 +118,7 @@ export default function TournamentPhase({ wins, lineup = [], onReset }) {
   const [netCutting,  setNetCutting] = useState(false)
   const [netCut,      setNetCut]     = useState(false)
   const [champSlid,   setChampSlid]  = useState(false)
+  const [roundPopup,  setRoundPopup] = useState(null)
   const timerRef    = useRef(null)
   const floaterIdRef = useRef(0)
 
@@ -136,6 +137,21 @@ export default function TournamentPhase({ wins, lineup = [], onReset }) {
     if (phase === PHASE.BETWEEN && game && !game.playerWins) {
       const t = setTimeout(() => setPhase(PHASE.ELIMINATED), 2500)
       return () => clearTimeout(t)
+    }
+    if (phase === PHASE.BETWEEN && game && game.playerWins) {
+      const next = gameIdx + 1
+      const label = next >= results.games.length
+        ? (results.won ? 'Champions' : null)
+        : ROUND_NAMES[next]
+      const t1 = setTimeout(() => {
+        if (label) setRoundPopup(label)
+        const t2 = setTimeout(() => {
+          setRoundPopup(null)
+          handleContinue()
+        }, 1000)
+        return () => clearTimeout(t2)
+      }, 600)
+      return () => clearTimeout(t1)
     }
   }, [phase, game])
 
@@ -175,7 +191,9 @@ export default function TournamentPhase({ wins, lineup = [], onReset }) {
   function handleContinue() {
     const next = gameIdx + 1
     if (next >= results.games.length) {
-      setPhase(results.won ? PHASE.CHAMPION : PHASE.ELIMINATED)
+      const newPhase = results.won ? PHASE.CHAMPION : PHASE.ELIMINATED
+      setPhase(newPhase)
+      if (results.won) onChampion?.()
     } else {
       startGame(next)
     }
@@ -229,6 +247,8 @@ export default function TournamentPhase({ wins, lineup = [], onReset }) {
     const confDiff  = getConferenceDifficultyGrade(lineup)
     const offRating = getOffensiveRating(lineup)
     const defRating = getDefensiveRating(lineup)
+    const statsOn   = localStorage.getItem('showStats') === 'true'
+    const losses    = 32 - wins
     const totalPPG  = lineup.reduce((s, p) => s + (p?.ppg ?? 0), 0)
     const totalRPG  = lineup.reduce((s, p) => s + (p?.rpg ?? 0), 0)
     const totalAPG  = lineup.reduce((s, p) => s + (p?.apg ?? 0), 0)
@@ -324,6 +344,18 @@ export default function TournamentPhase({ wins, lineup = [], onReset }) {
                 </div>
               </div>
 
+              <div className="champ-meta">
+                <div className="champ-meta-side champ-meta-side--left">
+                  <span className="champ-meta-record">{wins}–{losses}</span>
+                </div>
+                <span className="champ-meta-sep">·</span>
+                <div className="champ-meta-side champ-meta-side--right">
+                  <div className="result-stats-badge" data-on={String(statsOn)}>
+                    Stats: {statsOn ? 'On' : 'Off'}
+                  </div>
+                </div>
+              </div>
+
               <button className="btn-play-again btn-tourney-reset" onClick={onReset}>
                 ↺ Back to Menu
               </button>
@@ -381,12 +413,8 @@ export default function TournamentPhase({ wins, lineup = [], onReset }) {
           </div>
         </div>
 
-        {isBetween && game.playerWins && (
-          <button className="btn-tourney-action btn-tourney-action--between" onClick={handleContinue}>
-            {gameIdx === 5
-              ? 'Claim Trophy'
-              : `Next: ${ROUND_NAMES[gameIdx + 1]} →`}
-          </button>
+        {roundPopup && (
+          <div className="tgc-round-popup">{roundPopup}</div>
         )}
       </div>
 

@@ -2929,6 +2929,18 @@ export const ALL_PLAYERS = [
   p('bam-adebayo','Bam Adebayo','Kentucky','sec','era3',2017,13.0,8.0,1.1,0.9,1.5,0.620,0.0,["C","PF"]),
   p('shai-gilgeous-alexander','Shai Gilgeous-Alexander','Kentucky','sec','era3',2018,14.4,4.1,5.1,1.6,0.5,0.567,0.3,["PG","SG"]),
   p('tyrese-maxey','Tyrese Maxey','Kentucky','sec','era3',2020,14.0,4.3,3.2,0.9,0.4,0.536,0.7,["PG","SG"]),
+  p('joakim-noah','Joakim Noah','Florida','sec','era1',2007,12.9,9.3,1.7,1.4,2.2,0.600,0.0,["C","PF"]),
+  p('al-horford','Al Horford','Florida','sec','era1',2007,14.0,11.2,1.5,1.2,1.7,0.610,0.0,["C","PF"]),
+  p('mario-chalmers','Mario Chalmers','Kansas','big12','era1',2008,12.0,3.8,4.4,1.9,0.2,0.565,2.2,["PG","SG"]),
+  p('brandon-rush','Brandon Rush','Kansas','big12','era1',2008,14.9,5.0,2.0,1.4,0.4,0.595,1.7,["SG","SF"]),
+  p('cole-aldrich','Cole Aldrich','Kansas','big12','era1',2010,11.8,11.0,0.8,0.7,3.0,0.600,0.0,["C"]),
+  p('nerlens-noel','Nerlens Noel','Kentucky','sec','era2',2013,10.5,9.5,0.7,2.1,4.4,0.580,0.0,["C"]),
+  p('michael-kidd-gilchrist','Michael Kidd-Gilchrist','Kentucky','sec','era2',2012,11.9,7.4,1.9,1.4,0.9,0.590,0.0,["SF","PF"]),
+  p('aaron-craft','Aaron Craft','Ohio State','big10','era2',2013,9.9,4.3,4.9,2.8,0.2,0.530,0.8,["PG"]),
+  p('wayne-selden','Wayne Selden','Kansas','big12','era3',2016,13.5,4.1,2.3,0.9,0.3,0.540,2.2,["SG","SF"]),
+  p('christian-braun','Christian Braun','Kansas','big12','era4',2022,14.1,6.6,2.4,1.4,0.3,0.575,2.2,["SG","SF"]),
+  p('jalen-suggs','Jalen Suggs','Gonzaga','wcc','era4',2021,14.4,5.3,4.4,2.0,0.9,0.580,2.2,["PG","SG"]),
+  p('chet-holmgren','Chet Holmgren','Gonzaga','wcc','era4',2022,14.1,9.9,1.9,1.9,3.7,0.660,2.2,["C","PF"]),
 ]
 
 export function getPlayers(conferenceId, eraId) {

@@ -51,8 +51,12 @@ const OPP_SEED_BY_ROUND = {
   8: [9,  [1,16], [4,5],  [2,3],  [1,2],  [1,2]],
 }
 
-// ELO calibrated so 32-0 (elo=2400) wins the tournament ~75% of the time
-function winsToElo(wins) { return 1600 + wins * 25 }
+// Steep concave curve: 32-0→75%, 30-2→~40%, then sharp falloff below
+// matchPct (0–1) adds up to +120 ELO for team quality, pushing elite lineups toward 85%
+function winsToElo(wins, matchPct = 0) {
+  const base = wins >= 32 ? 2400 : Math.round(2400 - 125 * Math.pow(32 - wins, 0.747))
+  return base + Math.round(matchPct * 120)
+}
 
 const SEED_ELO = {
   1:2050, 2:1950, 3:1870, 4:1800, 5:1740,
@@ -96,9 +100,9 @@ export function winsToSeed(wins) {
   return 8
 }
 
-export function simulateTournament(wins) {
+export function simulateTournament(wins, matchPct = 0) {
   const playerSeed = winsToSeed(wins)
-  const playerElo  = winsToElo(wins)
+  const playerElo  = winsToElo(wins, matchPct)
   const oppRounds  = OPP_SEED_BY_ROUND[playerSeed] || OPP_SEED_BY_ROUND[4]
 
   const usedNames = new Set()

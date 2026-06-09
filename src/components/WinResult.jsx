@@ -63,22 +63,20 @@ export default function WinResult({ lineup, onReset, onTournament }) {
           </div>
           <span className="rsb-dash">—</span>
           <div className="rsb-col">
-            <span className="rsb-label">LOSS</span>
+            <span className="rsb-label">LOSSES</span>
             <span className="rsb-num rsb-num--loss">
               <span className="rsb-seg-bg" aria-hidden="true">{String(32 - displayed).replace(/\d/g,'8')}</span>
               {32 - displayed}
             </span>
           </div>
         </div>
-        {done && (
-          <>
-            <div className="result-label" style={{ color: !isDark() && label.color === '#4ade80' ? '#16a34a' : label.color }}>{label.text}</div>
-            <div className="result-match">{matchPct.toFixed(1)}% of perfect lineup</div>
-            <div className="result-stats-badge" data-on={statsOn}>
-              {statsOn ? 'Stats: On' : 'Stats: Off'}
-            </div>
-          </>
-        )}
+        <div className={`result-below-board ${done ? 'result-below-board--visible' : ''}`}>
+          <div className="result-label" style={{ color: !isDark() && label.color === '#4ade80' ? '#16a34a' : label.color }}>{label.text}</div>
+          <div className="result-match">{matchPct.toFixed(1)}% of perfect lineup</div>
+          <div className="result-stats-badge" data-on={statsOn}>
+            {statsOn ? 'Stats: On' : 'Stats: Off'}
+          </div>
+        </div>
       </div>
 
       {/* ── Roster breakdown ── */}

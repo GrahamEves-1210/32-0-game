@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import DraftPhase from './components/DraftPhase'
 import WinResult from './components/WinResult'
 import TournamentPhase from './components/TournamentPhase'
-import { calculateWins } from './utils/winFormula'
+import { calculateWins, getMatchPercentage } from './utils/winFormula'
 import './App.css'
 
 // Phases: 'draft' → 'result' → 'tournament'
@@ -11,8 +11,9 @@ export default function App() {
   const [phase,       setPhase]       = useState('draft')
   const [finalLineup, setFinalLineup] = useState(null)
   const [resetKey,    setResetKey]    = useState(0)
-  const [showHeader,  setShowHeader]  = useState(true)
-  const [darkMode,    setDarkMode]    = useState(() => localStorage.getItem('theme') === 'dark')
+  const [showHeader,   setShowHeader]  = useState(true)
+  const [champReached, setChampReached] = useState(false)
+  const [darkMode,     setDarkMode]    = useState(() => localStorage.getItem('theme') === 'dark')
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light')
@@ -45,6 +46,7 @@ export default function App() {
     setPhase('draft')
     setResetKey(k => k + 1)
     setShowHeader(true)
+    setChampReached(false)
   }
 
   function handleTournament() {
@@ -55,12 +57,13 @@ export default function App() {
 
   return (
     <div className="app">
-      {(showHeader || phase === 'result') && (
+      {(showHeader || phase === 'result' || champReached) && (
         <header className="app-header">
           <div className="app-logo"><span className="logo-number">32<span className="logo-dash">-</span>0</span></div>
           <p className="app-subtitle">Men's College Hoops · Build the perfect lineup</p>
         </header>
       )}
+      {(showHeader || phase === 'result' || champReached) && <div className="app-header-divider" />}
 
       <main className="app-main">
         {phase === 'draft' && (
@@ -82,11 +85,19 @@ export default function App() {
         {phase === 'tournament' && (
           <TournamentPhase
             wins={calculateWins(lineupArray)}
+            matchPct={getMatchPercentage(lineupArray) / 100}
             lineup={lineupArray}
             onReset={handleReset}
+            onChampion={() => setChampReached(true)}
           />
         )}
       </main>
+
+      {!showHeader && phase !== 'result' && !champReached && (
+        <div className="mobile-logo" aria-hidden="true">
+          <span className="mobile-logo-number">32<span className="logo-dash">-</span>0</span>
+        </div>
+      )}
 
       <button
         className={`btn-theme-toggle ${darkMode ? 'btn-theme-toggle--dark' : ''}`}

@@ -217,11 +217,22 @@
   animation: fade-up 0.3s ease 0.1s both;
 }
 
+.result-below-board {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.result-below-board--visible {
+  opacity: 1;
+}
+
 .result-match {
   font-size: 13px;
   color: var(--text-muted);
   margin-top: 6px;
-  animation: fade-up 0.3s ease 0.2s both;
 }
 
 .result-stats-badge {
@@ -462,7 +473,7 @@
 .btn-tournament {
   width: 100%;
   max-width: 360px;
-  background: #13e700e7;
+  background: #12d400c9;
   color: #fff;
   font-size: 16px;
   font-weight: 700;
@@ -498,50 +509,52 @@
 }
 
 @media (max-width: 768px) {
+  .result-wrap {
+    padding: 4px 8px 24px;
+    gap: 12px;
+  }
+
   .result-scoreboard {
-    padding: 14px 20px 10px;
-    gap: 8px;
-    max-width: 300px;
+    padding: 12px 16px 10px;
+    gap: 6px;
+    max-width: 280px;
   }
 
   .rsb-num {
-    font-size: 52px;
-    min-width: 70px;
+    font-size: 46px;
+    min-width: 60px;
   }
 
   .rsb-dash {
-    font-size: 22px;
-    margin-top: 14px;
+    font-size: 20px;
+    margin-top: 12px;
   }
 
   .result-label {
-    font-size: 16px;
+    font-size: 15px;
+    padding: 4px 14px;
+    margin-top: 20px;
   }
 
-  /* Hide CFG on mobile — show PPG RPG APG S+B TS% */
+  /* Hide CFG on mobile */
   .rr-cfg-val, .rr-cfg-head {
     display: none;
   }
 
-  .result-wrap {
-    padding: 4px 4px 20px;
-    gap: 14px;
-  }
-
   .result-roster-header,
   .result-roster-row {
-    grid-template-columns: 24px 1fr 36px 36px 36px 36px 42px;
-    padding: 7px 8px;
+    grid-template-columns: 22px 1fr 32px 32px 32px 32px 38px;
+    padding: 6px 8px;
     gap: 2px;
   }
 
   .result-roster-header {
     padding: 5px 8px;
-    grid-template-columns: 24px 1fr 36px 36px 36px 36px 42px;
+    grid-template-columns: 22px 1fr 32px 32px 32px 32px 38px;
   }
 
   .result-team-totals {
-    grid-template-columns: 24px 1fr 36px 36px 36px 36px 42px;
+    grid-template-columns: 22px 1fr 32px 32px 32px 32px 38px;
     padding: 8px 8px;
     gap: 2px;
   }
@@ -553,27 +566,50 @@
   }
 
   .rr-name {
-    font-size: 15px;
+    font-size: 14px;
   }
 
   .rr-school {
-    font-size: 11px;
+    font-size: 10px;
   }
 
-  .rr-year {
-    display: none;
-  }
+  .rr-year { display: none; }
 
   .rr-stat {
-    font-size: 15px;
+    font-size: 13px;
   }
 
   .rtt-val {
-    font-size: 15px;
+    font-size: 13px;
   }
 
-  .btn-play-again {
+  /* Grade bar: shrink labels to prevent Conf. Difficulty from overflowing */
+  .result-team-grades {
+    max-width: 100%;
+  }
+
+  .rtg-label {
+    font-size: 10px;
+    letter-spacing: 0;
+    white-space: nowrap;
+  }
+
+  .rtg-grade {
+    font-size: 28px;
+  }
+
+  .rtg-grade--num {
+    font-size: 22px;
+  }
+
+  .rtg-item {
+    padding: 10px 2px;
+  }
+
+  .btn-play-again,
+  .btn-tournament {
     width: 100%;
+    max-width: 100%;
     padding: 14px;
   }
 }

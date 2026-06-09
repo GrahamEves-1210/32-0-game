@@ -66,6 +66,9 @@
 
 .reel--spinning .reel-window {
   border-color: var(--orange);
+}
+
+.reel--spinning {
   animation: reel-vibrate 0.08s linear infinite;
 }
 
@@ -126,8 +129,14 @@
 
 /* ── Basketball spin button ── */
 .btn-spin-main {
-  background: color-mix(in srgb, white 18%, var(--surface));
-  border: 2px solid rgba(255, 255, 255, 0.25);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--surface) 60%, #fff) 0%,
+    color-mix(in srgb, var(--surface) 85%, #fff) 25%,
+    var(--surface) 55%,
+    color-mix(in srgb, var(--surface) 80%, #000) 100%
+  );
+  border: none;
   border-radius: 50%;
   display: flex;
   flex-direction: column;
@@ -138,12 +147,66 @@
   width: 160px;
   height: 160px;
   padding: 0;
-  transition: border-color 0.15s;
+  position: relative;
+  box-shadow:
+    0 10px 0 color-mix(in srgb, var(--bg) 30%, #000),
+    0 14px 32px rgba(0, 0, 0, 0.55),
+    inset 0 2px 0 rgba(255, 255, 255, 0.28),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.25);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
 
 .btn-spin-main:hover:not(:disabled) {
-  border-color: rgba(255, 255, 255, 0.45);
+  transform: translateY(-2px);
+  box-shadow:
+    0 12px 0 color-mix(in srgb, var(--bg) 30%, #000),
+    0 18px 36px rgba(0, 0, 0, 0.6),
+    inset 0 2px 0 rgba(255, 255, 255, 0.32),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.25);
 }
+
+.btn-spin-main:active:not(:disabled) {
+  transform: translateY(6px);
+  box-shadow:
+    0 4px 0 color-mix(in srgb, var(--bg) 30%, #000),
+    0 6px 16px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 3px 8px rgba(0, 0, 0, 0.35);
+}
+
+[data-theme="light"] .btn-spin-main {
+  background: linear-gradient(
+    180deg,
+    #fff 0%,
+    color-mix(in srgb, var(--surface) 60%, #fff) 30%,
+    var(--surface) 60%,
+    color-mix(in srgb, var(--surface) 70%, #000) 100%
+  );
+  box-shadow:
+    0 10px 0 color-mix(in srgb, var(--border) 80%, #000),
+    0 14px 28px rgba(0, 0, 0, 0.28),
+    inset 0 2px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.12);
+}
+
+[data-theme="light"] .btn-spin-main:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow:
+    0 12px 0 color-mix(in srgb, var(--border) 80%, #000),
+    0 18px 32px rgba(0, 0, 0, 0.32),
+    inset 0 2px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.12);
+}
+
+[data-theme="light"] .btn-spin-main:active:not(:disabled) {
+  transform: translateY(6px);
+  box-shadow:
+    0 4px 0 color-mix(in srgb, var(--border) 80%, #000),
+    0 6px 12px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    inset 0 3px 8px rgba(0, 0, 0, 0.12);
+}
+
 
 /* Wrapper is what rotates — its center is the axis */
 .btn-ball-wrap {
@@ -175,13 +238,9 @@
   transition: color 0.15s;
 }
 
-/* Default — slow idle spin; hover/rolling only change the duration, not the animation itself */
+/* Default — slow idle spin; rolling only changes the duration */
 .btn-ball-wrap {
   animation: bball-spin 3s linear infinite;
-}
-
-.btn-spin-main:hover:not(:disabled) {
-  transform: none;
 }
 
 [data-theme="light"] .btn-spin-main {
@@ -197,10 +256,15 @@
   color: #ffd000;
 }
 
-/* Rolling state — fast spin */
+/* Rolling state — pressed down */
 .btn-spin-main--rolling {
   cursor: not-allowed;
-  transform: none;
+  transform: translateY(6px);
+  box-shadow:
+    0 4px 0 color-mix(in srgb, var(--bg) 30%, #000),
+    0 6px 16px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 3px 8px rgba(0, 0, 0, 0.35);
 }
 
 .btn-spin-main--rolling .btn-ball-wrap {

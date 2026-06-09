@@ -139,17 +139,11 @@
 }
 
 .pick-label {
-  font-size: 13px;
-  color: var(--text);
-  font-style: italic;
-}
-
-[data-theme="dark"] .pick-label {
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 4px;
-  padding: 2px 7px;
+  font-size: 14px;
+  font-weight: 400;
   color: var(--text-dim);
-  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
 }
 
 /* ── Body ── */

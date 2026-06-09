@@ -76,13 +76,13 @@
 
 .tgc-round {
   width: 100%;
-  padding: 10px 20px;
+  padding: 12px 20px;
   background: var(--surface2);
   border-bottom: 1px solid var(--border);
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--text-muted);
   text-align: center;
@@ -92,8 +92,8 @@
   display: flex;
   align-items: stretch;
   width: 100%;
-  padding: 28px 16px 24px;
-  gap: 12px;
+  padding: 40px 20px 36px;
+  gap: 8px;
 }
 
 .tgc-team {
@@ -101,40 +101,44 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
-  transition: opacity 0.3s;
+  gap: 10px;
+  transition: opacity 0.4s;
 }
 
-.tgc-team--loser { opacity: 0.45; }
+.tgc-team--loser { opacity: 0.35; }
 
 .tgc-name {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 700;
   color: var(--text);
   text-align: center;
   line-height: 1.1;
+  letter-spacing: 0.02em;
 }
 
 .tgc-team--player .tgc-name { color: var(--orange); }
 
 .tgc-seed {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--text-muted);
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
+  font-family: 'Barlow Condensed', sans-serif;
+  text-transform: uppercase;
 }
 
 .tgc-scorebox {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 64px;
+  font-size: 96px;
   font-weight: 700;
   line-height: 1;
   color: var(--text);
   font-variant-numeric: tabular-nums;
-  min-width: 80px;
+  min-width: 110px;
   text-align: center;
-  margin-top: 4px;
+  margin-top: 6px;
+  letter-spacing: -2px;
 }
 
 .tgc-team--player .tgc-scorebox { color: var(--orange); }
@@ -144,15 +148,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-top: 52px;
+  padding-top: 72px;
   flex-shrink: 0;
-  width: 36px;
+  width: 44px;
 }
 
 .tgc-ball {
-  font-size: 22px;
+  font-size: 30px;
   line-height: 1;
-  animation: ball-bounce 0.5s ease-in-out infinite alternate;
+  animation: ball-bounce 0.45s ease-in-out infinite alternate;
   display: block;
 }
 
@@ -181,7 +185,7 @@
   position: absolute;
   top: 0;
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 20px;
+  font-size: 26px;
   font-weight: 700;
   white-space: nowrap;
 }
@@ -210,8 +214,9 @@
 
 .tgc-result {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 28px;
+  font-size: 40px;
   font-weight: 700;
+  letter-spacing: 0.04em;
   animation: pop-in 0.3s cubic-bezier(0.34,1.56,0.64,1);
 }
 
@@ -221,6 +226,20 @@
 @keyframes pop-in {
   from { transform: scale(0.5); opacity: 0; }
   to   { transform: scale(1);   opacity: 1; }
+}
+
+.tgc-round-popup {
+  width: 100%;
+  padding: 14px 20px;
+  background: var(--orange);
+  color: #fff;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-align: center;
+  animation: pop-in 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .btn-tourney-action {
@@ -304,12 +323,12 @@
   flex-direction: column;
   align-items: center;
   gap: 12px;
-  padding-top: 4vh;
-  transition: padding-top 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(4vh);
+  transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .champ-screen--slid .champ-card-wrap {
-  padding-top: 0;
+  transform: translateY(0);
 }
 
 .champ-outcome-card {
@@ -373,6 +392,44 @@
   font-size: 42px;
   letter-spacing: 0.12em;
   animation: trophy-bounce 0.6s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+
+.champ-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.champ-meta-side {
+  flex: 1;
+  display: flex;
+}
+
+.champ-meta-side--left  { justify-content: flex-end; }
+.champ-meta-side--right { justify-content: flex-start; }
+
+.champ-meta .result-stats-badge {
+  margin-top: 0;
+  font-size: 11px;
+  padding: 2px 9px;
+  line-height: 1;
+}
+
+.champ-meta-record {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+  line-height: 1;
+}
+
+.champ-meta-sep {
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1;
 }
 
 .btn-champ-menu {
@@ -512,7 +569,12 @@
     min-height: 100svh;
     justify-content: center;
   }
-  .tgc-scorebox { font-size: 52px; }
-  .tgc-name     { font-size: 15px; }
+  .tourney-wrap--champ {
+    justify-content: flex-start;
+    padding-top: 0;
+  }
+  .tgc-scorebox { font-size: 72px; min-width: 88px; }
+  .tgc-name     { font-size: 18px; }
+  .tgc-vs       { padding-top: 58px; }
   .ts-seed-num  { font-size: 44px; }
 }

@@ -69,43 +69,56 @@ export default function SpinScreen({ conferences, eras, onChoose }) {
   const [results,  setResults]  = useState(null)
   const [tick,     setTick]     = useState(0)
   const intervalRef    = useRef(null)
-  const stopRef        = useRef(null)
   const transitionRef  = useRef(null)
+  const holdingRef     = useRef(false)
+  const pressTimeRef   = useRef(0)
 
-  function spin() {
-    if (spinning) return
+  function startSpin(e) {
+    if (spinning || results) return
+    e.currentTarget?.setPointerCapture?.(e.pointerId)
+    holdingRef.current = true
+    pressTimeRef.current = Date.now()
     setResults(null)
     setLanded(false)
     setSpinning(true)
-
-    const { ci: finalConf, ei: finalEra } = pickValidCombo(conferences, eras)
 
     intervalRef.current = setInterval(() => {
       setConfIdx(weightedRandomConf(conferences))
       setEraIdx(Math.floor(Math.random() * eras.length))
       setTick(t => t + 1)
     }, 80)
+  }
 
-    stopRef.current = setTimeout(() => {
+  const stopTimerRef = useRef(null)
+
+  function stopSpin() {
+    if (!holdingRef.current) return
+    holdingRef.current = false
+
+    const { ci: finalConf, ei: finalEra } = pickValidCombo(conferences, eras)
+    const heldMs = Date.now() - pressTimeRef.current
+    const delay  = heldMs > 1800 ? 200 : 1100
+
+    stopTimerRef.current = setTimeout(() => {
       clearInterval(intervalRef.current)
       setConfIdx(finalConf)
       setEraIdx(finalEra)
       setSpinning(false)
       setLanded(true)
       const finalConference = conferences[finalConf]
-      const finalEraObj = eras[finalEra]
+      const finalEraObj     = eras[finalEra]
       setResults({ conference: finalConference, era: finalEraObj })
       transitionRef.current = setTimeout(() => {
         document.documentElement.scrollTop = 0
-        document.body.scrollTop = 0
+        document.body.scrollTop            = 0
         onChoose(finalConference, finalEraObj)
       }, 1800)
-    }, 1300)
+    }, delay)
   }
 
   useEffect(() => () => {
     clearInterval(intervalRef.current)
-    clearTimeout(stopRef.current)
+    clearTimeout(stopTimerRef.current)
     clearTimeout(transitionRef.current)
   }, [])
 
@@ -145,8 +158,9 @@ export default function SpinScreen({ conferences, eras, onChoose }) {
       {!results ? (
         <button
           className={`btn-spin-main ${spinning ? 'btn-spin-main--rolling' : ''}`}
-          onClick={spin}
-          disabled={spinning}
+          onPointerDown={startSpin}
+          onPointerUp={stopSpin}
+          onPointerLeave={stopSpin}
           aria-label={spinning ? 'Spinning…' : 'Spin'}
         >
           <span className="btn-ball-wrap"><span className="btn-ball-icon">🏀</span></span>
