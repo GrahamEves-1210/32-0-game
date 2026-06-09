@@ -403,8 +403,6 @@
 
 @media (max-width: 768px) {
   .tourney-roster-panel {
-    overflow-y: auto;
-    max-height: 200px;
     border-radius: var(--radius-sm);
   }
 }
@@ -713,11 +711,12 @@
 
 @media (max-width: 768px) {
   .tourney-wrap {
-    padding: 40px 12px 24px;
+    padding: 36px 12px 12px;
     height: 100svh;
     max-height: 100svh;
     overflow: hidden;
     justify-content: flex-start;
+    gap: 8px;
   }
   .tourney-wrap--seeding {
     justify-content: center;
@@ -753,8 +752,17 @@
   .to-title--champ {
     font-size: 28px;
   }
-  .tgc-scorebox { font-size: 72px; min-width: 88px; }
-  .tgc-name     { font-size: 18px; }
-  .tgc-vs       { padding-top: 58px; }
+
+  /* Scale bracket down so it doesn't eat too much height */
+  .mm-bracket-full { max-width: 220px; }
+
+  .mm-header { gap: 4px; padding: 4px 0 4px; }
+
+  .tgc-teams    { padding: 16px 12px 14px; }
+  .tgc-scorebox { font-size: 64px; min-width: 78px; }
+  .tgc-name     { font-size: 16px; }
+  .tgc-seed     { font-size: 10px; }
+  .tgc-vs       { padding-top: 48px; }
+  .tgc-round    { padding: 8px 16px; font-size: 11px; }
   .ts-seed-num  { font-size: 44px; }
 }
