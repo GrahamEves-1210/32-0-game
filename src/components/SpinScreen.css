@@ -374,8 +374,31 @@
 
 @media (max-width: 520px) {
   .spin-screen {
+    gap: 10px;
+    padding: 6px 0 16px;
+  }
+
+  .spin-machine {
+    padding: 12px 16px 14px;
     gap: 14px;
-    padding: 8px 0 20px;
+  }
+
+  .btn-spin-main {
+    width: 120px;
+    height: 120px;
+  }
+
+  .btn-ball-wrap {
+    width: 54px;
+    height: 54px;
+  }
+
+  .btn-ball-icon {
+    font-size: 52px;
+  }
+
+  .btn-spin-text {
+    font-size: 22px;
   }
 
   .reels-row {

@@ -222,7 +222,17 @@
 
 @media (max-width: 768px) {
   .app-footer {
-    display: none;
+    position: fixed;
+    bottom: 8px;
+    left: 0;
+    right: 0;
+    padding: 0;
+    margin: 0;
+    pointer-events: none;
+  }
+
+  .app-footer .footer-link {
+    pointer-events: auto;
   }
 }
 
