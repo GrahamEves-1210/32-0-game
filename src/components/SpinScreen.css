@@ -375,7 +375,11 @@
 @media (max-width: 520px) {
   .spin-screen {
     gap: 14px;
-    padding: 8px 0 72px;
+    padding: 8px 0 20px;
+  }
+
+  .btn-spin-main {
+    margin-bottom: 52px;
   }
 
   .reels-row {

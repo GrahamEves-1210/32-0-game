@@ -23,7 +23,7 @@ export default function App() {
   }, [darkMode])
 
   useEffect(() => {
-    if (phase !== 'draft') {
+    if (phase === 'tournament') {
       document.documentElement.style.overflow = 'hidden'
       document.body.style.overflow = 'hidden'
       return () => {
