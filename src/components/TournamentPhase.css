@@ -397,6 +397,16 @@
 .tourney-roster-panel {
   width: 100%;
   animation: fade-up 0.25s ease;
+  min-height: 0;
+  flex-shrink: 1;
+}
+
+@media (max-width: 768px) {
+  .tourney-roster-panel {
+    overflow-y: auto;
+    max-height: 200px;
+    border-radius: var(--radius-sm);
+  }
 }
 
 /* ── History strip ── */
