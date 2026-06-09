@@ -6,7 +6,8 @@
       "Bash(npx vite *)",
       "Bash(node -e ' *)",
       "WebSearch",
-      "WebFetch(domain:en.wikipedia.org)"
+      "WebFetch(domain:en.wikipedia.org)",
+      "Bash(node --input-type=module)"
     ]
   }
 }

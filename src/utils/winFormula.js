@@ -45,7 +45,7 @@ export function calculateWins(lineup) {
   const { perfectScore } = getBenchmarks()
   // Scale benchmark to 85% — the true perfect requires an impossible assembly;
   // this lets elite realistic lineups reach 30-32 rather than clustering at 28.
-  const ratio = Math.min(1, Math.max(0, teamScore / (perfectScore * 0.85)))
+  const ratio = Math.min(1, Math.max(0, teamScore / (perfectScore * 0.82)))
   const raw   = Math.pow(ratio, 0.45)
   return Math.max(0, Math.round((raw - 0.20) / 0.80 * 32))
 }
@@ -60,11 +60,12 @@ export function getMatchPercentage(lineup) {
 export function getSpacingGrade(lineup) {
   const valid = lineup.filter(p => p != null)
   if (!valid.length) return { grade: '?', avg: 0, total: 0 }
-  const total  = valid.reduce((s, p) => s + (p.tpm ?? 0), 0)
-  const maxTpm = Math.max(...valid.map(p => p.tpm ?? 0))
-  // Weight the best shooter 1.5× extra so one elite floor-spacer meaningfully lifts the grade
-  const effective = (total + maxTpm * 1.5) / (valid.length + 1.5)
-  const grade = effective >= 2.2 ? 'A' : effective >= 1.5 ? 'B' : effective >= 0.9 ? 'C' : effective >= 0.4 ? 'D' : 'F'
+  const total = valid.reduce((s, p) => s + (p.tpm ?? 0), 0)
+  // Grade on the top-3 shooters' average — big/center not penalizing elite perimeter spacers
+  const sorted = [...valid].sort((a, b) => (b.tpm ?? 0) - (a.tpm ?? 0))
+  const top3   = sorted.slice(0, 3)
+  const top3Avg = top3.reduce((s, p) => s + (p.tpm ?? 0), 0) / top3.length
+  const grade = top3Avg >= 2.2 ? 'A' : top3Avg >= 1.4 ? 'B' : top3Avg >= 0.7 ? 'C' : top3Avg >= 0.25 ? 'D' : 'F'
   return { grade, avg: total / valid.length, total }
 }
 

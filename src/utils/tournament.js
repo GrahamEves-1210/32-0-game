@@ -51,10 +51,12 @@ const OPP_SEED_BY_ROUND = {
   8: [9,  [1,16], [4,5],  [2,3],  [1,2],  [1,2]],
 }
 
-// Steep concave curve: 32-0→75%, 30-2→~40%, then sharp falloff below
+// Calibrated lookup: each entry produces the exact target championship %
+// 32-0→75%, 31-1→55%, 30-2→38%, 29-3→25%, 28-4→15%, 27-5→8%, 26-6→4%, 25-7→2%
+const WINS_ELO = { 32:2400, 31:2265, 30:2173, 29:2104, 28:2038, 27:1973, 26:1918, 25:1868, 24:1810, 23:1755, 22:1700 }
 // matchPct (0–1) adds up to +120 ELO for team quality, pushing elite lineups toward 85%
 function winsToElo(wins, matchPct = 0) {
-  const base = wins >= 32 ? 2400 : Math.round(2400 - 125 * Math.pow(32 - wins, 0.747))
+  const base = WINS_ELO[wins] ?? Math.max(1200, Math.round(2400 - 135 * Math.pow(32 - wins, 0.707)))
   return base + Math.round(matchPct * 120)
 }
 
