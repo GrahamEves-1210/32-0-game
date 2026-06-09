@@ -129,6 +129,9 @@
 
 /* ── Basketball spin button ── */
 .btn-spin-main {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
   background: linear-gradient(
     180deg,
     color-mix(in srgb, var(--surface) 60%, #fff) 0%,

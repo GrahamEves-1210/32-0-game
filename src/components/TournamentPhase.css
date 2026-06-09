@@ -572,6 +572,31 @@
   .tourney-wrap--champ {
     justify-content: flex-start;
     padding-top: 0;
+    overflow: hidden;
+  }
+
+  .champ-screen {
+    gap: 10px;
+  }
+
+  .champ-card-wrap {
+    gap: 8px;
+  }
+
+  .champ-roster-panel {
+    gap: 10px;
+  }
+
+  .tourney-outcome--champ {
+    padding: 20px 16px;
+  }
+
+  .to-trophy {
+    font-size: 44px;
+  }
+
+  .to-title--champ {
+    font-size: 28px;
   }
   .tgc-scorebox { font-size: 72px; min-width: 88px; }
   .tgc-name     { font-size: 18px; }

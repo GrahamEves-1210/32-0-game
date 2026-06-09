@@ -183,7 +183,7 @@ export default function TournamentPhase({ wins, matchPct = 0, lineup = [], onRes
         clearInterval(timerRef.current)
         setPhase(PHASE.BETWEEN)
       }
-    }, 95)
+    }, 65)
   }
 
   function handleEnter() { startGame(0) }

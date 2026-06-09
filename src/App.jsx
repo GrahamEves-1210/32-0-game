@@ -102,7 +102,7 @@ export default function App() {
         <button className="btn-reset" onClick={handleReset}>↺ Start Over</button>
       )}
 
-      {(showHeader || phase === 'result') && (
+      {showHeader && (
         <footer className="app-footer">
           <a href="https://www.82-0.com" target="_blank" rel="noopener noreferrer" className="footer-link">
             Inspired by 82-0.com
