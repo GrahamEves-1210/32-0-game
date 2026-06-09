@@ -510,30 +510,30 @@
 
 @media (max-width: 768px) {
   .result-wrap {
-    padding: 4px 8px 24px;
-    gap: 12px;
+    padding: 4px 8px 20px;
+    gap: 8px;
   }
 
   .result-scoreboard {
-    padding: 12px 16px 10px;
+    padding: 8px 14px 8px;
     gap: 6px;
-    max-width: 280px;
+    max-width: 260px;
   }
 
   .rsb-num {
-    font-size: 46px;
-    min-width: 60px;
+    font-size: 40px;
+    min-width: 52px;
   }
 
   .rsb-dash {
-    font-size: 20px;
-    margin-top: 12px;
+    font-size: 18px;
+    margin-top: 8px;
   }
 
   .result-label {
-    font-size: 15px;
-    padding: 4px 14px;
-    margin-top: 20px;
+    font-size: 14px;
+    padding: 3px 12px;
+    margin-top: 10px;
   }
 
   /* Hide CFG on mobile */
@@ -544,18 +544,18 @@
   .result-roster-header,
   .result-roster-row {
     grid-template-columns: 22px 1fr 32px 32px 32px 32px 38px;
-    padding: 6px 8px;
+    padding: 4px 8px;
     gap: 2px;
   }
 
   .result-roster-header {
-    padding: 5px 8px;
+    padding: 4px 8px;
     grid-template-columns: 22px 1fr 32px 32px 32px 32px 38px;
   }
 
   .result-team-totals {
     grid-template-columns: 22px 1fr 32px 32px 32px 32px 38px;
-    padding: 8px 8px;
+    padding: 6px 8px;
     gap: 2px;
   }
 
@@ -595,15 +595,15 @@
   }
 
   .rtg-grade {
-    font-size: 28px;
+    font-size: 24px;
   }
 
   .rtg-grade--num {
-    font-size: 22px;
+    font-size: 19px;
   }
 
   .rtg-item {
-    padding: 10px 2px;
+    padding: 7px 2px;
   }
 
   .btn-play-again,
