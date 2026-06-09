@@ -14,6 +14,7 @@ export default function App() {
   const [resetKey,    setResetKey]    = useState(0)
   const [showHeader,   setShowHeader]  = useState(true)
   const [champReached, setChampReached] = useState(false)
+  const [draftSubPhase, setDraftSubPhase] = useState('spin')
   const [darkMode,     setDarkMode]    = useState(() => localStorage.getItem('theme') === 'dark')
 
   useEffect(() => {
@@ -45,6 +46,7 @@ export default function App() {
     setResetKey(k => k + 1)
     setShowHeader(true)
     setChampReached(false)
+    setDraftSubPhase('spin')
   }
 
   function handleTournament() {
@@ -70,6 +72,7 @@ export default function App() {
             key={resetKey}
             onComplete={handleDraftComplete}
             onFirstSpinDone={() => setShowHeader(false)}
+            onSubPhase={setDraftSubPhase}
           />
         )}
 
@@ -113,7 +116,7 @@ export default function App() {
         <button className="btn-reset" onClick={handleReset}>↺ Start Over</button>
       )}
 
-      {onlineCount !== null && phase === 'draft' && showHeader && (
+      {onlineCount !== null && phase === 'draft' && draftSubPhase === 'spin' && (
         <div className="online-counter">
           <span className="online-dot" />
           {onlineCount + 4} playing

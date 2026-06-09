@@ -18,7 +18,7 @@ function getInitials(name) {
   return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
 }
 
-export default function DraftPhase({ onComplete, onFirstSpinDone }) {
+export default function DraftPhase({ onComplete, onFirstSpinDone, onSubPhase }) {
   const [lineup,        setLineup]        = useState({ PG: null, SG: null, SF: null, PF: null, C: null })
   const [focusedPlayer, setFocusedPlayer] = useState(null)
   const [pickNumber,    setPickNumber]    = useState(1)
@@ -77,6 +77,7 @@ export default function DraftPhase({ onComplete, onFirstSpinDone }) {
     setCurrentEra(era)
     setSubPhase('pool')
     setFocusedPlayer(null)
+    onSubPhase?.('pool')
     if (pickNumber === 1) onFirstSpinDone?.()
   }
 
@@ -97,6 +98,7 @@ export default function DraftPhase({ onComplete, onFirstSpinDone }) {
       setSubPhase('spin')
       setCurrentConf(null)
       setCurrentEra(null)
+      onSubPhase?.('spin')
     }
   }
 
