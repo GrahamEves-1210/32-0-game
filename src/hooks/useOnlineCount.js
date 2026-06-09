@@ -1,19 +1,16 @@
 import { useEffect, useState } from 'react'
 import supabase from '../lib/supabase'
 
-const USER_ID = crypto.randomUUID()
-
 export default function useOnlineCount() {
   const [count, setCount] = useState(null)
 
   useEffect(() => {
-    const channel = supabase.channel('online-users', {
-      config: { presence: { key: USER_ID } }
-    })
+    const channel = supabase.channel('online-users')
 
     channel
       .on('presence', { event: 'sync' }, () => {
-        setCount(Object.keys(channel.presenceState()).length)
+        const state = channel.presenceState()
+        setCount(Object.values(state).flat().length)
       })
       .subscribe(async (status) => {
         if (status === 'SUBSCRIBED') {
