@@ -51,19 +51,20 @@ const OPP_SEED_BY_ROUND = {
   8: [9,  [1,16], [4,5],  [2,3],  [1,2],  [1,2]],
 }
 
-// Calibrated lookup: each entry produces the exact target championship %
-// 32-0→75%, 31-1→55%, 30-2→38%, 29-3→25%, 28-4→15%, 27-5→8%, 26-6→4%, 25-7→2%
-const WINS_ELO = { 32:2400, 31:2265, 30:2173, 29:2104, 28:2038, 27:1973, 26:1918, 25:1868, 24:1810, 23:1755, 22:1700 }
-// matchPct (0–1) adds up to +120 ELO for team quality, pushing elite lineups toward 85%
+// Steeper drop-off: 32-0→60%, 30-2→32%, 28-4→10%, 26-6→3%
+// Later rounds much harder due to elevated top-seed ELOs
+const WINS_ELO = { 32:2400, 31:2230, 30:2110, 29:2020, 28:1940, 27:1865, 26:1800, 25:1742, 24:1685, 23:1630, 22:1575 }
+// matchPct (0–1) adds up to +100 ELO for team quality
 function winsToElo(wins, matchPct = 0) {
-  const base = WINS_ELO[wins] ?? Math.max(1200, Math.round(2400 - 135 * Math.pow(32 - wins, 0.707)))
-  return base + Math.round(matchPct * 120)
+  const base = WINS_ELO[wins] ?? Math.max(1200, Math.round(2400 - 150 * Math.pow(32 - wins, 0.75)))
+  return base + Math.round(matchPct * 100)
 }
 
+// Top seeds boosted — F4/Champ opponents are genuinely elite
 const SEED_ELO = {
-  1:2050, 2:1950, 3:1870, 4:1800, 5:1740,
-  6:1700, 7:1650, 8:1620, 9:1600, 10:1575,
-  11:1550, 12:1525, 13:1500, 14:1450, 15:1400, 16:1300,
+  1:2200, 2:2080, 3:1980, 4:1880, 5:1760,
+  6:1710, 7:1660, 8:1625, 9:1600, 10:1570,
+  11:1545, 12:1515, 13:1485, 14:1440, 15:1385, 16:1285,
 }
 
 function seedToElo(seed) {
@@ -92,13 +93,13 @@ function pickSeed(range) {
 }
 
 export function winsToSeed(wins) {
-  if (wins >= 30) return 1
-  if (wins >= 27) return 2
-  if (wins >= 25) return 3
-  if (wins >= 22) return 4
-  if (wins >= 19) return 5
-  if (wins >= 17) return 6
-  if (wins >= 15) return 7
+  if (wins >= 31) return 1
+  if (wins >= 28) return 2
+  if (wins >= 26) return 3
+  if (wins >= 24) return 4
+  if (wins >= 21) return 5
+  if (wins >= 19) return 6
+  if (wins >= 17) return 7
   return 8
 }
 
