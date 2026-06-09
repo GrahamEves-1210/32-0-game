@@ -8,6 +8,9 @@ function getGradeMultiplier(conferenceId) {
   return GRADE_MULTIPLIERS[conf?.grade] ?? 0.92
 }
 
+// Hand-tuned boosts for generational players whose C-conf multiplier undersells their true impact
+const EXCEPTION_BOOST = { 'stephen-curry': 10, 'ja-morant': 8 }
+
 // TS% scales PPG as a multiplier; spacing (3PM/g) rewards floor spacers who open the offense
 function playerScore(p) {
   const mult         = getGradeMultiplier(p.conference)
@@ -15,7 +18,8 @@ function playerScore(p) {
   const stocks       = ((p.spg ?? 0) + (p.bpg ?? 0)) * 2.6
   const tsMultiplier = (p.tspct ?? 0.55) / 0.55
   const spacing      = (p.tpm ?? 0) * 1.1
-  return (p.ppg * 1.15 * tsMultiplier + p.apg * 1.5 + p.rpg * 0.6 + stocks + spacing) * mult + scoringBonus
+  const exceptionBoost = EXCEPTION_BOOST[p.id] ?? 0
+  return (p.ppg * 1.15 * tsMultiplier + p.apg * 1.5 + p.rpg * 0.6 + stocks + spacing) * mult + scoringBonus + exceptionBoost
 }
 
 let _cache = null // invalidated when playerScore formula changes
