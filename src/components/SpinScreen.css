@@ -360,8 +360,8 @@
 
 @media (max-width: 520px) {
   .spin-screen {
-    gap: 20px;
-    padding: 12px 0 32px;
+    gap: 14px;
+    padding: 8px 0 20px;
   }
 
   .reels-row {

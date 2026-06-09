@@ -270,20 +270,25 @@
 
 @media (max-width: 480px) {
   .app {
-    padding: 0 10px 60px;
+    padding: 0 10px 80px;
   }
 
   .app-header {
-    padding: 20px 0 16px;
+    padding: 10px 0 8px;
+  }
+
+  .app-header-divider {
+    margin: 8px 0;
   }
 
   .app-logo {
-    font-size: 52px;
+    font-size: 44px;
     letter-spacing: -1px;
   }
 
   .app-subtitle {
-    font-size: 11px;
+    font-size: 10px;
+    margin-top: 3px;
   }
 
   .btn-reset {

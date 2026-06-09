@@ -359,30 +359,38 @@
 }
 
 @media (max-width: 480px) {
+  .draft-phase--chrome {
+    padding-top: calc(100px + env(safe-area-inset-top));
+  }
+
   .draft-phase-header {
-    gap: 10px;
-    margin-bottom: 14px;
+    gap: 6px;
+    padding: 6px 12px;
   }
 
   .pick-dot {
-    width: 60px;
-    height: 60px;
+    width: 38px;
+    height: 38px;
   }
 
   .pick-dot-pos {
-    font-size: 14px;
+    font-size: 11px;
   }
 
   .pick-dot-initials {
-    font-size: 14px;
+    font-size: 11px;
   }
 
   .pick-tracker {
-    gap: 6px;
+    gap: 4px;
+  }
+
+  .pick-label {
+    font-size: 11px;
   }
 
   .draft-badge {
-    font-size: 12px;
-    padding: 4px 10px;
+    font-size: 11px;
+    padding: 3px 8px;
   }
 }
