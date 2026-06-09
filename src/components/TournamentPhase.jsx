@@ -314,9 +314,6 @@ export default function TournamentPhase({ wins, matchPct = 0, lineup = [], onRes
         <div className="tourney-outcome tourney-outcome--out">
           <div className="to-title">Eliminated</div>
           <div className="to-sub">{lastGame.roundName} · Lost to {lastGame.opp.name} ({lastGame.opp.seed} seed)</div>
-          <div className="to-record">
-            {results.games.filter(g => g.playerWins).length}W – 1L in the tournament
-          </div>
           <button className="btn-play-again btn-tourney-reset" onClick={onReset}>↺ Play Again</button>
         </div>
       </div>
@@ -520,16 +517,44 @@ export default function TournamentPhase({ wins, matchPct = 0, lineup = [], onRes
         )}
       </div>
 
-      {gameIdx > 0 && (
-        <div className="tourney-history">
-          {results.games.slice(0, gameIdx).map((g, i) => (
-            <div key={i} className={`th-row ${g.playerWins ? 'th-row--win' : 'th-row--loss'}`}>
-              <span className="th-round">{g.roundName}</span>
-              <span className="th-score">
-                {g.playerWins ? '✓' : '✗'} {g.playerScore}–{g.oppScore} {g.opp.name}
-              </span>
+      {lineup.length > 0 && (
+        <div className="tourney-roster-panel">
+          <div className="result-roster">
+            <div className="result-roster-header">
+              <span>Player</span>
+              <span className="rr-stat-head rr-cfg-head">CFG</span>
+              <span className="rr-stat-head">PPG</span>
+              <span className="rr-stat-head">RPG</span>
+              <span className="rr-stat-head">APG</span>
+              <span className="rr-stat-head">S+B</span>
+              <span className="rr-stat-head rr-ts-head">TS%</span>
             </div>
-          ))}
+            {POSITIONS.map((pos, i) => {
+              const p = lineup[i]
+              if (!p) return null
+              const sc    = getSchoolColor(p.school)
+              const grade = getGrade(p.conference)
+              const gc    = getGradeColor(grade)
+              return (
+                <div key={pos} className="result-roster-row" style={{ background:
+                  grade === 'A' ? 'color-mix(in srgb, #a8c8ff 35%, var(--surface2))'
+                : grade === 'B' ? 'color-mix(in srgb, #86efac 30%, var(--surface2))'
+                : 'color-mix(in srgb, #fde68a 55%, var(--surface2))' }}>
+                  <span className="rr-pos" style={{ color: POS_COLOR[pos] }}>{pos}</span>
+                  <div className="rr-player">
+                    <span className="rr-name">{p.name}</span>
+                    <span className="rr-school" style={{ color: sc || 'var(--text-muted)' }}>{p.school}</span>
+                  </div>
+                  <span className="rr-cfg-val" style={{ color: gc }}>{grade}</span>
+                  <span className="rr-stat">{p.ppg.toFixed(1)}</span>
+                  <span className="rr-stat">{p.rpg.toFixed(1)}</span>
+                  <span className="rr-stat">{p.apg.toFixed(1)}</span>
+                  <span className="rr-stat">{((p.spg ?? 0) + (p.bpg ?? 0)).toFixed(1)}</span>
+                  <span className="rr-stat rr-ts">{p.tspct ? (p.tspct * 100).toFixed(1) : '—'}</span>
+                </div>
+              )
+            })}
+          </div>
         </div>
       )}
     </div>

@@ -393,6 +393,12 @@
   animation: fade-up 0.3s ease;
 }
 
+/* ── Roster panel (replaces history strip) ── */
+.tourney-roster-panel {
+  width: 100%;
+  animation: fade-up 0.25s ease;
+}
+
 /* ── History strip ── */
 .tourney-history {
   width: 100%;
@@ -572,7 +578,7 @@
   letter-spacing: 0.08em;
 }
 
-.to-sub    { font-size: 14px; color: var(--text-muted); }
+.to-sub    { font-size: 17px; color: var(--text-muted); }
 .to-record { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700; color: var(--text-dim); margin: 4px 0; }
 
 .btn-tourney-reset {
