@@ -20,7 +20,7 @@ export default function WinResult({ lineup, onReset, onTournament }) {
   const finalWins  = calculateWins(lineup)
   const label      = getWinLabel(finalWins)
   const matchPct   = getMatchPercentage(lineup)
-  const statsOn    = localStorage.getItem('showStats') === 'true'
+  const statsOn    = localStorage.getItem('showStats') !== 'false'
   const spacing    = getSpacingGrade(lineup)
   const confDiff   = getConferenceDifficultyGrade(lineup)
   const offRating  = getOffensiveRating(lineup)

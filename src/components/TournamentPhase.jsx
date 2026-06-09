@@ -247,7 +247,7 @@ export default function TournamentPhase({ wins, matchPct = 0, lineup = [], onRes
     const confDiff  = getConferenceDifficultyGrade(lineup)
     const offRating = getOffensiveRating(lineup)
     const defRating = getDefensiveRating(lineup)
-    const statsOn   = localStorage.getItem('showStats') === 'true'
+    const statsOn   = localStorage.getItem('showStats') !== 'false'
     const losses    = 32 - wins
     const totalPPG  = lineup.reduce((s, p) => s + (p?.ppg ?? 0), 0)
     const totalRPG  = lineup.reduce((s, p) => s + (p?.rpg ?? 0), 0)
