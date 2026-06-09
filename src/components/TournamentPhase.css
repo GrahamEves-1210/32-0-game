@@ -8,6 +8,7 @@
   margin: 0 auto;
   animation: fade-up 0.4s ease;
   position: relative;
+  overflow-anchor: none;
 }
 
 /* ── Seeding screen ── */
@@ -61,6 +62,130 @@
   color: var(--text-muted);
 }
 
+/* ── Full bracket graphic ── */
+.mm-bracket-full {
+  width: 100%;
+  padding: 0 6px;
+}
+
+/* ── NCAA Tournament header ── */
+.mm-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  padding: 8px 0 4px;
+  width: 100%;
+}
+
+/* bracket row */
+.mm-bracket {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 340px;
+}
+
+.mm-bracket-step {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.mm-bracket-node {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  letter-spacing: 0;
+  transition: all 0.2s;
+}
+
+.mm-bracket-node--done {
+  background: var(--orange);
+  border-color: var(--orange);
+  color: #fff;
+}
+
+.mm-bracket-node--active {
+  background: var(--surface);
+  border-color: var(--orange);
+  color: var(--orange);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--orange) 25%, transparent);
+  animation: node-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes node-pulse {
+  0%, 100% { box-shadow: 0 0 0 3px color-mix(in srgb, var(--orange) 25%, transparent); }
+  50%       { box-shadow: 0 0 0 5px color-mix(in srgb, var(--orange) 10%, transparent); }
+}
+
+.mm-bracket-line {
+  flex: 1;
+  height: 2px;
+  background: var(--border);
+  transition: background 0.2s;
+}
+
+.mm-bracket-line--done {
+  background: var(--orange);
+}
+
+/* wordmark */
+.mm-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+.mm-logo-left {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 0.2em;
+  color: #fff;
+  background: #005eb8;
+  padding: 2px 10px 2px 10px;
+  border-radius: 3px 0 0 3px;
+  clip-path: polygon(0 0, calc(100% - 5px) 0, 100% 50%, calc(100% - 5px) 100%, 0 100%);
+  padding-right: 14px;
+}
+
+.mm-logo-right {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 0.2em;
+  color: #fff;
+  background: #c94b00;
+  padding: 2px 10px 2px 14px;
+  border-radius: 0 3px 3px 0;
+  clip-path: polygon(5px 0, 100% 0, 100% 100%, 5px 100%, 0 50%);
+  margin-left: -1px;
+}
+
+.mm-logo-ball {
+  font-size: 13px;
+  margin-left: 6px;
+  line-height: 1;
+}
+
 /* ── Game card ── */
 .tourney-game-card {
   width: 100%;
@@ -72,6 +197,7 @@
   flex-direction: column;
   align-items: center;
   gap: 0;
+  position: relative;
 }
 
 .tgc-round {
@@ -229,7 +355,10 @@
 }
 
 .tgc-round-popup {
-  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
   padding: 14px 20px;
   background: var(--orange);
   color: #fff;
@@ -240,6 +369,7 @@
   text-transform: uppercase;
   text-align: center;
   animation: pop-in 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 5;
 }
 
 .btn-tourney-action {
@@ -269,6 +399,7 @@
   border: 1.5px solid var(--border);
   border-radius: var(--radius-sm);
   overflow: hidden;
+  animation: fade-up 0.25s ease;
 }
 
 .th-row {
@@ -565,12 +696,17 @@
 
 @media (max-width: 768px) {
   .tourney-wrap {
-    padding: 16px 12px 24px;
+    padding: 40px 12px 24px;
     height: 100svh;
     max-height: 100svh;
     overflow: hidden;
-    justify-content: center;
+    justify-content: flex-start;
   }
+  .tourney-wrap--seeding {
+    justify-content: center;
+    padding-top: 16px;
+  }
+
   .tourney-wrap--champ {
     justify-content: flex-start;
     padding-top: 0;

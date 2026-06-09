@@ -99,6 +99,55 @@ function buildTimeline(pScore, oScore) {
   return pPadded.map((pd, i) => [pd, oPadded[i]])
 }
 
+function BracketSVG({ gameIdx }) {
+  const sw = 18, sh = 5, lw = 1.5
+  const lcx  = [0, 28, 56, 84]
+  const rcx  = [262, 234, 206, 178]
+  const chX  = 131
+  // R64 slot y-positions and derived midpoints
+  const y64  = [5, 19, 43, 57]
+  const pm1  = 14.5, pm2 = 52.5, rm = 33.5, cy = 31
+
+  const c = ri => gameIdx >= ri ? '#f97316' : 'var(--border)'
+  const S = (x, y, ri) => <rect x={x} y={y} width={sw} height={sh} rx={1} fill="none" stroke={c(ri)} strokeWidth={lw} />
+  const L = (x1,y1,x2,y2,ri) => <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={c(ri)} strokeWidth={lw} />
+
+  return (
+    <svg viewBox="0 0 280 68" width="100%" style={{display:'block'}} aria-hidden="true">
+      {/* ── LEFT SIDE ── */}
+      {y64.map((y, i) => <rect key={`ll${i}`} x={lcx[0]} y={y} width={sw} height={sh} rx={1} fill="none" stroke={c(0)} strokeWidth={lw} />)}
+      {L(lcx[0]+sw, 7.5,  lcx[0]+sw, 21.5, 0)}
+      {L(lcx[0]+sw, 45.5, lcx[0]+sw, 59.5, 0)}
+      {L(lcx[0]+sw, pm1,  lcx[1],    pm1,  1)}
+      {L(lcx[0]+sw, pm2,  lcx[1],    pm2,  1)}
+      {S(lcx[1], pm1-sh/2, 1)}{S(lcx[1], pm2-sh/2, 1)}
+      {L(lcx[1]+sw, pm1,  lcx[1]+sw, pm2,  1)}
+      {L(lcx[1]+sw, rm,   lcx[2],    rm,   2)}
+      {S(lcx[2], cy, 2)}
+      {L(lcx[2]+sw, rm,   lcx[3],    rm,   3)}
+      {S(lcx[3], cy, 3)}
+      {L(lcx[3]+sw, rm,   chX,       rm,   4)}
+
+      {/* ── CHAMPIONSHIP ── */}
+      {S(chX, cy, 5)}
+
+      {/* ── RIGHT SIDE ── */}
+      {y64.map((y, i) => <rect key={`rl${i}`} x={rcx[0]} y={y} width={sw} height={sh} rx={1} fill="none" stroke={c(0)} strokeWidth={lw} />)}
+      {L(rcx[0], 7.5,  rcx[0], 21.5, 0)}
+      {L(rcx[0], 45.5, rcx[0], 59.5, 0)}
+      {L(rcx[0],    pm1, rcx[1]+sw, pm1, 1)}
+      {L(rcx[0],    pm2, rcx[1]+sw, pm2, 1)}
+      {S(rcx[1], pm1-sh/2, 1)}{S(rcx[1], pm2-sh/2, 1)}
+      {L(rcx[1],    pm1,  rcx[1],    pm2,       1)}
+      {L(rcx[1],    rm,   rcx[2]+sw, rm,        2)}
+      {S(rcx[2], cy, 2)}
+      {L(rcx[2],    rm,   rcx[3]+sw, rm,        3)}
+      {S(rcx[3], cy, 3)}
+      {L(rcx[3],    rm,   chX+sw,    rm,        4)}
+    </svg>
+  )
+}
+
 const POSITIONS   = ['PG', 'SG', 'SF', 'PF', 'C']
 const POS_COLOR   = { PG: '#3b82f6', SG: '#8b5cf6', SF: '#16a34a', PF: '#f59e0b', C: '#ef4444' }
 const GRADE_COLOR = { A: '#22c55e', B: '#38B6E8', C: '#f59e0b', D: '#f97316', F: '#d93030', '?': '#888' }
@@ -209,7 +258,7 @@ export default function TournamentPhase({ wins, matchPct = 0, lineup = [], onRes
 
   /* ── Seeding screen ── */
   if (phase === PHASE.SEEDING) return (
-    <div className="tourney-wrap">
+    <div className="tourney-wrap tourney-wrap--seeding">
       <div className="tourney-seeding">
         <div className="ts-badge">NCAA Tournament</div>
         <div className="ts-seed-line">
@@ -373,6 +422,26 @@ export default function TournamentPhase({ wins, matchPct = 0, lineup = [], onRes
 
   return (
     <div className="tourney-wrap">
+      <div className="mm-header" aria-hidden="true">
+        <div className="mm-bracket-full">
+          <BracketSVG gameIdx={gameIdx} />
+        </div>
+        <div className="mm-bracket">
+          {['64','32','16','8','4','🏆'].map((label, i) => (
+            <div key={i} className="mm-bracket-step">
+              <div className={`mm-bracket-node ${i < gameIdx ? 'mm-bracket-node--done' : i === gameIdx ? 'mm-bracket-node--active' : ''}`}>
+                {label}
+              </div>
+              {i < 5 && <div className={`mm-bracket-line ${i < gameIdx ? 'mm-bracket-line--done' : ''}`} />}
+            </div>
+          ))}
+        </div>
+        <div className="mm-logo">
+          <span className="mm-logo-left">NCAA</span>
+          <span className="mm-logo-right">TOURNAMENT</span>
+          <span className="mm-logo-ball">🏀</span>
+        </div>
+      </div>
       <div className="tourney-game-card">
         <div className="tgc-round">{game?.roundName}</div>
 

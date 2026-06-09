@@ -2,15 +2,60 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>32-0 Game — College Basketball Draft</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#cfe0f5" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)"  content="#0d1f4e" />
+    <title>32-0 Game — Build the Perfect College Basketball Lineup</title>
+
+    <!-- Primary meta -->
+    <meta name="description" content="Draft the ultimate men's college basketball lineup and see if your team can go 32-0. Pick five players across eras and conferences, then simulate the NCAA Tournament. Inspired by the 82-0 game." />
+    <meta name="keywords" content="college basketball game, NCAA basketball draft, 32-0 game, basketball lineup builder, march madness simulator, 82-0 game" />
+    <meta name="author" content="32-0game.com" />
+    <link rel="canonical" href="https://www.32-0game.com/" />
+
+    <!-- Open Graph (Facebook, Discord, etc.) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.32-0game.com/" />
+    <meta property="og:title" content="32-0 Game — Build the Perfect College Basketball Lineup" />
+    <meta property="og:description" content="Draft five college basketball legends across any era or conference and find out if your squad can go 32-0. Inspired by the 82-0 game." />
+    <meta property="og:image" content="https://www.32-0game.com/android-chrome-512x512.png" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:url" content="https://www.32-0game.com/" />
+    <meta name="twitter:title" content="32-0 Game — Build the Perfect College Basketball Lineup" />
+    <meta name="twitter:description" content="Draft five college basketball legends across any era or conference and find out if your squad can go 32-0. Inspired by the 82-0 game." />
+    <meta name="twitter:image" content="https://www.32-0game.com/android-chrome-512x512.png" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <script type="module" crossorigin src="/assets/index-0e2a7bd6.js"></script>
-    <link rel="stylesheet" href="/assets/index-d8a93eca.css">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Nunito:wght@400;500;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet" />
+    <script type="module" crossorigin src="/assets/index-b68d4072.js"></script>
+    <link rel="stylesheet" href="/assets/index-62f44453.css">
   </head>
   <body>
+    <svg style="display:none">
+      <filter id="grain-filter" x="0%" y="0%" width="100%" height="100%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise"/>
+        <feColorMatrix type="saturate" values="0" in="noise"/>
+        <feComponentTransfer>
+          <feFuncR type="linear" slope="2" intercept="-0.5"/>
+          <feFuncG type="linear" slope="2" intercept="-0.5"/>
+          <feFuncB type="linear" slope="2" intercept="-0.5"/>
+        </feComponentTransfer>
+      </filter>
+    </svg>
+    <div id="grain-overlay" style="
+      position:fixed;inset:0;z-index:9999;pointer-events:none;
+      width:100%;height:100%;
+      background:white;
+      filter:url(#grain-filter);
+      opacity:0.07;
+    "></div>
     <div id="root"></div>
     
   </body>
