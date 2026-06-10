@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import useOnlineCount from './hooks/useOnlineCount'
 import DraftPhase from './components/DraftPhase'
 import WinResult from './components/WinResult'
 import TournamentPhase from './components/TournamentPhase'
@@ -87,7 +86,6 @@ export default function App() {
     setPhase('tournament')
   }
 
-  const onlineCount = useOnlineCount()
   const lineupArray = finalLineup ? Object.values(finalLineup).filter(Boolean) : []
 
   if (showLeaderboard) return (
@@ -159,12 +157,6 @@ export default function App() {
         <button className="btn-reset" onClick={handleReset}>↺ Start Over</button>
       )}
 
-      {onlineCount !== null && phase === 'draft' && draftSubPhase === 'spin' && (
-        <div className="online-counter">
-          <span className="online-dot" />
-          {onlineCount + 200} playing
-        </div>
-      )}
 
       {showHeader && (
         <footer className="app-footer">

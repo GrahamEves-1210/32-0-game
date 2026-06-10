@@ -31,6 +31,7 @@ export default function DraftPhase({ onComplete, onFirstSpinDone, onSubPhase }) 
   const [eraRerolls,    setEraRerolls]    = useState(1)
   const [spinLockedConf, setSpinLockedConf] = useState(null)
   const [spinLockedEra,  setSpinLockedEra]  = useState(null)
+  const [swapFrom,       setSwapFrom]       = useState(null)
   const hoverTimer  = useRef(null)
   const closeTimer  = useRef(null)
 
@@ -124,6 +125,14 @@ export default function DraftPhase({ onComplete, onFirstSpinDone, onSubPhase }) 
     }
   }
 
+  function handleSwap(targetPos) {
+    if (!swapFrom) return
+    const player = lineup[swapFrom]
+    setLineup(prev => ({ ...prev, [swapFrom]: null, [targetPos]: player }))
+    setSwapFrom(null)
+    setExpandedPos(null)
+  }
+
   function handleRespin() {
     clearTimeout(hoverTimer.current)
     clearTimeout(closeTimer.current)
@@ -142,6 +151,7 @@ export default function DraftPhase({ onComplete, onFirstSpinDone, onSubPhase }) 
       onClick={() => {
         if (focusedPlayer) setFocusedPlayer(null)
         if (expandedPos) setExpandedPos(null)
+        if (swapFrom) setSwapFrom(null)
       }}
     >
 
@@ -152,30 +162,49 @@ export default function DraftPhase({ onComplete, onFirstSpinDone, onSubPhase }) 
             <span className="pick-label">{`Pick ${pickNumber} of 5`}</span>
             <div className="pick-tracker">
               {POSITIONS.map(pos => {
-                const player    = lineup[pos]
-                const done      = player !== null
-                const available = !done && focusedPlayer?.positions.includes(pos)
-                const isOpen    = expandedPos === pos
+                const player     = lineup[pos]
+                const done       = player !== null
+                const swapping   = swapFrom === pos
+                const swapTarget = swapFrom !== null && !done && lineup[swapFrom]?.positions.includes(pos)
+                const available  = !swapFrom && !done && focusedPlayer?.positions.includes(pos)
+                const isOpen     = expandedPos === pos && !swapFrom
+
+                function handleDotClick(e) {
+                  e.stopPropagation()
+                  if (swapTarget) {
+                    handleSwap(pos)
+                  } else if (done) {
+                    clearTimeout(hoverTimer.current)
+                    clearTimeout(closeTimer.current)
+                    setExpandedPos(null)
+                    if (swapping) {
+                      setSwapFrom(null)
+                    } else {
+                      setSwapFrom(pos)
+                      setFocusedPlayer(null)
+                    }
+                  } else if (available) {
+                    e.currentTarget.blur()
+                    handleSlotFill(pos, focusedPlayer)
+                  }
+                }
+
                 return (
                   <div
                     key={pos}
                     className={[
                       'pick-dot',
-                      done      ? 'pick-dot--done'      : '',
-                      available ? 'pick-dot--available' : '',
-                      isOpen    ? 'pick-dot--open'      : '',
+                      done       ? 'pick-dot--done'        : '',
+                      swapping   ? 'pick-dot--swapping'    : '',
+                      swapTarget ? 'pick-dot--swap-target' : '',
+                      available  ? 'pick-dot--available'   : '',
+                      isOpen     ? 'pick-dot--open'        : '',
                     ].join(' ')}
                     title={done ? '' : pos}
-                    onClick={
-                      done
-                        ? (e) => { e.stopPropagation(); clearTimeout(hoverTimer.current); clearTimeout(closeTimer.current); setExpandedPos(p => p === pos ? null : pos) }
-                        : available
-                          ? (e) => { e.currentTarget.blur(); handleSlotFill(pos, focusedPlayer) }
-                          : undefined
-                    }
-                    onMouseEnter={done ? () => handleDotMouseEnter(pos) : undefined}
-                    onMouseLeave={done ? handleDotMouseLeave : undefined}
-                    style={done || available ? { cursor: 'pointer' } : {}}
+                    onClick={handleDotClick}
+                    onMouseEnter={done && !swapFrom ? () => handleDotMouseEnter(pos) : undefined}
+                    onMouseLeave={done && !swapFrom ? handleDotMouseLeave : undefined}
+                    style={done || available || swapTarget ? { cursor: 'pointer' } : {}}
                   >
                     {done
                       ? <span className="pick-dot-initials">{getInitials(player.name)}</span>

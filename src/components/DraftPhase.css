@@ -106,6 +106,35 @@
   50%       { box-shadow: 0 0 0 6px rgba(224, 168, 0, 0); }
 }
 
+.pick-dot--swapping {
+  border-color: #38B6E8;
+  background: color-mix(in srgb, #38B6E8 22%, var(--surface2));
+  box-shadow: 0 0 0 2px #38B6E8;
+}
+
+.pick-dot--swap-target {
+  border-color: #4ade80;
+  background: color-mix(in srgb, #4ade80 25%, var(--surface2));
+  animation: swap-pulse 1s ease-in-out infinite;
+}
+
+.pick-dot--swap-target:active {
+  transform: scale(0.92);
+}
+
+@keyframes swap-pulse {
+  0%, 100% { box-shadow: 0 0 0 0   rgba(74, 222, 128, 0.6); }
+  50%       { box-shadow: 0 0 0 6px rgba(74, 222, 128, 0); }
+}
+
+[data-theme="dark"] .pick-dot--swapping {
+  background: color-mix(in srgb, #38B6E8 28%, #2e50a0);
+}
+
+[data-theme="dark"] .pick-dot--swap-target {
+  background: color-mix(in srgb, #4ade80 28%, #2e50a0);
+}
+
 [data-theme="dark"] .pick-dot {
   background: #253f8a;
   border-color: #4060b0;
