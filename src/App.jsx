@@ -20,8 +20,9 @@ export default function App() {
   const [draftSubPhase, setDraftSubPhase] = useState('spin')
   const [darkMode,       setDarkMode]       = useState(() => localStorage.getItem('theme') === 'dark')
   const [showLeaderboard, setShowLeaderboard] = useState(false)
-  const [pendingScore,    setPendingScore]    = useState(null)   // { score, wonChampionship }
+  const [pendingScore,    setPendingScore]    = useState(null)   // { score, wonChampionship, statsOn }
   const [showPrompt,      setShowPrompt]      = useState(false)
+  const [statsOn,         setStatsOn]         = useState(true)
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light')
@@ -41,24 +42,25 @@ export default function App() {
     }
   }, [phase])
 
-  function handleDraftComplete(lineup) {
+  function handleDraftComplete(lineup, showStats) {
     setFinalLineup(lineup)
+    setStatsOn(showStats)
     setPhase('result')
   }
 
   async function handleGameEnd(wonChampionship) {
     const lineup = finalLineup ? Object.values(finalLineup).filter(Boolean) : []
     const score  = getMatchPercentage(lineup)
-    setPendingScore({ score, wonChampionship })
+    setPendingScore({ score, wonChampionship, statsOn })
     try {
-      const qualified = await isTopTen(score, wonChampionship)
+      const qualified = await isTopTen(score, wonChampionship, statsOn)
       if (qualified) setShowPrompt(true)
     } catch (_) { /* silently skip prompt on network error */ }
   }
 
   async function handleUsernameSubmit(username) {
     if (pendingScore) {
-      await submitScore({ username, score: pendingScore.score, won_championship: pendingScore.wonChampionship })
+      await submitScore({ username, score: pendingScore.score, won_championship: pendingScore.wonChampionship, stats_on: pendingScore.statsOn })
     }
     setShowPrompt(false)
     setPendingScore(null)
@@ -78,6 +80,7 @@ export default function App() {
     setDraftSubPhase('spin')
     setShowPrompt(false)
     setPendingScore(null)
+    setStatsOn(true)
   }
 
   function handleTournament() {

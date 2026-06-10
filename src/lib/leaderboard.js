@@ -1,19 +1,21 @@
 import supabase from './supabase'
 
-export async function fetchTop10() {
+export async function fetchTop10(statsOn = true) {
   const { data } = await supabase
     .from('leaderboard')
     .select('username, score, won_championship, created_at')
+    .eq('stats_on', statsOn)
     .order('won_championship', { ascending: false })
     .order('score', { ascending: false })
     .limit(10)
   return data ?? []
 }
 
-export async function isTopTen(score, wonChampionship) {
+export async function isTopTen(score, wonChampionship, statsOn = true) {
   const { data } = await supabase
     .from('leaderboard')
     .select('score, won_championship')
+    .eq('stats_on', statsOn)
     .order('won_championship', { ascending: false })
     .order('score', { ascending: false })
     .limit(10)
@@ -24,6 +26,6 @@ export async function isTopTen(score, wonChampionship) {
   return score >= tenth.score
 }
 
-export async function submitScore({ username, score, won_championship }) {
-  await supabase.from('leaderboard').insert({ username, score, won_championship })
+export async function submitScore({ username, score, won_championship, stats_on }) {
+  await supabase.from('leaderboard').insert({ username, score, won_championship, stats_on })
 }

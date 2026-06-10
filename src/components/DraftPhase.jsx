@@ -114,7 +114,7 @@ export default function DraftPhase({ onComplete, onFirstSpinDone, onSubPhase }) 
     document.body.scrollTop = 0
 
     if (pickNumber >= 5) {
-      onComplete(newLineup)
+      onComplete(newLineup, showStats)
     } else {
       setPickNumber(prev => prev + 1)
       setSubPhase('spin')
