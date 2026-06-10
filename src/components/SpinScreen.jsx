@@ -61,27 +61,29 @@ function pickValidCombo(conferences, eras) {
   return { ci: conferences.indexOf(last.conf), ei: eras.indexOf(last.era) }
 }
 
-function pickReroll(conferences, eras, lockedConf, lockedEra) {
+function pickReroll(conferences, eras, lockedConf, lockedEra, excludeConf, excludeEra) {
   if (lockedConf) {
-    const validEras = eras.filter(e => !EMPTY_COMBOS.has(`${lockedConf.id}|${e.id}`))
-    const era = validEras[Math.floor(Math.random() * validEras.length)] ?? eras[0]
+    const validEras = eras.filter(e => !EMPTY_COMBOS.has(`${lockedConf.id}|${e.id}`) && e.id !== excludeEra?.id)
+    const pool = validEras.length > 0 ? validEras : eras.filter(e => !EMPTY_COMBOS.has(`${lockedConf.id}|${e.id}`))
+    const era = pool[Math.floor(Math.random() * pool.length)] ?? eras[0]
     return { ci: conferences.indexOf(lockedConf), ei: eras.indexOf(era) }
   }
   if (lockedEra) {
-    const validConfs = conferences.filter(c => !EMPTY_COMBOS.has(`${c.id}|${lockedEra.id}`))
-    const weights = validConfs.map(c => COMBO_BOOSTS[`${c.id}|${lockedEra.id}`] ?? GRADE_WEIGHTS[c.grade] ?? 1)
+    const validConfs = conferences.filter(c => !EMPTY_COMBOS.has(`${c.id}|${lockedEra.id}`) && c.id !== excludeConf?.id)
+    const pool = validConfs.length > 0 ? validConfs : conferences.filter(c => !EMPTY_COMBOS.has(`${c.id}|${lockedEra.id}`))
+    const weights = pool.map(c => COMBO_BOOSTS[`${c.id}|${lockedEra.id}`] ?? GRADE_WEIGHTS[c.grade] ?? 1)
     const total = weights.reduce((s, w) => s + w, 0)
     let r = Math.random() * total
-    for (let i = 0; i < validConfs.length; i++) {
+    for (let i = 0; i < pool.length; i++) {
       r -= weights[i]
-      if (r <= 0) return { ci: conferences.indexOf(validConfs[i]), ei: eras.indexOf(lockedEra) }
+      if (r <= 0) return { ci: conferences.indexOf(pool[i]), ei: eras.indexOf(lockedEra) }
     }
-    return { ci: conferences.indexOf(validConfs[validConfs.length - 1]), ei: eras.indexOf(lockedEra) }
+    return { ci: conferences.indexOf(pool[pool.length - 1]), ei: eras.indexOf(lockedEra) }
   }
   return pickValidCombo(conferences, eras)
 }
 
-export default function SpinScreen({ conferences, eras, onChoose, lockedConf = null, lockedEra = null }) {
+export default function SpinScreen({ conferences, eras, onChoose, lockedConf = null, lockedEra = null, excludeConf = null, excludeEra = null }) {
   const isReroll = lockedConf != null || lockedEra != null
   const [spinning, setSpinning] = useState(isReroll)
   const [confIdx,  setConfIdx]  = useState(() => lockedConf ? conferences.indexOf(lockedConf) : 0)
@@ -104,7 +106,7 @@ export default function SpinScreen({ conferences, eras, onChoose, lockedConf = n
       setTick(t => t + 1)
     }, 80)
     stopTimerRef.current = setTimeout(() => {
-      const { ci: finalConf, ei: finalEra } = pickReroll(conferences, eras, lockedConf, lockedEra)
+      const { ci: finalConf, ei: finalEra } = pickReroll(conferences, eras, lockedConf, lockedEra, excludeConf, excludeEra)
       clearInterval(intervalRef.current)
       setConfIdx(finalConf)
       setEraIdx(finalEra)

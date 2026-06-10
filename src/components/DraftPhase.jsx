@@ -237,6 +237,8 @@ export default function DraftPhase({ onComplete, onFirstSpinDone, onSubPhase }) 
                 onChoose={handleSpinDone}
                 lockedConf={spinLockedConf}
                 lockedEra={spinLockedEra}
+                excludeConf={spinLockedEra ? currentConf : null}
+                excludeEra={spinLockedConf ? currentEra : null}
               />
             </>
           )}
