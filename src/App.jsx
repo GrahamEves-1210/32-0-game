@@ -159,7 +159,7 @@ export default function App() {
       {onlineCount !== null && phase === 'draft' && draftSubPhase === 'spin' && (
         <div className="online-counter">
           <span className="online-dot" />
-          {onlineCount + 4} playing
+          {onlineCount + 200} playing
         </div>
       )}
 
