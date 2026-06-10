@@ -49,8 +49,8 @@ export function calculateWins(lineup) {
   const { perfectScore } = getBenchmarks()
   // Scale benchmark to 85% — the true perfect requires an impossible assembly;
   // this lets elite realistic lineups reach 30-32 rather than clustering at 28.
-  const ratio = Math.min(1, Math.max(0, teamScore / (perfectScore * 0.78)))
-  const raw   = Math.pow(ratio, 0.50)
+  const ratio = Math.min(1, Math.max(0, teamScore / (perfectScore * 0.83)))
+  const raw   = Math.pow(ratio, 0.52)
   return Math.max(0, Math.round((raw - 0.22) / 0.78 * 32))
 }
 
