@@ -270,7 +270,7 @@ export default function DraftPhase({ onComplete, onFirstSpinDone, onSubPhase }) 
                   className="btn-reroll"
                   disabled={eraRerolls === 0}
                   onClick={handleRerollEra}
-                  style={{ '--reroll-color': '#38B6E8' }}
+                  style={{ '--reroll-color': '#0ea5e9' }}
                 >
                   ↺ Era {eraRerolls > 0 ? `(${eraRerolls})` : '(0)'}
                 </button>
