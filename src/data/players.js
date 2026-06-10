@@ -1638,7 +1638,7 @@ export const ALL_PLAYERS = [
   p('malik-monk','Malik Monk','Kentucky','sec','era3',2017,19.8,2.5,2.3,0.9,0.5,0.592,2.7,["SG","SF"]),
   p('breein-tyree','Breein Tyree','Ole Miss','sec','era3',2020,19.7,3.7,2.5,1.3,0.1,0.559,2.1,["SG","SF"]),
   p('yante-maten','Yante Maten','Georgia','sec','era3',2018,19.3,8.6,1.5,0.5,1.5,0.576,0.9,["PF","C"]),
-  p('ben-simmons','Ben Simmons','LSU','sec','era3',2016,19.2,11.8,4.8,2,0.8,0.612,0,["PF","C"]),
+  p('ben-simmons','Ben Simmons','LSU','sec','era3',2016,19.2,11.8,4.8,2,0.8,0.612,0,["PG","SG","SF","PF"]),
   p('collin-sexton','Collin Sexton','Alabama','sec','era3',2018,19.2,3.8,3.6,0.8,0.1,0.576,1.3,["PG","SG"]),
   p('anthony-edwards','Anthony Edwards','Georgia','sec','era3',2020,19.1,5.2,2.8,1.3,0.6,0.526,2.3,["SF"]),
   p('j-j-frazier','J.J. Frazier','Georgia','sec','era3',2017,18.8,3.8,4.1,1.9,0.1,0.549,1.6,["PG","SG"]),
