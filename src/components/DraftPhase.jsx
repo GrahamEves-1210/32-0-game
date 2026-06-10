@@ -27,6 +27,10 @@ export default function DraftPhase({ onComplete, onFirstSpinDone, onSubPhase }) 
   const [currentEra,    setCurrentEra]    = useState(null)
   const [showStats,     setShowStats]     = useState(() => localStorage.getItem('showStats') !== 'false')
   const [expandedPos,   setExpandedPos]   = useState(null)
+  const [confRerolls,   setConfRerolls]   = useState(1)
+  const [eraRerolls,    setEraRerolls]    = useState(1)
+  const [spinLockedConf, setSpinLockedConf] = useState(null)
+  const [spinLockedEra,  setSpinLockedEra]  = useState(null)
   const hoverTimer  = useRef(null)
   const closeTimer  = useRef(null)
 
@@ -72,9 +76,27 @@ export default function DraftPhase({ onComplete, onFirstSpinDone, onSubPhase }) 
   // Hide the header and sidebar on the very first spin (nothing picked yet)
   const showChrome = filledCount > 0 || subPhase === 'pool'
 
+  function handleRerollConf() {
+    setSpinLockedConf(null)
+    setSpinLockedEra(currentEra)
+    setConfRerolls(r => r - 1)
+    setSubPhase('spin')
+    onSubPhase?.('spin')
+  }
+
+  function handleRerollEra() {
+    setSpinLockedConf(currentConf)
+    setSpinLockedEra(null)
+    setEraRerolls(r => r - 1)
+    setSubPhase('spin')
+    onSubPhase?.('spin')
+  }
+
   function handleSpinDone(conf, era) {
     setCurrentConf(conf)
     setCurrentEra(era)
+    setSpinLockedConf(null)
+    setSpinLockedEra(null)
     setSubPhase('pool')
     setFocusedPlayer(null)
     onSubPhase?.('pool')
@@ -108,6 +130,8 @@ export default function DraftPhase({ onComplete, onFirstSpinDone, onSubPhase }) 
     setSubPhase('spin')
     setCurrentConf(null)
     setCurrentEra(null)
+    setSpinLockedConf(null)
+    setSpinLockedEra(null)
     setFocusedPlayer(null)
     setExpandedPos(null)
   }
@@ -211,6 +235,8 @@ export default function DraftPhase({ onComplete, onFirstSpinDone, onSubPhase }) 
                 conferences={CONFERENCES}
                 eras={ERAS}
                 onChoose={handleSpinDone}
+                lockedConf={spinLockedConf}
+                lockedEra={spinLockedEra}
               />
             </>
           )}
@@ -230,6 +256,24 @@ export default function DraftPhase({ onComplete, onFirstSpinDone, onSubPhase }) 
                     Conference Grade {currentConf.grade}
                   </span>
                 )}
+              </div>
+              <div className="reroll-row">
+                <button
+                  className="btn-reroll"
+                  disabled={confRerolls === 0}
+                  onClick={handleRerollConf}
+                  style={{ '--reroll-color': getGradeColor(currentConf?.grade) }}
+                >
+                  ↺ Conf {confRerolls > 0 ? `(${confRerolls})` : '(0)'}
+                </button>
+                <button
+                  className="btn-reroll"
+                  disabled={eraRerolls === 0}
+                  onClick={handleRerollEra}
+                  style={{ '--reroll-color': '#38B6E8' }}
+                >
+                  ↺ Era {eraRerolls > 0 ? `(${eraRerolls})` : '(0)'}
+                </button>
               </div>
               <PlayerPool
                 players={players}

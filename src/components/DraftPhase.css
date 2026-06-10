@@ -274,8 +274,26 @@
 .draft-pool-badge-row {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
   flex-wrap: wrap;
+}
+
+@media (max-width: 520px) {
+  .draft-pool-badge-row {
+    flex-wrap: nowrap;
+    gap: 6px;
+    overflow: hidden;
+  }
+
+  .draft-pool-badge-row .draft-badge {
+    font-size: 13px;
+    padding: 5px 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+  }
 }
 
 .draft-badge {
@@ -393,4 +411,37 @@
     font-size: 11px;
     padding: 3px 8px;
   }
+}
+
+
+.reroll-row {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 0;
+  margin-top: -2px;
+}
+
+.btn-reroll {
+  flex: 1;
+  max-width: 160px;
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--reroll-color, var(--border));
+  background: var(--surface2);
+  color: var(--reroll-color, var(--text-dim));
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-reroll:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--reroll-color, var(--border)) 12%, var(--surface2));
+}
+
+.btn-reroll:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
 }

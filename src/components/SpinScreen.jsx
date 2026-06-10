@@ -3,18 +3,18 @@ import { getGradeColor } from '../data/conferences'
 import './SpinScreen.css'
 
 
-function Reel({ label, current, accentKey, subKey, spinning, landed, accentColor, tick }) {
+function Reel({ label, current, accentKey, subKey, spinning, landed, accentColor, tick, locked }) {
   const sub = subKey ? current?.[subKey] : null
-  const contentKey = spinning ? tick : (landed ? 'landed' : current?.[accentKey])
+  const contentKey = locked ? 'locked' : spinning ? tick : (landed ? 'landed' : current?.[accentKey])
   return (
-    <div className={`reel ${spinning ? 'reel--spinning' : ''} ${landed ? 'reel--landed' : ''}`}>
-      <div className="reel-label">{label}</div>
+    <div className={`reel ${spinning && !locked ? 'reel--spinning' : ''} ${landed && !locked ? 'reel--landed' : ''} ${locked ? 'reel--locked' : ''}`}>
+      <div className="reel-label">{locked ? '🔒 ' : ''}{label}</div>
       <div
         className="reel-window"
-        style={accentColor ? { borderColor: accentColor } : {}}
+        style={accentColor ? { borderColor: locked ? 'var(--border)' : accentColor } : {}}
       >
         <div key={contentKey} className="reel-content">
-          <span className="reel-main" style={accentColor ? { color: accentColor } : {}}>
+          <span className="reel-main" style={{ color: locked ? 'var(--text-muted)' : accentColor }}>
             {current?.[accentKey] ?? '?'}
           </span>
           {sub && <span className="reel-sub">{sub}</span>}
@@ -61,17 +61,69 @@ function pickValidCombo(conferences, eras) {
   return { ci: conferences.indexOf(last.conf), ei: eras.indexOf(last.era) }
 }
 
-export default function SpinScreen({ conferences, eras, onChoose }) {
-  const [spinning, setSpinning] = useState(false)
-  const [confIdx,  setConfIdx]  = useState(0)
-  const [eraIdx,   setEraIdx]   = useState(0)
+function pickReroll(conferences, eras, lockedConf, lockedEra) {
+  if (lockedConf) {
+    const validEras = eras.filter(e => !EMPTY_COMBOS.has(`${lockedConf.id}|${e.id}`))
+    const era = validEras[Math.floor(Math.random() * validEras.length)] ?? eras[0]
+    return { ci: conferences.indexOf(lockedConf), ei: eras.indexOf(era) }
+  }
+  if (lockedEra) {
+    const validConfs = conferences.filter(c => !EMPTY_COMBOS.has(`${c.id}|${lockedEra.id}`))
+    const weights = validConfs.map(c => COMBO_BOOSTS[`${c.id}|${lockedEra.id}`] ?? GRADE_WEIGHTS[c.grade] ?? 1)
+    const total = weights.reduce((s, w) => s + w, 0)
+    let r = Math.random() * total
+    for (let i = 0; i < validConfs.length; i++) {
+      r -= weights[i]
+      if (r <= 0) return { ci: conferences.indexOf(validConfs[i]), ei: eras.indexOf(lockedEra) }
+    }
+    return { ci: conferences.indexOf(validConfs[validConfs.length - 1]), ei: eras.indexOf(lockedEra) }
+  }
+  return pickValidCombo(conferences, eras)
+}
+
+export default function SpinScreen({ conferences, eras, onChoose, lockedConf = null, lockedEra = null }) {
+  const isReroll = lockedConf != null || lockedEra != null
+  const [spinning, setSpinning] = useState(isReroll)
+  const [confIdx,  setConfIdx]  = useState(() => lockedConf ? conferences.indexOf(lockedConf) : 0)
+  const [eraIdx,   setEraIdx]   = useState(() => lockedEra  ? eras.indexOf(lockedEra)         : 0)
   const [landed,   setLanded]   = useState(false)
   const [results,  setResults]  = useState(null)
   const [tick,     setTick]     = useState(0)
   const intervalRef    = useRef(null)
   const transitionRef  = useRef(null)
   const holdingRef     = useRef(false)
-  const pressTimeRef   = useRef(0)
+  const pressTimeRef   = useRef(isReroll ? Date.now() - 2000 : 0)
+  const stopTimerRef   = useRef(null)
+
+  // Auto-start and auto-stop for reroll (spins for 1s then resolves)
+  useEffect(() => {
+    if (!isReroll) return
+    intervalRef.current = setInterval(() => {
+      if (!lockedConf) setConfIdx(weightedRandomConf(conferences))
+      if (!lockedEra)  setEraIdx(Math.floor(Math.random() * eras.length))
+      setTick(t => t + 1)
+    }, 80)
+    stopTimerRef.current = setTimeout(() => {
+      const { ci: finalConf, ei: finalEra } = pickReroll(conferences, eras, lockedConf, lockedEra)
+      clearInterval(intervalRef.current)
+      setConfIdx(finalConf)
+      setEraIdx(finalEra)
+      setSpinning(false)
+      setLanded(true)
+      const finalConference = conferences[finalConf]
+      const finalEraObj     = eras[finalEra]
+      setResults({ conference: finalConference, era: finalEraObj })
+      transitionRef.current = setTimeout(() => {
+        document.documentElement.scrollTop = 0
+        document.body.scrollTop            = 0
+        onChoose(finalConference, finalEraObj)
+      }, 1200)
+    }, 800)
+    return () => {
+      clearInterval(intervalRef.current)
+      clearTimeout(stopTimerRef.current)
+    }
+  }, [])
 
   function startSpin(e) {
     if (spinning || results) return
@@ -89,9 +141,9 @@ export default function SpinScreen({ conferences, eras, onChoose }) {
     }, 80)
   }
 
-  const stopTimerRef = useRef(null)
-
   function stopSpin() {
+    if (isReroll) return  // reroll auto-resolves
+
     if (!holdingRef.current) return
     holdingRef.current = false
 
@@ -130,7 +182,7 @@ export default function SpinScreen({ conferences, eras, onChoose }) {
     <div className="spin-screen">
       <div className="spin-machine">
         <h2 className="spin-instruction">
-          {results ? 'Your draw' : 'Spin to build your lineup'}
+          {results ? 'Your draw' : isReroll ? 'Rerolling…' : 'Spin to build your lineup'}
         </h2>
 
         <div className="reels-row">
@@ -143,6 +195,7 @@ export default function SpinScreen({ conferences, eras, onChoose }) {
             landed={landed}
             accentColor={confColor}
             tick={tick}
+            locked={!!lockedConf}
           />
           <div className="reels-x">×</div>
           <Reel
@@ -153,6 +206,7 @@ export default function SpinScreen({ conferences, eras, onChoose }) {
             landed={landed}
             accentColor='#38B6E8'
             tick={tick}
+            locked={!!lockedEra}
           />
         </div>
       </div>
@@ -160,9 +214,10 @@ export default function SpinScreen({ conferences, eras, onChoose }) {
       {!results ? (
         <button
           className={`btn-spin-main ${spinning ? 'btn-spin-main--rolling' : ''}`}
-          onPointerDown={startSpin}
-          onPointerUp={stopSpin}
-          onPointerLeave={stopSpin}
+          onPointerDown={isReroll ? undefined : startSpin}
+          onPointerUp={isReroll ? stopSpin : stopSpin}
+          onClick={isReroll ? stopSpin : undefined}
+          onPointerLeave={isReroll ? undefined : stopSpin}
           aria-label={spinning ? 'Spinning…' : 'Spin'}
         >
           <span className="btn-ball-wrap"><span className="btn-ball-icon">🏀</span></span>
