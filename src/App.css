@@ -214,6 +214,40 @@
   border-color: var(--text-dim);
 }
 
+/* Leaderboard button */
+.btn-leaderboard {
+  position: fixed;
+  top: 16px;
+  left: 80px;
+  z-index: 200;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 29px;
+  width: 48px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.15s;
+  padding: 0;
+}
+
+.btn-leaderboard:hover {
+  border-color: var(--text-dim);
+}
+
+@media (max-width: 768px) {
+  .btn-leaderboard {
+    top: 4px;
+    left: 4px;
+    font-size: 26px;
+    width: 38px;
+    height: 34px;
+  }
+}
+
 .app-footer {
   text-align: center;
   padding: 24px 0 32px;

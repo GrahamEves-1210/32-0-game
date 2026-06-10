@@ -190,7 +190,7 @@ function getGrade(conferenceId) {
   return CONFERENCES.find(c => c.id === conferenceId)?.grade ?? '?'
 }
 
-export default function TournamentPhase({ wins, matchPct = 0, lineup = [], onReset, onChampion }) {
+export default function TournamentPhase({ wins, matchPct = 0, lineup = [], onReset, onChampion, onGameEnd }) {
   const [results]     = useState(() => simulateTournament(wins, matchPct))
   const [phase,       setPhase]      = useState(PHASE.SEEDING)
   const [gameIdx,     setGameIdx]    = useState(0)
@@ -201,8 +201,9 @@ export default function TournamentPhase({ wins, matchPct = 0, lineup = [], onRes
   const [netCut,      setNetCut]     = useState(false)
   const [champSlid,   setChampSlid]  = useState(false)
   const [roundPopup,  setRoundPopup] = useState(null)
-  const timerRef    = useRef(null)
+  const timerRef     = useRef(null)
   const floaterIdRef = useRef(0)
+  const gameEndFired = useRef(false)
 
   function addFloater(side, value) {
     if (!value) return
@@ -214,6 +215,20 @@ export default function TournamentPhase({ wins, matchPct = 0, lineup = [], onRes
   const game = results.games[gameIdx] ?? null
 
   useEffect(() => () => clearInterval(timerRef.current), [])
+
+  useEffect(() => {
+    if (phase === PHASE.ELIMINATED && !gameEndFired.current) {
+      gameEndFired.current = true
+      onGameEnd?.(false)
+    }
+  }, [phase])
+
+  useEffect(() => {
+    if (champSlid && !gameEndFired.current) {
+      gameEndFired.current = true
+      onGameEnd?.(true)
+    }
+  }, [champSlid])
 
   useEffect(() => {
     if (phase === PHASE.BETWEEN && game && !game.playerWins) {

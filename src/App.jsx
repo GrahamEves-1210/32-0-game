@@ -3,7 +3,10 @@ import useOnlineCount from './hooks/useOnlineCount'
 import DraftPhase from './components/DraftPhase'
 import WinResult from './components/WinResult'
 import TournamentPhase from './components/TournamentPhase'
+import Leaderboard from './components/Leaderboard'
+import UsernamePrompt from './components/UsernamePrompt'
 import { calculateWins, getMatchPercentage } from './utils/winFormula'
+import { isTopTen, submitScore } from './lib/leaderboard'
 import './App.css'
 
 // Phases: 'draft' → 'result' → 'tournament'
@@ -15,7 +18,10 @@ export default function App() {
   const [showHeader,   setShowHeader]  = useState(true)
   const [champReached, setChampReached] = useState(false)
   const [draftSubPhase, setDraftSubPhase] = useState('spin')
-  const [darkMode,     setDarkMode]    = useState(() => localStorage.getItem('theme') === 'dark')
+  const [darkMode,       setDarkMode]       = useState(() => localStorage.getItem('theme') === 'dark')
+  const [showLeaderboard, setShowLeaderboard] = useState(false)
+  const [pendingScore,    setPendingScore]    = useState(null)   // { score, wonChampionship }
+  const [showPrompt,      setShowPrompt]      = useState(false)
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light')
@@ -40,6 +46,29 @@ export default function App() {
     setPhase('result')
   }
 
+  async function handleGameEnd(wonChampionship) {
+    const lineup = finalLineup ? Object.values(finalLineup).filter(Boolean) : []
+    const score  = getMatchPercentage(lineup)
+    setPendingScore({ score, wonChampionship })
+    try {
+      const qualified = await isTopTen(score, wonChampionship)
+      if (qualified) setShowPrompt(true)
+    } catch (_) { /* silently skip prompt on network error */ }
+  }
+
+  async function handleUsernameSubmit(username) {
+    if (pendingScore) {
+      await submitScore({ username, score: pendingScore.score, won_championship: pendingScore.wonChampionship })
+    }
+    setShowPrompt(false)
+    setPendingScore(null)
+  }
+
+  function handlePromptSkip() {
+    setShowPrompt(false)
+    setPendingScore(null)
+  }
+
   function handleReset() {
     setFinalLineup(null)
     setPhase('draft')
@@ -47,6 +76,8 @@ export default function App() {
     setShowHeader(true)
     setChampReached(false)
     setDraftSubPhase('spin')
+    setShowPrompt(false)
+    setPendingScore(null)
   }
 
   function handleTournament() {
@@ -55,6 +86,14 @@ export default function App() {
 
   const onlineCount = useOnlineCount()
   const lineupArray = finalLineup ? Object.values(finalLineup).filter(Boolean) : []
+
+  if (showLeaderboard) return (
+    <div className="app">
+      <main className="app-main">
+        <Leaderboard onClose={() => setShowLeaderboard(false)} />
+      </main>
+    </div>
+  )
 
   return (
     <div className="app">
@@ -91,6 +130,7 @@ export default function App() {
             lineup={lineupArray}
             onReset={handleReset}
             onChampion={() => setChampReached(true)}
+            onGameEnd={handleGameEnd}
           />
         )}
       </main>
@@ -129,6 +169,25 @@ export default function App() {
             Inspired by 82-0.com
           </a>
         </footer>
+      )}
+
+      {showHeader && phase === 'draft' && (
+        <button
+          className="btn-leaderboard"
+          onClick={() => setShowLeaderboard(true)}
+          title="Leaderboard"
+        >
+          🏆
+        </button>
+      )}
+
+      {showPrompt && pendingScore && (
+        <UsernamePrompt
+          score={pendingScore.score}
+          wonChampionship={pendingScore.wonChampionship}
+          onSubmit={handleUsernameSubmit}
+          onSkip={handlePromptSkip}
+        />
       )}
     </div>
   )
