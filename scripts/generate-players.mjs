@@ -69,6 +69,8 @@ const POS_OVERRIDES = {
   'Marvin Bagley III|Duke':                ['PF', 'C'],
   'Aday Mara|Michigan':                    ['C'],
   'Bronny James|USC':                      ['PG', 'SG'],
+  'Russ Smith|Louisville':                 ['PG', 'SG'],
+  'Trevor Releford|Alabama':               ['PG', 'SG'],
   'Bones Hyland|VCU':                      ['PG', 'SG'],
   'Justin Champagnie|Pittsburgh':          ['SG', 'SF'],
   'Keegan Murray|Iowa':                    ['SF', 'PF'],

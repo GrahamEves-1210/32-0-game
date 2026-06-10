@@ -39,25 +39,30 @@ function poolForSeed(seed) {
   return TEAMS.s16
 }
 
-// For each player seed, the typical opponent seed each round
+// Opponent seeds per round based on the real 64-team bracket structure:
+//   Upper half: seeds 1,16,8,9,5,12,4,13  |  Lower half: seeds 6,11,3,14,7,10,2,15
+// Each array entry is the exact set of seeds possible — pickSeed draws uniformly from it
+// R64→E8 are within the region; F4/Champ opponents come from other regions
 const OPP_SEED_BY_ROUND = {
-  1: [16, [8,9],  [4,5],  [2,3],  [1,2],  [1,2]],
-  2: [15, [7,10], [3,6],  [1,4],  [1,2],  [1,2]],
-  3: [14, [6,11], [2,7],  [1,4],  [1,2],  [1,2]],
-  4: [13, [5,12], [1,8],  [2,3],  [1,2],  [1,2]],
-  5: [12, [4,13], [1,8],  [2,3],  [1,2],  [1,2]],
-  6: [11, [3,14], [2,7],  [1,4],  [1,2],  [1,2]],
-  7: [10, [2,15], [3,6],  [1,4],  [1,2],  [1,2]],
-  8: [9,  [1,16], [4,5],  [2,3],  [1,2],  [1,2]],
+  //         R64   R32          S16            E8            F4            Champ
+  1: [16,    [8,9],    [4,5],     [2,3],     [1,2,3,4],  [1,2,3]],
+  2: [15,    [7,10],   [3,6],     [1,4,5],   [1,2,3,4],  [1,2,3]],
+  3: [14,    [6,11],   [2,7],     [1,4,5],   [1,2,3,4],  [1,2,3]],
+  4: [13,    [5,12],   [1,8,9],   [2,3],     [1,2,3,4],  [1,2,3]],
+  5: [12,    [4,13],   [1,8,9],   [2,3],     [1,2,3,4],  [1,2,3]],
+  6: [11,    [3,14],   [2,7],     [1,4,5],   [1,2,3,4],  [1,2,3]],
+  7: [10,    [2,15],   [3,6],     [1,4,5],   [1,2,3,4],  [1,2,3]],
+  8: [9,     [1,16],   [4,5],     [2,3],     [1,2,3,4],  [1,2,3]],
 }
 
 // Steeper drop-off: 32-0→60%, 30-2→32%, 28-4→10%, 26-6→3%
 // Later rounds much harder due to elevated top-seed ELOs
 const WINS_ELO = { 32:2320, 31:2160, 30:2040, 29:1955, 28:1880, 27:1808, 26:1748, 25:1692, 24:1638, 23:1584, 22:1530 }
-// matchPct (0–1) adds up to +70 ELO for team quality
+// Power-curve bonus: steepens toward the 90% guarantee threshold
 function winsToElo(wins, matchPct = 0) {
   const base = WINS_ELO[wins] ?? Math.max(1200, Math.round(2320 - 150 * Math.pow(32 - wins, 0.75)))
-  return base + Math.round(matchPct * 200)
+  const t = Math.min(matchPct / 0.9, 1)
+  return base + Math.round(Math.pow(t, 3) * 500)
 }
 
 // Top seeds boosted — F4/Champ opponents are genuinely elite
@@ -88,8 +93,7 @@ function makeScore(pWin) {
 
 function pickSeed(range) {
   if (typeof range === 'number') return range
-  const [lo, hi] = range
-  return lo + Math.floor(Math.random() * (hi - lo + 1))
+  return range[Math.floor(Math.random() * range.length)]
 }
 
 export function winsToSeed(wins) {
@@ -124,9 +128,11 @@ export function simulateTournament(wins, matchPct = 0) {
     const oppElo  = seedToElo(oppSeed)
     const oppName = pickName(oppSeed)
 
-    const perfect    = matchPct >= 1.0
-    const p          = perfect ? 1 : winProb(playerElo, oppElo)
-    const playerWins = perfect || Math.random() < p
+    const perfect     = matchPct >= 0.95
+    const nearPerfect = !perfect && matchPct >= 0.9
+    // 0.9915^6 ≈ 95% overall championship probability
+    const p           = perfect ? 1 : nearPerfect ? 0.9915 : winProb(playerElo, oppElo)
+    const playerWins  = perfect || Math.random() < p
     const score      = makeScore(playerWins ? p : 1 - p)
 
     games.push({

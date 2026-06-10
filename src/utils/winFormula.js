@@ -47,11 +47,12 @@ export function calculateWins(lineup) {
   if (!lineup || lineup.length < 5) return 0
   const teamScore = lineup.reduce((s, p) => s + (p ? playerScore(p) : 0), 0)
   const { perfectScore } = getBenchmarks()
-  // Scale benchmark to 85% — the true perfect requires an impossible assembly;
-  // this lets elite realistic lineups reach 30-32 rather than clustering at 28.
-  const ratio = Math.min(1, Math.max(0, teamScore / (perfectScore * 0.84)))
-  const raw   = Math.pow(ratio, 0.52)
-  return Math.max(0, Math.round((raw - 0.22) / 0.78 * 32))
+  const ratio = Math.max(0, teamScore / (perfectScore * 0.83))
+  const capped = Math.min(ratio, 1)
+  const raw    = Math.pow(capped, 0.52)
+  const exact  = (raw - 0.22) / 0.78 * 32
+  // 32 wins requires exactly 83%+ match — no rounding up from below
+  return Math.max(0, ratio >= 1 ? 32 : Math.min(31, Math.round(exact)))
 }
 
 export function getMatchPercentage(lineup) {
@@ -65,11 +66,13 @@ export function getSpacingGrade(lineup) {
   const valid = lineup.filter(p => p != null)
   if (!valid.length) return { grade: '?', avg: 0, total: 0 }
   const total = valid.reduce((s, p) => s + (p.tpm ?? 0), 0)
+  const hasCurry = valid.some(p => p.name === 'Stephen Curry')
+  if (hasCurry) return { grade: 'A', avg: total / valid.length, total }
   // Grade on the top-3 shooters' average — big/center not penalizing elite perimeter spacers
   const sorted = [...valid].sort((a, b) => (b.tpm ?? 0) - (a.tpm ?? 0))
   const top3   = sorted.slice(0, 3)
   const top3Avg = top3.reduce((s, p) => s + (p.tpm ?? 0), 0) / top3.length
-  const grade = top3Avg >= 2.2 ? 'A' : top3Avg >= 1.4 ? 'B' : top3Avg >= 0.7 ? 'C' : top3Avg >= 0.25 ? 'D' : 'F'
+  const grade = top3Avg >= 2.3 ? 'A' : top3Avg >= 1.9 ? 'B' : top3Avg >= 0.5 ? 'C' : 'F'
   return { grade, avg: total / valid.length, total }
 }
 

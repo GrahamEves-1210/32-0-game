@@ -269,6 +269,14 @@
 
   .pr-positions--merged {
     display: flex;
+    flex-direction: column;
+    gap: 2px;
+    align-self: center;
+  }
+
+  .pr-positions--merged:has(.pr-pos ~ .pr-pos) .pr-pos {
+    font-size: 11px;
+    padding: 1px 5px;
   }
 
   .pr-stats {
