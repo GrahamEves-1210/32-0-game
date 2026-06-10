@@ -3414,7 +3414,7 @@ export const ALL_PLAYERS = [
   p('kj-mcdaniels','KJ McDaniels','Clemson','acc','era3',2014,17.1,7.1,1.6,1.1,2.8,0.573,1.2,["SF","PF"]),
   p('lamar-patterson','Lamar Patterson','Pittsburgh','acc','era3',2014,17.1,4.9,4.3,1.4,0.3,0.576,2.2,["PG","SG"]),
   p('terry-rozier','Terry Rozier','Louisville','acc','era3',2015,17.1,5.6,3,2,0.2,0.514,1.3,["SG","SF"]),
-  p('brice-johnson','Brice Johnson','North Carolina','acc','era3',2016,17,10.4,1.5,1.1,1.5,0.657,0,["C"]),
+  p('brice-johnson','Brice Johnson','North Carolina','acc','era3',2016,17,10.4,1.5,1.1,1.5,0.657,0,["PF","C"]),
   p('mason-plumlee-2','Mason Plumlee','Duke','acc','era3',2013,16.9,10.2,2,1,1.5,0.63,0,["PF","C"]),
   p('marcus-georges-hunt','Marcus Georges-Hunt','Georgia Tech','acc','era3',2016,16.7,3.4,3.3,0.9,0.4,0.599,1.1,["SG","SF"]),
   p('c-j-fair','C.J. Fair','Syracuse','acc','era3',2014,16.5,6.4,1.2,1.3,0.8,0.493,0.7,["SF","PF"]),

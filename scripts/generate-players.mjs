@@ -75,6 +75,7 @@ const POS_OVERRIDES = {
   'Justin Champagnie|Pittsburgh':          ['SG', 'SF'],
   'Keegan Murray|Iowa':                    ['SF', 'PF'],
   'Zach Edey|Purdue':                      ['C'],
+  'Brice Johnson|North Carolina':          ['PF', 'C'],
   'Michael Beasley|Kansas State':          ['PF', 'C'],
   'Austin Reaves|Oklahoma':                ['SG', 'SF'],
   'AJ Dybantsa|BYU':                       ['PG', 'SF', 'PF'],

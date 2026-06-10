@@ -28,6 +28,8 @@ export default function Leaderboard({ onClose }) {
   }, [tab])
 
   return (
+    <>
+    <button className="lb-close-btn" onClick={onClose}>← Back</button>
     <div className="lb-wrap">
       <div className="lb-header">
         <div className="lb-title">🏆 Leaderboard</div>
@@ -72,7 +74,7 @@ export default function Leaderboard({ onClose }) {
         </div>
       )}
 
-      <button className="lb-close-btn" onClick={onClose}>← Back</button>
     </div>
+    </>
   )
 }
