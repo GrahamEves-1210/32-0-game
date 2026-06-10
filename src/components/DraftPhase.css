@@ -178,6 +178,8 @@
 /* ── Body ── */
 .draft-phase-body {
   display: block;
+  position: relative;
+  z-index: 1;
 }
 
 .draft-phase-main {

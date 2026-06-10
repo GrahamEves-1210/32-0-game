@@ -184,4 +184,11 @@
   .lb-date {
     display: none;
   }
+
+  .lb-close-btn {
+    order: -1;
+    align-self: flex-start;
+    padding: 8px 16px;
+    font-size: 13px;
+  }
 }

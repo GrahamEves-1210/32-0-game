@@ -49,7 +49,7 @@ export function calculateWins(lineup) {
   const { perfectScore } = getBenchmarks()
   // Scale benchmark to 85% — the true perfect requires an impossible assembly;
   // this lets elite realistic lineups reach 30-32 rather than clustering at 28.
-  const ratio = Math.min(1, Math.max(0, teamScore / (perfectScore * 0.83)))
+  const ratio = Math.min(1, Math.max(0, teamScore / (perfectScore * 0.84)))
   const raw   = Math.pow(ratio, 0.52)
   return Math.max(0, Math.round((raw - 0.22) / 0.78 * 32))
 }
@@ -134,7 +134,7 @@ export function getDefensiveRating(lineup) {
 }
 
 export function getWinLabel(wins) {
-  if (wins >= 32) return { text: 'Cut the Net',              color: '#e0a800' }
+  if (wins >= 32) return { text: 'Championship Locks',        color: '#e0a800' }
   if (wins >= 28) return { text: 'Championship Favorites',   color: '#4ade80' }
   if (wins >= 22) return { text: 'NCAA Tournament Bound',    color: '#38B6E8' }
   if (wins >= 16) return { text: 'Bubble Team',              color: '#8b5cf6' }

@@ -12,6 +12,14 @@ const POS_COLOR = {
   PG: '#3b82f6', SG: '#8b5cf6', SF: '#16a34a', PF: '#f59e0b', C: '#ef4444',
 }
 
+function mergePos(positions) {
+  const key = positions.join('/')
+  if (key === 'PG/SG')    return [{ label: 'G',  color: POS_COLOR.PG }]
+  if (key === 'SF/PF')    return [{ label: 'F',  color: POS_COLOR.SF }]
+  if (key === 'PG/SF/PF') return [{ label: 'PG', color: POS_COLOR.PG }, { label: 'F', color: POS_COLOR.SF }]
+  return positions.map(p => ({ label: p, color: POS_COLOR[p] }))
+}
+
 function getInitials(name) {
   const parts = name.trim().split(/\s+/)
   if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase()
@@ -227,8 +235,8 @@ export default function DraftPhase({ onComplete, onFirstSpinDone, onSubPhase }) 
                   <span className="pdp-sep">·</span>
                   <span className="pdp-year">{p.season}</span>
                   <span className="pdp-sep">·</span>
-                  {p.positions.map(pos => (
-                    <span key={pos} className="pdp-pos" style={{ '--c': POS_COLOR[pos] }}>{pos}</span>
+                  {mergePos(p.positions).map(({ label, color }) => (
+                    <span key={label} className="pdp-pos" style={{ '--c': color }}>{label}</span>
                   ))}
                 </div>
                 {showStats && (
@@ -246,7 +254,7 @@ export default function DraftPhase({ onComplete, onFirstSpinDone, onSubPhase }) 
         </div>
       )}
 
-      <div className="draft-phase-body" onClick={e => e.stopPropagation()}>
+      <div className="draft-phase-body" onClick={e => { e.stopPropagation(); if (swapFrom) setSwapFrom(null) }}>
         <div className="draft-phase-main">
           {subPhase === 'spin' && (
             <>

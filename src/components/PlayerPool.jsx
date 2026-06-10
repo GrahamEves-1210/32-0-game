@@ -20,6 +20,9 @@ export default function PlayerPool({ players, lineup, focusedPlayer, onFocus, on
     const inLineup = Object.values(lineup).some(lp => lp?.id === player.id)
     if (inLineup) return 'in-lineup'
     if (focusedPlayer?.id === player.id) return 'focused'
+    // locked if a different-era version of the same player is already picked
+    const nameInLineup = Object.values(lineup).some(lp => lp?.name === player.name)
+    if (nameInLineup) return 'locked'
     // locked = all this player's positions are already filled
     const openSlots = player.positions.filter(pos => !lineup[pos])
     if (openSlots.length === 0) return 'locked'
@@ -36,12 +39,9 @@ export default function PlayerPool({ players, lineup, focusedPlayer, onFocus, on
     }
   }
 
-  const order = { idle: 0, focused: 0, 'in-lineup': 1, locked: 2 }
-  const sorted = [...players].sort((a, b) => {
-    const sa = getStatus(a), sb = getStatus(b)
-    if (order[sa] !== order[sb]) return order[sa] - order[sb]
-    return showStats ? b.ppg - a.ppg : a.name.localeCompare(b.name)
-  })
+  const sorted = [...players].sort((a, b) =>
+    showStats ? b.ppg - a.ppg : a.name.localeCompare(b.name)
+  )
 
   return (
     <div className="pool-wrap">

@@ -25,7 +25,7 @@ function Reel({ label, current, accentKey, subKey, spinning, landed, accentColor
 }
 
 const GRADE_WEIGHTS = { A: 6, B: 4, C: 1 }
-const EMPTY_COMBOS  = new Set(['pac12|era5', 'aac|era1'])
+const EMPTY_COMBOS  = new Set(['aac|era1', 'aac|era2'])
 
 // Boost only the exact conf+era combos that contain Steph, Ja, or Reggie Williams
 const COMBO_BOOSTS  = { 'southern|era1': 3, 'ovc|era3': 3, 'bigsouth|era1': 3 }

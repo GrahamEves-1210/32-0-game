@@ -586,7 +586,20 @@
   letter-spacing: 0.08em;
 }
 
-.to-sub    { font-size: 17px; color: var(--text-muted); }
+.to-sub       { font-size: 17px; color: var(--text-muted); display: flex; flex-direction: column; align-items: center; gap: 0; }
+.to-opp-name  {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--school-color, #888);
+  background: color-mix(in srgb, var(--school-color, #888) 15%, var(--surface));
+  border: 1.5px solid color-mix(in srgb, var(--school-color, #888) 40%, transparent);
+  display: inline-block;
+  padding: 3px 16px;
+  border-radius: 999px;
+  margin-top: 8px;
+}
+.to-opp-seed  { font-size: 14px; color: var(--text-muted); margin-top: 2px; }
 .to-record { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700; color: var(--text-dim); margin: 4px 0; }
 
 .btn-tourney-reset {

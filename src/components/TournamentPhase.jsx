@@ -328,7 +328,16 @@ export default function TournamentPhase({ wins, matchPct = 0, lineup = [], onRes
       <div className="tourney-wrap">
         <div className="tourney-outcome tourney-outcome--out">
           <div className="to-title">Eliminated</div>
-          <div className="to-sub">{lastGame.roundName} · Lost to {lastGame.opp.name} ({lastGame.opp.seed} seed)</div>
+          <div className="to-sub">
+            {lastGame.roundName} · Lost to
+            <div
+              className="to-opp-name"
+              style={{ '--school-color': getSchoolColor(lastGame.opp.name) || '#888' }}
+            >
+              {lastGame.opp.name}
+            </div>
+            <div className="to-opp-seed">({lastGame.opp.seed} seed)</div>
+          </div>
           <button className="btn-play-again btn-tourney-reset" onClick={onReset}>↺ Play Again</button>
         </div>
       </div>

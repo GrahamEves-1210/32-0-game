@@ -42,21 +42,45 @@ const CONF_MAP = {
 }
 
 function getEra(season) {
-  if (season <= 2010) return 'era1'
-  if (season <= 2015) return 'era2'
-  if (season <= 2020) return 'era3'
-  if (season <= 2024) return 'era4'
-  return 'era5'
+  if (season <= 2008) return 'era1'
+  if (season <= 2012) return 'era2'
+  if (season <= 2016) return 'era3'
+  if (season <= 2020) return 'era4'
+  if (season <= 2023) return 'era5'
+  return 'era6'
 }
 
 // Manual position overrides for players the API misclassifies
 // Key: "name|school" (exact strings from the API)
 const POS_OVERRIDES = {
-  'JJ Redick|Duke':               ['SG', 'SF'],
-  'Tyrese Haliburton|Iowa State': ['PG', 'SG'],
-  'Brandon Miller|Alabama':       ['SF', 'PF'],
-  'Blake Griffin|Oklahoma':       ['PF', 'C'],
-  'Kevin Love|UCLA':              ['PF', 'C'],
+  'JJ Redick|Duke':                        ['SG', 'SF'],
+  'Stephen Curry|Davidson':                ['PG', 'SG'],
+  'Tyrese Haliburton|Iowa State':          ['PG', 'SG'],
+  'Brandon Miller|Alabama':                ['SG', 'SF'],
+  'Blake Griffin|Oklahoma':                ['PF', 'C'],
+  'Kevin Love|UCLA':                       ['PF', 'C'],
+  'Ben Simmons|LSU':                       ['PG', 'SG', 'SF', 'PF'],
+  'RJ Barrett|Duke':                       ['SG', 'SF'],
+  'Caris LeVert|Michigan':                 ['SG', 'SF'],
+  'Pierre Deshawn Jackson|Baylor':         ['PG', 'SG'],
+  'Vonterius Woolbright|Western Carolina': ['SF', 'PF'],
+  'Cameron Boozer|Duke':                   ['PF', 'C'],
+  'Darington Hobson|New Mexico':           ['SF', 'PF'],
+  'Marvin Bagley III|Duke':                ['PF', 'C'],
+  'Aday Mara|Michigan':                    ['C'],
+  'Bones Hyland|VCU':                      ['PG', 'SG'],
+  'Justin Champagnie|Pittsburgh':          ['SG', 'SF'],
+  'Keegan Murray|Iowa':                    ['SF', 'PF'],
+  'Zach Edey|Purdue':                      ['C'],
+  'Michael Beasley|Kansas State':          ['PF', 'C'],
+  'Austin Reaves|Oklahoma':                ['SG', 'SF'],
+  'AJ Dybantsa|BYU':                       ['PG', 'SF', 'PF'],
+  'Doug McDermott|Creighton':              ['SF', 'PF'],
+  'Sam Merrill|Utah State':                ['SG', 'SF'],
+  'Klay Thompson|Washington State':        ['SG', 'SF'],
+  'Caleb Love|North Carolina':             ['PG', 'SG'],
+  'Caleb Love|Arizona':                    ['PG', 'SG'],
+  'Jamal Murray|Kentucky':                 ['PG', 'SG'],
 }
 
 function mapPos(pos, rpg, apg, name, school) {
@@ -82,10 +106,13 @@ const MAJOR    = new Set(['acc','bigeast','big10','sec','big12','pac12'])
 const MIDMAJOR = new Set(['mwc','aac','a10','wcc','mvc','ivy'])
 
 function playerLimit(confId) {
-  if (MAJOR.has(confId))    return 40
-  if (MIDMAJOR.has(confId)) return 20
-  return 12
+  if (MAJOR.has(confId))    return 80
+  if (MIDMAJOR.has(confId)) return 60
+  return 45
 }
+
+// Players force-included regardless of PPG (must still have >= 10 games)
+const FORCE_INCLUDE = new Set(['Bronny James|USC', 'Aday Mara|Michigan'])
 
 // All 5 positions the game uses
 const ALL_POSITIONS = ['PG', 'SG', 'SF', 'PF', 'C']
@@ -133,9 +160,11 @@ async function main() {
       const tpm   = r1((p.threePointFieldGoals?.made ?? 0) / p.games)
       if (ppg < 3.0) continue
 
+      const hasOverride = !!POS_OVERRIDES[`${p.name}|${p.team}`]
       let positions = mapPos(p.position, rpg, apg, p.name, p.team)
       // True centers: dominant rebounders with elite efficiency — C only, not PF
-      if (positions.includes('C') && positions.includes('PF') && rpg > 10 && tspct > 0.65) {
+      // Skip if a manual override is in place
+      if (!hasOverride && positions.includes('C') && positions.includes('PF') && rpg > 10 && tspct > 0.65) {
         positions = ['C']
       }
       const record = { name: p.name, school: p.team, conference: confId, era, season, ppg, rpg, apg, spg, bpg, tspct, tpm, positions }
@@ -145,8 +174,9 @@ async function main() {
       const prevCov = coveragePool.get(key)
       if (!prevCov || ppg > prevCov.ppg) coveragePool.set(key, record)
 
-      // Main pool: players >= 6 PPG
-      if (ppg < 6.0) continue
+      // Main pool: players >= 6 PPG, or force-included regardless of PPG
+      const forced = FORCE_INCLUDE.has(`${p.name}|${p.team}`)
+      if (!forced && ppg < 6.0) continue
       const prev = bestPerEra.get(key)
       if (!prev || ppg > prev.ppg) bestPerEra.set(key, record)
     }
@@ -169,8 +199,11 @@ async function main() {
     players.sort((a, b) => b.ppg - a.ppg)
 
     const limit   = playerLimit(confId)
-    const selected = players.slice(0, limit)
-    const bench    = players.slice(limit)   // remaining sorted by PPG
+    // Force-included players always make the cut before the limit is applied
+    const forced  = players.filter(p => FORCE_INCLUDE.has(`${p.name}|${p.school}`))
+    const rest    = players.filter(p => !FORCE_INCLUDE.has(`${p.name}|${p.school}`))
+    const selected = [...forced, ...rest.slice(0, Math.max(0, limit - forced.length))]
+    const bench    = rest.slice(Math.max(0, limit - forced.length))   // remaining sorted by PPG
 
     // Guarantee every position is covered
     // First try bench (8+ PPG), then fall back to coveragePool (5+ PPG)
@@ -207,7 +240,7 @@ async function main() {
   }
 
   // Sort for readable output: era then conference
-  const eraOrder = { era1: 0, era2: 1, era3: 2, era4: 3, era5: 4 }
+  const eraOrder = { era1: 0, era2: 1, era3: 2, era4: 3, era5: 4, era6: 5 }
   final.sort((a, b) => {
     const ed = eraOrder[a.era] - eraOrder[b.era]
     if (ed !== 0) return ed

@@ -57,7 +57,7 @@ const WINS_ELO = { 32:2320, 31:2160, 30:2040, 29:1955, 28:1880, 27:1808, 26:1748
 // matchPct (0–1) adds up to +70 ELO for team quality
 function winsToElo(wins, matchPct = 0) {
   const base = WINS_ELO[wins] ?? Math.max(1200, Math.round(2320 - 150 * Math.pow(32 - wins, 0.75)))
-  return base + Math.round(matchPct * 70)
+  return base + Math.round(matchPct * 200)
 }
 
 // Top seeds boosted — F4/Champ opponents are genuinely elite
@@ -124,8 +124,9 @@ export function simulateTournament(wins, matchPct = 0) {
     const oppElo  = seedToElo(oppSeed)
     const oppName = pickName(oppSeed)
 
-    const p          = winProb(playerElo, oppElo)
-    const playerWins = Math.random() < p
+    const perfect    = matchPct >= 1.0
+    const p          = perfect ? 1 : winProb(playerElo, oppElo)
+    const playerWins = perfect || Math.random() < p
     const score      = makeScore(playerWins ? p : 1 - p)
 
     games.push({
