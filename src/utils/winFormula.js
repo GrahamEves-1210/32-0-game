@@ -47,7 +47,7 @@ export function calculateWins(lineup) {
   if (!lineup || lineup.length < 5) return 0
   const teamScore = lineup.reduce((s, p) => s + (p ? playerScore(p) : 0), 0)
   const { perfectScore } = getBenchmarks()
-  const ratio = Math.max(0, teamScore / (perfectScore * 0.83))
+  const ratio = Math.max(0, teamScore / (perfectScore * 0.85))
   const capped = Math.min(ratio, 1)
   const raw    = Math.pow(capped, 0.52)
   const exact  = (raw - 0.22) / 0.78 * 32
