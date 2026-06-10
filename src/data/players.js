@@ -9521,7 +9521,7 @@ export const ALL_PLAYERS = [
   p('josiah-davis-2','Josiah Davis','Tennessee Tech','ovc','era6',2024,12.9,4.6,2.3,0.7,0.1,0.546,0.3,["SG","SF"]),
   p('christian-brown','Christian Brown','Tennessee State','ovc','era6',2024,12.8,3.4,0.7,1.1,0.3,0.599,1.6,["SG","SF"]),
   p('cameron-wallace','Cameron Wallace','Little Rock','ovc','era6',2026,12.7,6.9,1.8,1,0.3,0.512,0,["SF","PF"]),
-  p('bronny-james','Bronny James','USC','pac12','era6',2024,4.8,2.8,2.1,0.8,0.2,0.477,0.6,["SG","SF"]),
+  p('bronny-james','Bronny James','USC','pac12','era6',2024,4.8,2.8,2.1,0.8,0.2,0.477,0.6,["PG","SG"]),
   p('keion-brooks-jr-2','Keion Brooks Jr.','Washington','pac12','era6',2024,21.1,6.8,1.4,0.7,0.8,0.602,1.6,["SF","PF"]),
   p('kj-simpson-2','KJ Simpson','Colorado','pac12','era6',2024,19.7,5.8,4.9,1.6,0.1,0.613,2.1,["PG","SG"]),
   p('jaylon-tyson-2','Jaylon Tyson','California','pac12','era6',2024,19.6,6.8,3.5,1.2,0.5,0.563,1.6,["SF","PF"]),

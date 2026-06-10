@@ -68,6 +68,7 @@ const POS_OVERRIDES = {
   'Darington Hobson|New Mexico':           ['SF', 'PF'],
   'Marvin Bagley III|Duke':                ['PF', 'C'],
   'Aday Mara|Michigan':                    ['C'],
+  'Bronny James|USC':                      ['PG', 'SG'],
   'Bones Hyland|VCU':                      ['PG', 'SG'],
   'Justin Champagnie|Pittsburgh':          ['SG', 'SF'],
   'Keegan Murray|Iowa':                    ['SF', 'PF'],
