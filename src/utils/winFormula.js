@@ -122,7 +122,7 @@ export function getOffensiveRating(lineup) {
   if (!valid.length) return 0
   const { perfectOff } = getOffDefBenchmarks()
   const team = valid.reduce((s, p) => s + offPlayerScore(p), 0)
-  return Math.min(99, Math.max(1, Math.round((team / perfectOff) * 100)))
+  return Math.min(99, Math.max(1, Math.round((team / (perfectOff * 0.88)) * 100)))
 }
 
 export function getDefensiveRating(lineup) {
@@ -130,7 +130,7 @@ export function getDefensiveRating(lineup) {
   if (!valid.length) return 0
   const { perfectDef } = getOffDefBenchmarks()
   const team = valid.reduce((s, p) => s + defPlayerScore(p), 0)
-  return Math.min(99, Math.max(1, Math.round((team / (perfectDef * 0.65)) * 100)))
+  return Math.min(99, Math.max(1, Math.round((team / (perfectDef * 0.75)) * 100)))
 }
 
 export function getWinLabel(wins) {
