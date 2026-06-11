@@ -164,14 +164,21 @@ export default function WinResult({ lineup, onReset, onTournament }) {
       </div>
 
       <div className="result-actions">
-        {finalWins >= 22 && (
-          <button className="btn-tournament" onClick={onTournament}>
-            🏀 Continue to Tournament
+        {finalWins >= 22 ? (
+          <div className="btn-split-bar">
+            <button className="btn-split-bar__half btn-split-bar__play" onClick={onReset}>
+              ↺ Play Again
+            </button>
+            <div className="btn-split-bar__divider" />
+            <button className="btn-split-bar__half btn-split-bar__tourney" onClick={onTournament}>
+              🏀 Continue to Tournament
+            </button>
+          </div>
+        ) : (
+          <button className="btn-play-again" onClick={onReset}>
+            ↺ Play Again
           </button>
         )}
-        <button className="btn-play-again" onClick={onReset}>
-          ↺ Play Again
-        </button>
       </div>
 
     </div>
