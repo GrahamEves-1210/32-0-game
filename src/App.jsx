@@ -100,6 +100,7 @@ export default function App() {
   function handleP2NameConfirm() {
     const trimmed = p2NameInput.trim()
     setP2Name(trimmed)
+    setChallengeData(prev => prev ? { ...prev, p2_name: trimmed } : prev)
     closeCodeModal()
     if (challengeData?.result) {
       setPhase('headtohead')

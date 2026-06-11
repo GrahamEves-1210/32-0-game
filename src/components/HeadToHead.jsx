@@ -173,10 +173,11 @@ export default function HeadToHead({ code, challenge, p2Lineup, p2Wins, p2MatchP
   const [gameClock,     setGameClock]     = useState(720)
   const [youLiveStats,  setYouLiveStats]  = useState(new Array(5).fill(0))
   const [themLiveStats, setThemLiveStats] = useState(new Array(5).fill(0))
-  const floaterIdRef = useRef(0)
-  const timerRef     = useRef(null)
-  const clockRef     = useRef(null)
-  const startTimeRef = useRef(null)
+  const floaterIdRef  = useRef(0)
+  const timerRef      = useRef(null)
+  const clockRef      = useRef(null)
+  const startTimeRef  = useRef(null)
+  const clockDoneRef  = useRef(false)
 
   function addFloater(side, value) {
     if (!value) return
@@ -192,6 +193,7 @@ export default function HeadToHead({ code, challenge, p2Lineup, p2Wins, p2MatchP
       if (elapsed >= 20000) {
         setQuarter(4)
         setGameClock(0)
+        clockDoneRef.current = true
         clearInterval(clockRef.current)
         return
       }
@@ -216,52 +218,54 @@ export default function HeadToHead({ code, challenge, p2Lineup, p2Wins, p2MatchP
     const youPlayerBaskets  = buildPlayerBaskets(p2BoxScore)
     const themPlayerBaskets = buildPlayerBaskets(p1BoxScore)
     const timeline = buildTimeline(youPlayerBaskets, themPlayerBaskets)
-    const tickMs   = Math.max(200, Math.ceil(20000 / timeline.length))
+    const GAME_MS  = 20000
 
     let step = 0, youRunning = 0, themRunning = 0
+    const simStart = Date.now()
+
+    function finish(rWithBoxes) {
+      clearInterval(timerRef.current)
+      setResult(rWithBoxes)
+      setSimDone(true)
+      if (!alreadyDone) {
+        submitChallenge(code, {
+          lineup:   p2Lineup,
+          wins:     youWins,
+          matchPct: youMatchPct,
+          wonChamp: false,
+          result:   rWithBoxes,
+          p2Name,
+        }).catch(err => console.error('submitChallenge failed:', err))
+      }
+    }
 
     timerRef.current = setInterval(() => {
-      const event = timeline[step] ?? { side: null, playerIdx: -1, value: 0 }
-      step++
-      const done = step >= timeline.length
+      const elapsed  = Date.now() - simStart
+      const fraction = Math.min(1, elapsed / GAME_MS)
+      const target   = Math.floor(fraction * timeline.length)
 
-      if (event.side === 'you') {
-        youRunning += event.value
-        setYouScore(youRunning)
-        addFloater('you', event.value)
-        if (event.playerIdx >= 0) {
-          setYouLiveStats(s => s.map((v, i) => i === event.playerIdx ? v + event.value : v))
-        }
-      } else if (event.side === 'them') {
-        themRunning += event.value
-        setThemScore(themRunning)
-        addFloater('them', event.value)
-        if (event.playerIdx >= 0) {
-          setThemLiveStats(s => s.map((v, i) => i === event.playerIdx ? v + event.value : v))
+      while (step < target) {
+        const event = timeline[step++]
+        if (event.side === 'you') {
+          youRunning += event.value
+          setYouScore(youRunning)
+          addFloater('you', event.value)
+          if (event.playerIdx >= 0)
+            setYouLiveStats(s => s.map((v, i) => i === event.playerIdx ? v + event.value : v))
+        } else if (event.side === 'them') {
+          themRunning += event.value
+          setThemScore(themRunning)
+          addFloater('them', event.value)
+          if (event.playerIdx >= 0)
+            setThemLiveStats(s => s.map((v, i) => i === event.playerIdx ? v + event.value : v))
         }
       }
 
-      if (done) {
-        setYouScore(rBase.p2Score)
-        setThemScore(rBase.p1Score)
-        clearInterval(timerRef.current)
-
+      if (fraction >= 1) {
         const rWithBoxes = { ...rBase, p1BoxScore, p2BoxScore }
-        setResult(rWithBoxes)
-        setSimDone(true)
-
-        if (!alreadyDone) {
-          submitChallenge(code, {
-            lineup:   p2Lineup,
-            wins:     youWins,
-            matchPct: youMatchPct,
-            wonChamp: false,
-            result:   rWithBoxes,
-            p2Name,
-          }).catch(err => console.error('submitChallenge failed:', err))
-        }
+        finish(rWithBoxes)
       }
-    }, tickMs)
+    }, 50)
 
     return () => clearInterval(timerRef.current)
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -273,6 +277,17 @@ export default function HeadToHead({ code, challenge, p2Lineup, p2Wins, p2MatchP
     <div className="h2h-wrap">
       <button className="lb-close-btn" onClick={onReset}>← Back</button>
       <div className="h2h-title">⚔️ Head to Head</div>
+
+      {simDone && (
+        <div className="h2h-verdict h2h-verdict--win">
+          {(() => {
+            const winnerName = youWon
+              ? (p2Name || challenge.p2_name || 'You')
+              : (p1Name || challenge.p1_name || 'Friend')
+            return `🎉 ${winnerName} Wins!`
+          })()}
+        </div>
+      )}
 
       <div className="h2h-board">
         {/* You */}
@@ -320,17 +335,6 @@ export default function HeadToHead({ code, challenge, p2Lineup, p2Wins, p2MatchP
           </div>
         </div>
       </div>
-
-      {simDone && (
-        <div className="h2h-verdict h2h-verdict--win">
-          {(() => {
-            const winnerName = youWon
-              ? (p2Name || challenge.p2_name || 'You')
-              : (p1Name || challenge.p1_name || 'Friend')
-            return `🎉 ${winnerName} Wins!`
-          })()}
-        </div>
-      )}
 
       {simDone && result && (
         <div className="h2h-odds">

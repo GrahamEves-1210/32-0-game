@@ -31,6 +31,8 @@
   border: 1.5px solid var(--border);
   border-radius: var(--radius-sm);
   overflow: hidden;
+  margin-top: 4px;
+  margin-bottom: -3px;
 }
 
 .h2h-side {
@@ -290,68 +292,68 @@
 
 @media (max-width: 480px) {
   .h2h-wrap {
-    padding: 10px 8px 28px;
-    gap: 10px;
+    padding: 6px 8px 20px;
+    gap: 5px;
   }
 
   .h2h-title {
-    font-size: 22px;
+    font-size: 18px;
   }
 
   .h2h-side {
-    padding: 8px 4px;
+    padding: 5px 3px;
     gap: 1px;
   }
 
   .h2h-label {
-    font-size: 10px;
+    font-size: 9px;
   }
 
   .h2h-record {
-    font-size: 20px;
+    font-size: 16px;
   }
 
   .h2h-pct {
-    font-size: 10px;
+    font-size: 9px;
   }
 
   .h2h-score {
-    font-size: 48px;
-    min-width: 54px;
+    font-size: 42px;
+    min-width: 48px;
     letter-spacing: -1px;
   }
 
   .h2h-floater {
-    font-size: 18px;
-  }
-
-  .h2h-mid {
-    padding: 0 8px;
-    min-width: 52px;
-  }
-
-  .h2h-quarter {
     font-size: 14px;
   }
 
+  .h2h-mid {
+    padding: 0 6px;
+    min-width: 48px;
+  }
+
+  .h2h-quarter {
+    font-size: 12px;
+  }
+
   .h2h-clock {
-    font-size: 11px;
+    font-size: 9px;
   }
 
   .h2h-ball {
-    font-size: 18px;
+    font-size: 14px;
   }
 
   .h2h-result {
-    font-size: 28px;
+    font-size: 23px;
   }
 
   .h2h-verdict {
-    font-size: 22px;
+    font-size: 18px;
   }
 
   .h2h-lineups {
-    gap: 14px;
+    gap: 12px;
   }
 
   .h2h-lineups .result-roster-header,
