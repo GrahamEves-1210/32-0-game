@@ -223,9 +223,9 @@
   background: var(--surface2);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  font-size: 37px;
-  width: 58px;
-  height: 45px;
+  font-size: 34px;
+  width: 54px;
+  height: 43px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -242,10 +242,192 @@
   .btn-leaderboard {
     top: 4px;
     left: 4px;
-    font-size: 33px;
+    font-size: 34px;
+    width: 50px;
+    height: 42px;
+  }
+}
+
+/* Challenge entry button */
+.btn-challenge-entry {
+  position: fixed;
+  top: 16px;
+  left: 148px;
+  z-index: 200;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 22px;
+  width: 58px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.15s;
+  padding: 0;
+}
+
+.btn-challenge-entry:hover {
+  border-color: var(--text-dim);
+}
+
+@media (max-width: 768px) {
+  .btn-challenge-entry {
+    top: 4px;
+    left: 56px;
     width: 48px;
     height: 40px;
+    font-size: 19px;
   }
+}
+
+/* Code entry modal */
+.code-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: code-overlay-in 0.25s ease forwards;
+}
+
+@keyframes code-overlay-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.code-modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 28px 24px;
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  animation: code-modal-in 0.32s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes code-modal-in {
+  from { opacity: 0; transform: translateY(28px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);    }
+}
+
+[data-theme="dark"] .code-modal {
+  background: #1e3470;
+  border-color: #4060b0;
+}
+
+.code-modal-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.02em;
+}
+
+.code-modal-sub {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: -6px;
+}
+
+.code-modal-input {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-align: center;
+  text-transform: uppercase;
+  padding: 10px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface2);
+  color: var(--text);
+  width: 100%;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.code-modal-input:focus {
+  border-color: var(--orange);
+}
+
+.code-modal-err {
+  font-size: 13px;
+  color: #ef4444;
+  text-align: center;
+}
+
+.code-modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.code-modal-submit {
+  width: 100%;
+  padding: 11px;
+  background: var(--orange);
+  border: none;
+  border-radius: var(--radius-sm);
+  color: #fff;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.code-modal-submit:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.code-modal-cancel {
+  width: 100%;
+  padding: 9px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-dim);
+  font-size: 14px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.code-modal-cancel:hover {
+  border-color: var(--text-dim);
+}
+
+.challenge-accepted-modal {
+  text-align: center;
+  gap: 12px;
+}
+
+.challenge-accepted-icon {
+  font-size: 48px;
+  line-height: 1;
+}
+
+.challenge-accepted-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--orange);
+  letter-spacing: 0.03em;
+}
+
+.challenge-accepted-sub {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin: 0;
 }
 
 .app-footer {

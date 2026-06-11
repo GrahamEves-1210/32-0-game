@@ -1,0 +1,375 @@
+.h2h-wrap {
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 48px 16px 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  animation: h2h-in 0.25s ease;
+}
+
+@keyframes h2h-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.h2h-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.02em;
+}
+
+.h2h-board {
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  background: var(--surface2);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.h2h-side {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 20px 12px;
+  transition: background 0.3s;
+}
+
+.h2h-side--win {
+  background: color-mix(in srgb, #22c55e 12%, var(--surface2));
+}
+
+.h2h-side--loss {
+  opacity: 0.55;
+}
+
+.h2h-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.h2h-record {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+}
+
+.h2h-pct {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* Scorebox area with floaters */
+.h2h-scorebox-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 6px;
+  isolation: isolate;
+}
+
+.h2h-score {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 72px;
+  font-weight: 700;
+  color: var(--orange);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  min-width: 80px;
+  text-align: center;
+  letter-spacing: -2px;
+  transform: translateZ(0);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Floaters */
+.h2h-floaters {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.h2h-floater {
+  position: absolute;
+  top: 0;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.h2h-floater--you {
+  color: var(--orange);
+  right: -4px;
+  animation: h2h-floater-rise-p 0.7s ease-out forwards;
+}
+
+.h2h-floater--them {
+  color: var(--text-muted);
+  left: -4px;
+  animation: h2h-floater-rise-o 0.7s ease-out forwards;
+}
+
+@keyframes h2h-floater-rise-p {
+  0%   { transform: translateY(0);     opacity: 1; }
+  100% { transform: translateY(-48px); opacity: 0; }
+}
+
+@keyframes h2h-floater-rise-o {
+  0%   { transform: translateY(0);     opacity: 1; }
+  100% { transform: translateY(-48px); opacity: 0; }
+}
+
+.h2h-result {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  animation: h2h-pop-in 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+.h2h-result--win  { color: #22c55e; }
+.h2h-result--loss { color: #d93030; }
+
+@keyframes h2h-pop-in {
+  from { transform: scale(0.5); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+/* Middle column */
+.h2h-mid {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 0 16px;
+  flex-shrink: 0;
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  min-width: 72px;
+}
+
+.h2h-clock-group {
+  position: absolute;
+  top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.h2h-mid-vs {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+}
+
+.h2h-mid-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.h2h-quarter {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  line-height: 1;
+}
+
+.h2h-clock {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  width: 3.4em;
+  text-align: center;
+}
+
+.h2h-ball {
+  font-size: 26px;
+  line-height: 1;
+  animation: h2h-ball-bounce 0.45s ease-in-out infinite alternate;
+  display: block;
+}
+
+@keyframes h2h-ball-bounce {
+  from { transform: translateY(-3px); }
+  to   { transform: translateY(3px); }
+}
+
+/* Verdict */
+.h2h-verdict {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.h2h-verdict--win  { color: #22c55e; }
+.h2h-verdict--loss { color: var(--text-muted); }
+
+.h2h-odds {
+  font-size: 12px;
+  color: var(--text-muted);
+  letter-spacing: 0.03em;
+}
+
+/* Dark theme win side */
+[data-theme="dark"] .h2h-side--win {
+  background: color-mix(in srgb, #22c55e 18%, #253f8a);
+}
+
+/* Pending stat dashes during live sim */
+.h2h-stat--pending {
+  opacity: 0.3;
+}
+
+/* Roster tables below the board — 7-col grid (no TS%) and no tint */
+.h2h-lineups .result-roster-header,
+.h2h-lineups .result-roster-row {
+  grid-template-columns: 28px 1fr 28px 44px 44px 44px 44px;
+}
+
+.h2h-lineups .result-roster-header {
+  grid-template-columns: 28px 1fr 28px 44px 44px 44px 44px;
+}
+
+.h2h-lineups .result-roster-row {
+  background: none !important;
+}
+
+.h2h-lineups {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.h2h-roster-section {
+  width: 100%;
+}
+
+.h2h-roster-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+@media (max-width: 480px) {
+  .h2h-wrap {
+    padding: 10px 8px 28px;
+    gap: 10px;
+  }
+
+  .h2h-title {
+    font-size: 22px;
+  }
+
+  .h2h-side {
+    padding: 8px 4px;
+    gap: 1px;
+  }
+
+  .h2h-label {
+    font-size: 10px;
+  }
+
+  .h2h-record {
+    font-size: 20px;
+  }
+
+  .h2h-pct {
+    font-size: 10px;
+  }
+
+  .h2h-score {
+    font-size: 48px;
+    min-width: 54px;
+    letter-spacing: -1px;
+  }
+
+  .h2h-floater {
+    font-size: 18px;
+  }
+
+  .h2h-mid {
+    padding: 0 8px;
+    min-width: 52px;
+  }
+
+  .h2h-quarter {
+    font-size: 14px;
+  }
+
+  .h2h-clock {
+    font-size: 11px;
+  }
+
+  .h2h-ball {
+    font-size: 18px;
+  }
+
+  .h2h-result {
+    font-size: 28px;
+  }
+
+  .h2h-verdict {
+    font-size: 22px;
+  }
+
+  .h2h-lineups {
+    gap: 14px;
+  }
+
+  .h2h-lineups .result-roster-header,
+  .h2h-lineups .result-roster-row {
+    grid-template-columns: 24px 1fr 24px 36px 36px 36px 36px;
+    padding: 4px 8px;
+    font-size: 11px;
+  }
+
+  .h2h-lineups .rr-name {
+    font-size: 12px;
+  }
+
+  .h2h-lineups .rr-school {
+    font-size: 10px;
+  }
+
+  .h2h-lineups .rr-stat {
+    font-size: 12px;
+  }
+}

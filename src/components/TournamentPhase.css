@@ -607,6 +607,12 @@
   width: 100%;
 }
 
+.champ-challenge {
+  display: flex;
+  justify-content: center;
+  margin-top: 4px;
+}
+
 /* ── Basketball net ── */
 .ct-net-wrap {
   display: flex;

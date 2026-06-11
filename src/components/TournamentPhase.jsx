@@ -3,6 +3,7 @@ import { simulateTournament, winsToSeed, ROUND_NAMES } from '../utils/tournament
 import { getSpacingGrade, getConferenceDifficultyGrade, getOffensiveRating, getDefensiveRating } from '../utils/winFormula'
 import { getSchoolColor } from '../data/schoolColors'
 import { CONFERENCES, getGradeColor } from '../data/conferences'
+import ChallengeButton from './ChallengeButton'
 import './TournamentPhase.css'
 
 const SEED_SUFFIX = s => s === 1 ? '1st' : s === 2 ? '2nd' : s === 3 ? '3rd' : `${s}th`
@@ -462,6 +463,10 @@ export default function TournamentPhase({ wins, matchPct = 0, lineup = [], onRes
               <button className="btn-play-again btn-tourney-reset" onClick={onReset}>
                 ↺ Back to Menu
               </button>
+
+              <div className="champ-challenge">
+                <ChallengeButton lineup={lineup} wins={wins} matchPct={matchPct * 100} wonChamp={true} />
+              </div>
             </div>
           )}
 

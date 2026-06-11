@@ -107,6 +107,22 @@ export function winsToSeed(wins) {
   return 8
 }
 
+export function simulateHeadToHead(p1wins, p1matchPct, p2wins, p2matchPct) {
+  const p1Elo = winsToElo(p1wins, p1matchPct)
+  const p2Elo = winsToElo(p2wins, p2matchPct)
+  // Compress toward 50% so H2H feels competitive even between mismatched records
+  const rawP  = winProb(p1Elo, p2Elo)
+  const p     = 0.5 + (rawP - 0.5) * 0.6
+  const p1Won = Math.random() < p
+  const { w, l } = makeScore(p1Won ? p : 1 - p)
+  return {
+    p1Won,
+    p1Score:  p1Won ? w : l,
+    p2Score:  p1Won ? l : w,
+    p1WinPct: Math.round(p * 100),
+  }
+}
+
 export function simulateTournament(wins, matchPct = 0) {
   const playerSeed = winsToSeed(wins)
   const playerElo  = winsToElo(wins, matchPct)
@@ -128,11 +144,9 @@ export function simulateTournament(wins, matchPct = 0) {
     const oppElo  = seedToElo(oppSeed)
     const oppName = pickName(oppSeed)
 
-    const perfect     = matchPct >= 0.95
-    const nearPerfect = !perfect && matchPct >= 0.9
-    // 0.9915^6 ≈ 95% overall championship probability
-    const p           = perfect ? 1 : nearPerfect ? 0.9915 : winProb(playerElo, oppElo)
-    const playerWins  = perfect || Math.random() < p
+    const perfect    = matchPct >= 0.95
+    const p          = perfect ? 1 : winProb(playerElo, oppElo)
+    const playerWins = perfect || Math.random() < p
     const score      = makeScore(playerWins ? p : 1 - p)
 
     games.push({

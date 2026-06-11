@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { calculateWins, getWinLabel, getMatchPercentage, getSpacingGrade, getConferenceDifficultyGrade, getOffensiveRating, getDefensiveRating } from '../utils/winFormula'
 import { getSchoolColor } from '../data/schoolColors'
 import { CONFERENCES, getGradeColor } from '../data/conferences'
+import ChallengeButton from './ChallengeButton'
 import './WinResult.css'
 
 const POSITIONS = ['PG', 'SG', 'SF', 'PF', 'C']
@@ -73,11 +74,18 @@ export default function WinResult({ lineup, onReset, onTournament }) {
         <div className={`result-below-board ${done ? 'result-below-board--visible' : ''}`}>
           <div className="result-label" style={{ color: !isDark() && label.color === '#4ade80' ? '#16a34a' : label.color }}>{label.text}</div>
           <div className="result-match">{matchPct.toFixed(1)}% of perfect lineup</div>
+        </div>
+      </div>
+
+      {/* ── Stats badge + Challenge button row ── */}
+      {done && (
+        <div className="result-meta-row">
           <div className="result-stats-badge" data-on={statsOn}>
             {statsOn ? 'Stats: On' : 'Stats: Off'}
           </div>
+          <ChallengeButton lineup={lineup} wins={finalWins} matchPct={matchPct} wonChamp={false} />
         </div>
-      </div>
+      )}
 
       {/* ── Roster breakdown ── */}
       <div className="result-roster">
@@ -165,6 +173,7 @@ export default function WinResult({ lineup, onReset, onTournament }) {
           ↺ Play Again
         </button>
       </div>
+
     </div>
   )
 }

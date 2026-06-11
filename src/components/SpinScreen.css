@@ -372,6 +372,49 @@
   transform: scale(1.02);
 }
 
+.spin-action-row {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-h2h-entry {
+  position: absolute;
+  /* right edge sits 24px left of the spin button (80px half-width + 24px gap) */
+  right: calc(50% + 104px);
+  bottom: 0;
+  top: auto;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: var(--surface2);
+  font-size: 40px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.15s, transform 0.15s;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.btn-h2h-entry:hover {
+  border-color: var(--orange);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 520px) {
+  .btn-h2h-entry {
+    width: 70px;
+    height: 70px;
+    font-size: 32px;
+    right: calc(50% + 89px);
+    bottom: 0;
+    top: auto;
+  }
+}
+
 @media (max-width: 520px) {
   .spin-screen {
     gap: 10px;

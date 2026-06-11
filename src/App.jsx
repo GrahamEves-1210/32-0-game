@@ -3,9 +3,11 @@ import DraftPhase from './components/DraftPhase'
 import WinResult from './components/WinResult'
 import TournamentPhase from './components/TournamentPhase'
 import Leaderboard from './components/Leaderboard'
+import HeadToHead from './components/HeadToHead'
 import UsernamePrompt from './components/UsernamePrompt'
 import { calculateWins, getMatchPercentage } from './utils/winFormula'
 import { isTopTen, submitScore } from './lib/leaderboard'
+import { getChallenge } from './lib/challenges'
 import './App.css'
 
 // Phases: 'draft' → 'result' → 'tournament'
@@ -18,10 +20,19 @@ export default function App() {
   const [champReached, setChampReached] = useState(false)
   const [draftSubPhase, setDraftSubPhase] = useState('spin')
   const [darkMode,       setDarkMode]       = useState(() => localStorage.getItem('theme') === 'dark')
-  const [showLeaderboard, setShowLeaderboard] = useState(false)
-  const [pendingScore,    setPendingScore]    = useState(null)   // { score, wonChampionship, statsOn }
-  const [showPrompt,      setShowPrompt]      = useState(false)
-  const [statsOn,         setStatsOn]         = useState(true)
+  const [showLeaderboard,  setShowLeaderboard]  = useState(false)
+  const [pendingScore,     setPendingScore]     = useState(null)
+  const [showPrompt,       setShowPrompt]       = useState(false)
+  const [statsOn,          setStatsOn]          = useState(true)
+  const [challengeCode,    setChallengeCode]    = useState(null)
+  const [challengeData,    setChallengeData]    = useState(null)
+  const [showCodeEntry,    setShowCodeEntry]    = useState(false)
+  const [codeInput,        setCodeInput]        = useState('')
+  const [codeEntryStatus,  setCodeEntryStatus]  = useState('idle')
+  const [codeEntryStep,    setCodeEntryStep]    = useState('code')
+  const [p2NameInput,      setP2NameInput]      = useState('')
+  const [p2Name,           setP2Name]           = useState('')
+  const [challengeAccepted, setChallengeAccepted] = useState(false)
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light')
@@ -44,7 +55,42 @@ export default function App() {
   function handleDraftComplete(lineup, showStats) {
     setFinalLineup(lineup)
     setStatsOn(showStats)
-    setPhase('result')
+    setPhase(challengeCode ? 'headtohead' : 'result')
+  }
+
+  async function handleCodeSubmit() {
+    if (codeInput.length < 6 || codeEntryStatus === 'loading') return
+    setCodeEntryStatus('loading')
+    try {
+      const data = await getChallenge(codeInput)
+      setChallengeData(data)
+      setChallengeCode(codeInput.toUpperCase())
+      setCodeEntryStatus('idle')
+      if (data.result) {
+        // Already played — just watch the replay, no name needed
+        setShowCodeEntry(false)
+        setCodeInput('')
+        setPhase('headtohead')
+      } else {
+        setCodeEntryStep('name')
+      }
+    } catch {
+      setCodeEntryStatus('not-found')
+    }
+  }
+
+  function handleP2NameConfirm() {
+    const trimmed = p2NameInput.trim()
+    setP2Name(trimmed)
+    setShowCodeEntry(false)
+    setCodeInput('')
+    setCodeEntryStep('code')
+    setP2NameInput('')
+    if (challengeData?.result) {
+      setPhase('headtohead')
+    } else {
+      setChallengeAccepted(true)
+    }
   }
 
   async function handleGameEnd(wonChampionship) {
@@ -80,6 +126,14 @@ export default function App() {
     setShowPrompt(false)
     setPendingScore(null)
     setStatsOn(true)
+    setChallengeCode(null)
+    setChallengeData(null)
+    setCodeInput('')
+    setCodeEntryStatus('idle')
+    setCodeEntryStep('code')
+    setP2NameInput('')
+    setP2Name('')
+    setChallengeAccepted(false)
   }
 
   function handleTournament() {
@@ -92,6 +146,23 @@ export default function App() {
     <div className="app">
       <main className="app-main">
         <Leaderboard onClose={() => setShowLeaderboard(false)} />
+      </main>
+    </div>
+  )
+
+  if (phase === 'headtohead' && challengeData) return (
+    <div className="app">
+      <main className="app-main">
+        <HeadToHead
+          code={challengeCode}
+          challenge={challengeData}
+          p2Lineup={lineupArray.length ? lineupArray : null}
+          p2Wins={lineupArray.length ? calculateWins(lineupArray) : null}
+          p2MatchPct={lineupArray.length ? getMatchPercentage(lineupArray) : null}
+          p1Name={challengeData.p1_name ?? null}
+          p2Name={p2Name || null}
+          onReset={handleReset}
+        />
       </main>
     </div>
   )
@@ -113,6 +184,7 @@ export default function App() {
             onComplete={handleDraftComplete}
             onFirstSpinDone={() => setShowHeader(false)}
             onSubPhase={setDraftSubPhase}
+            onChallengeEntry={() => setShowCodeEntry(true)}
           />
         )}
 
@@ -174,6 +246,85 @@ export default function App() {
         >
           🏆
         </button>
+      )}
+
+
+      {showCodeEntry && (
+        <div className="code-overlay" onClick={() => { setShowCodeEntry(false); setCodeInput(''); setCodeEntryStatus('idle'); setCodeEntryStep('code'); setP2NameInput('') }}>
+          <div className="code-modal" onClick={e => e.stopPropagation()}>
+            {codeEntryStep === 'code' ? (
+              <>
+                <div className="code-modal-title">Enter Challenge Code</div>
+                <input
+                  className="code-modal-input"
+                  value={codeInput}
+                  onChange={e => setCodeInput(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6))}
+                  placeholder="ABC123"
+                  maxLength={6}
+                  autoFocus
+                  onKeyDown={e => e.key === 'Enter' && handleCodeSubmit()}
+                />
+                {codeEntryStatus === 'not-found' && <p className="code-modal-err">Code not found — check for typos</p>}
+                {codeEntryStatus === 'error'     && <p className="code-modal-err">Connection error — try again</p>}
+                <div className="code-modal-actions">
+                  <button
+                    className="code-modal-submit"
+                    onClick={handleCodeSubmit}
+                    disabled={codeInput.length < 6 || codeEntryStatus === 'loading'}
+                  >
+                    {codeEntryStatus === 'loading' ? 'Looking up…' : 'Accept Challenge / Replay Game'}
+                  </button>
+                  <button
+                    className="code-modal-cancel"
+                    onClick={() => { setShowCodeEntry(false); setCodeInput(''); setCodeEntryStatus('idle'); setCodeEntryStep('code'); setP2NameInput('') }}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="code-modal-title">What's Your Name?</div>
+                <input
+                  className="code-modal-input"
+                  value={p2NameInput}
+                  onChange={e => setP2NameInput(e.target.value.slice(0, 12))}
+                  placeholder="Your name"
+                  maxLength={12}
+                  autoFocus
+                  autoComplete="off"
+                  spellCheck={false}
+                  onKeyDown={e => e.key === 'Enter' && p2NameInput.trim() && handleP2NameConfirm()}
+                />
+                <div className="code-modal-actions">
+                  <button
+                    className="code-modal-submit"
+                    onClick={handleP2NameConfirm}
+                    disabled={!p2NameInput.trim()}
+                  >
+                    Let's Go!
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
+      {challengeAccepted && (
+        <div className="code-overlay" onClick={() => setChallengeAccepted(false)}>
+          <div className="code-modal challenge-accepted-modal" onClick={e => e.stopPropagation()}>
+            <div className="challenge-accepted-icon">⚔️</div>
+            <div className="challenge-accepted-title">Challenge Accepted</div>
+            <p className="challenge-accepted-sub">Build your lineup — then face off head to head!</p>
+            <button
+              className="code-modal-submit"
+              onClick={() => setChallengeAccepted(false)}
+            >
+              Build Your Lineup
+            </button>
+          </div>
+        </div>
       )}
 
       {showPrompt && pendingScore && (

@@ -83,7 +83,7 @@ function pickReroll(conferences, eras, lockedConf, lockedEra, excludeConf, exclu
   return pickValidCombo(conferences, eras)
 }
 
-export default function SpinScreen({ conferences, eras, onChoose, lockedConf = null, lockedEra = null, excludeConf = null, excludeEra = null }) {
+export default function SpinScreen({ conferences, eras, onChoose, lockedConf = null, lockedEra = null, excludeConf = null, excludeEra = null, onChallengeEntry = null }) {
   const isReroll = lockedConf != null || lockedEra != null
   const [spinning, setSpinning] = useState(isReroll)
   const [confIdx,  setConfIdx]  = useState(() => lockedConf ? conferences.indexOf(lockedConf) : 0)
@@ -214,17 +214,24 @@ export default function SpinScreen({ conferences, eras, onChoose, lockedConf = n
       </div>
 
       {!results ? (
-        <button
-          className={`btn-spin-main ${spinning ? 'btn-spin-main--rolling' : ''}`}
-          onPointerDown={isReroll ? undefined : startSpin}
-          onPointerUp={isReroll ? stopSpin : stopSpin}
-          onClick={isReroll ? stopSpin : undefined}
-          onPointerLeave={isReroll ? undefined : stopSpin}
-          aria-label={spinning ? 'Spinning…' : 'Spin'}
-        >
-          <span className="btn-ball-wrap"><span className="btn-ball-icon">🏀</span></span>
-          <span className="btn-spin-text">SPIN</span>
-        </button>
+        <div className="spin-action-row">
+          {onChallengeEntry && (
+            <button className="btn-h2h-entry" onClick={onChallengeEntry} title="Enter Challenge Code">
+              ⚔️
+            </button>
+          )}
+          <button
+            className={`btn-spin-main ${spinning ? 'btn-spin-main--rolling' : ''}`}
+            onPointerDown={isReroll ? undefined : startSpin}
+            onPointerUp={isReroll ? stopSpin : stopSpin}
+            onClick={isReroll ? stopSpin : undefined}
+            onPointerLeave={isReroll ? undefined : stopSpin}
+            aria-label={spinning ? 'Spinning…' : 'Spin'}
+          >
+            <span className="btn-ball-wrap"><span className="btn-ball-icon">🏀</span></span>
+            <span className="btn-spin-text">SPIN</span>
+          </button>
+        </div>
       ) : (
         <div className="spin-result-card">
           <div
