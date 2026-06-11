@@ -170,7 +170,7 @@ export default function HeadToHead({ code, challenge, p2Lineup, p2Wins, p2MatchP
   const [themScore,     setThemScore]     = useState(0)
   const [floaters,      setFloaters]      = useState([])
   const [quarter,       setQuarter]       = useState(1)
-  const [gameClock,     setGameClock]     = useState(720)
+  const [gameClock,     setGameClock]     = useState(1200)
   const [youLiveStats,  setYouLiveStats]  = useState(new Array(5).fill(0))
   const [themLiveStats, setThemLiveStats] = useState(new Array(5).fill(0))
   const floaterIdRef  = useRef(0)
@@ -191,16 +191,16 @@ export default function HeadToHead({ code, challenge, p2Lineup, p2Wins, p2MatchP
     clockRef.current = setInterval(() => {
       const elapsed = Date.now() - startTimeRef.current
       if (elapsed >= 20000) {
-        setQuarter(4)
+        setQuarter(2)
         setGameClock(0)
         clockDoneRef.current = true
         clearInterval(clockRef.current)
         return
       }
-      const qIdx  = Math.min(3, Math.floor(elapsed / 5000))
-      const qFrac = (elapsed % 5000) / 5000
-      setQuarter(qIdx + 1)
-      setGameClock(Math.max(0, Math.round(720 * (1 - qFrac))))
+      const halfIdx  = Math.min(1, Math.floor(elapsed / 10000))
+      const halfFrac = (elapsed % 10000) / 10000
+      setQuarter(halfIdx + 1)
+      setGameClock(Math.max(0, Math.round(1200 * (1 - halfFrac))))
     }, 50)
     return () => clearInterval(clockRef.current)
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -308,7 +308,7 @@ export default function HeadToHead({ code, challenge, p2Lineup, p2Wins, p2MatchP
         {/* Middle */}
         <div className="h2h-mid">
           <div className="h2h-clock-group">
-            <div className="h2h-quarter">Q{quarter}</div>
+            <div className="h2h-quarter">{quarter === 1 ? '1st' : '2nd'}</div>
             <div className="h2h-clock">{formatClock(gameClock)}</div>
           </div>
           {!simDone && <span className="h2h-ball">🏀</span>}

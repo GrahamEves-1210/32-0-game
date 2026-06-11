@@ -68,7 +68,7 @@
 
 .lb-row {
   display: grid;
-  grid-template-columns: 36px 1fr auto auto auto;
+  grid-template-columns: 36px 1fr auto auto;
   align-items: center;
   gap: 10px;
   padding: 10px 14px;
@@ -130,12 +130,6 @@
   text-align: right;
 }
 
-.lb-date {
-  font-size: 11px;
-  color: var(--text-muted);
-  min-width: 52px;
-  text-align: right;
-}
 
 .lb-row--empty .lb-name,
 .lb-row--empty .lb-score {
@@ -199,7 +193,4 @@
     padding: 8px 10px;
   }
 
-  .lb-date {
-    display: none;
-  }
 }

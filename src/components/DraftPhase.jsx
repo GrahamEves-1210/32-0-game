@@ -14,9 +14,10 @@ const POS_COLOR = {
 
 function mergePos(positions) {
   const key = positions.join('/')
-  if (key === 'PG/SG')    return [{ label: 'G',  color: POS_COLOR.PG }]
-  if (key === 'SF/PF')    return [{ label: 'F',  color: POS_COLOR.SF }]
-  if (key === 'PG/SF/PF') return [{ label: 'PG', color: POS_COLOR.PG }, { label: 'F', color: POS_COLOR.SF }]
+  if (key === 'PG/SG')         return [{ label: 'G',   color: POS_COLOR.PG }]
+  if (key === 'SF/PF')         return [{ label: 'F',   color: POS_COLOR.SF }]
+  if (key === 'PG/SF/PF')      return [{ label: 'PG',  color: POS_COLOR.PG }, { label: 'F', color: POS_COLOR.SF }]
+  if (key === 'PG/SG/SF/PF')   return [{ label: 'G/F', color: POS_COLOR.SG }]
   return positions.map(p => ({ label: p, color: POS_COLOR[p] }))
 }
 

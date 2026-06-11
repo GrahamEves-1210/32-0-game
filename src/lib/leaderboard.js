@@ -7,6 +7,7 @@ export async function fetchTop10(statsOn = true) {
     .eq('stats_on', statsOn)
     .order('won_championship', { ascending: false })
     .order('score', { ascending: false })
+    .order('created_at', { ascending: true })
     .limit(10)
   return data ?? []
 }
@@ -14,10 +15,11 @@ export async function fetchTop10(statsOn = true) {
 export async function isTopTen(score, wonChampionship, statsOn = true) {
   const { data } = await supabase
     .from('leaderboard')
-    .select('score, won_championship')
+    .select('score, won_championship, created_at')
     .eq('stats_on', statsOn)
     .order('won_championship', { ascending: false })
     .order('score', { ascending: false })
+    .order('created_at', { ascending: true })
     .limit(10)
   if (!data || data.length < 10) return true
   const tenth = data[data.length - 1]

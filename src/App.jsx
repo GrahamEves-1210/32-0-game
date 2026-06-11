@@ -33,6 +33,7 @@ export default function App() {
   const [p2NameInput,      setP2NameInput]      = useState('')
   const [p2Name,           setP2Name]           = useState('')
   const [challengeAccepted, setChallengeAccepted] = useState(false)
+  const [showMenu,          setShowMenu]          = useState(false)
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light')
@@ -235,16 +236,42 @@ export default function App() {
         </div>
       )}
 
-      <button
-        className={`btn-theme-toggle ${darkMode ? 'btn-theme-toggle--dark' : ''}`}
-        onClick={() => setDarkMode(d => !d)}
-        title="Toggle theme"
-        aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
-      >
-        <span className="toggle-icon toggle-icon--moon">🌙</span>
-        <span className="toggle-knob" />
-        <span className="toggle-icon toggle-icon--sun">☀️</span>
-      </button>
+      <div className="app-menu-wrap">
+        <button
+          className="btn-menu-trigger"
+          onClick={() => setShowMenu(m => !m)}
+          aria-label="Menu"
+        >
+          ☰
+        </button>
+        {showMenu && (
+          <>
+            <div className="menu-backdrop" onClick={() => setShowMenu(false)} />
+            <div className="app-menu-dropdown">
+              <button
+                className="menu-item"
+                onClick={() => setDarkMode(d => !d)}
+              >
+                <span className={`menu-toggle-pill ${darkMode ? 'menu-toggle-pill--dark' : ''}`}>
+                  <span className="toggle-icon toggle-icon--moon">🌙</span>
+                  <span className="toggle-knob" />
+                  <span className="toggle-icon toggle-icon--sun">☀️</span>
+                </span>
+                {darkMode ? 'Light Mode' : 'Dark Mode'}
+              </button>
+              <a
+                className="menu-item menu-item--link"
+                href="https://buymeacoffee.com/32and0"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setShowMenu(false)}
+              >
+                ☕ Tip Jar
+              </a>
+            </div>
+          </>
+        )}
+      </div>
 
       {phase === 'draft' && (
         <button className="btn-reset" onClick={handleReset}>↺ Start Over</button>

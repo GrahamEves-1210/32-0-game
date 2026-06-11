@@ -129,82 +129,170 @@
   }
 }
 
-/* Theme toggle switch */
-.btn-theme-toggle {
+/* Menu trigger + dropdown */
+.app-menu-wrap {
   position: fixed;
   top: 16px;
-  left: 16px;
+  right: 16px;
+  left: auto;
   z-index: 200;
-  width: 56px;
-  height: 28px;
+}
+
+.btn-menu-trigger {
+  width: 54px;
+  height: 43px;
+  border-radius: var(--radius-sm);
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.15s;
+  padding: 0;
+}
+
+.btn-menu-trigger:hover {
+  border-color: var(--text-dim);
+}
+
+.menu-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 199;
+}
+
+.app-menu-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: auto;
+  right: 0;
+  z-index: 201;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  min-width: 198px;
+  overflow: hidden;
+  animation: menu-in 0.12s ease;
+}
+
+@keyframes menu-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.menu-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+  text-decoration: none;
+  transition: background 0.1s, color 0.1s;
+}
+
+.menu-item:hover {
+  background: var(--surface);
+  color: var(--text);
+}
+
+.menu-item + .menu-item {
+  border-top: 1px solid var(--border);
+}
+
+.menu-item--link {
+  color: #7a5500;
+  background: #FFDD00;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.menu-item--link:hover {
+  color: #5a3d00;
+  background: #f0bc20;
+}
+
+/* Inline toggle pill inside the menu */
+.menu-toggle-pill {
+  position: relative;
+  width: 40px;
+  height: 22px;
   border-radius: 999px;
   background: #c8dff5;
   border: 1.5px solid rgba(255,255,255,0.7);
-  padding: 0;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
-  cursor: pointer;
-  transition: background 0.25s;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
 }
 
-.btn-theme-toggle--dark {
+.menu-toggle-pill--dark {
   background: #1e3a7a;
   border-color: rgba(255,255,255,0.2);
 }
 
-.toggle-knob {
+.menu-toggle-pill .toggle-knob {
   position: absolute;
-  width: 22px;
-  height: 22px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
-  background: #ffffff;
+  background: #fff;
   box-shadow: 0 1px 4px rgba(0,0,0,0.25);
-  left: 3px;
+  left: 2px;
   transition: left 0.25s cubic-bezier(0.34,1.3,0.64,1);
 }
 
-.btn-theme-toggle--dark .toggle-knob {
-  left: 31px;
+.menu-toggle-pill--dark .toggle-knob {
+  left: 20px;
 }
 
 .toggle-icon {
   position: absolute;
-  font-size: 13px;
+  font-size: 10px;
   line-height: 1;
   transition: opacity 0.2s;
   pointer-events: none;
 }
 
 .toggle-icon--moon {
-  right: 6px;
+  right: 4px;
   opacity: 1;
 }
 
 .toggle-icon--sun {
-  left: 6px;
+  left: 4px;
   opacity: 0;
 }
 
-.btn-theme-toggle--dark .toggle-icon--moon {
+.menu-toggle-pill--dark .toggle-icon--moon {
   opacity: 0;
 }
 
-.btn-theme-toggle--dark .toggle-icon--sun {
+.menu-toggle-pill--dark .toggle-icon--sun {
   opacity: 1;
 }
 
 /* Reset button */
 .btn-reset {
   position: fixed;
-  top: 16px;
-  right: 16px;
+  bottom: 24px;
+  right: 24px;
+  top: auto;
   background: var(--surface2);
   border: 1px solid var(--border);
   color: var(--text-dim);
-  padding: 14px 28px;
+  padding: 16px 36px;
   border-radius: var(--radius-sm);
-  font-size: 16px;
+  font-size: 19px;
+  font-weight: 600;
   transition: all 0.15s;
   z-index: 100;
 }
@@ -218,7 +306,7 @@
 .btn-leaderboard {
   position: fixed;
   top: 16px;
-  left: 80px;
+  left: 16px;
   z-index: 200;
   background: var(--surface2);
   border: 1px solid var(--border);
@@ -483,11 +571,21 @@
 }
 
 @media (max-width: 768px) {
-  .btn-theme-toggle {
+  .app-menu-wrap {
     top: 4px;
-    right: 4px;
     left: auto;
-    bottom: auto;
+    right: 4px;
+  }
+
+  .app-menu-dropdown {
+    left: auto;
+    right: 0;
+  }
+
+  .btn-menu-trigger {
+    width: 50px;
+    height: 42px;
+    font-size: 20px;
   }
 
   .btn-reset {

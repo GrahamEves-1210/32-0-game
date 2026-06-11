@@ -4,15 +4,6 @@ import './Leaderboard.css'
 
 const MEDAL = ['🥇', '🥈', '🥉']
 
-function timeAgo(iso) {
-  const diff = Date.now() - new Date(iso).getTime()
-  const days = Math.floor(diff / 86400000)
-  if (days === 0) return 'Today'
-  if (days === 1) return 'Yesterday'
-  if (days < 7)  return `${days}d ago`
-  if (days < 30) return `${Math.floor(days / 7)}w ago`
-  return `${Math.floor(days / 30)}mo ago`
-}
 
 export default function Leaderboard({ onClose }) {
   const [tab,     setTab]     = useState('on')
@@ -67,7 +58,6 @@ export default function Leaderboard({ onClose }) {
                 )}
                 {empty && <span />}
                 <span className="lb-score">{empty ? '—' : `${Number(e.score).toFixed(1)}%`}</span>
-                <span className="lb-date">{empty ? '' : timeAgo(e.created_at)}</span>
               </div>
             )
           })}
