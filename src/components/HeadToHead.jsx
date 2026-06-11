@@ -258,7 +258,7 @@ export default function HeadToHead({ code, challenge, p2Lineup, p2Wins, p2MatchP
             wonChamp: false,
             result:   rWithBoxes,
             p2Name,
-          }).catch(() => {})
+          }).catch(err => console.error('submitChallenge failed:', err))
         }
       }
     }, tickMs)

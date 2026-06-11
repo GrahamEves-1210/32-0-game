@@ -430,6 +430,23 @@
   margin: 0;
 }
 
+.h2h-challenge-banner {
+  width: 100%;
+  max-width: 1100px;
+  text-align: center;
+  padding: 8px 16px;
+  background: color-mix(in srgb, var(--orange) 12%, var(--surface));
+  border: 1px solid var(--orange);
+  border-radius: var(--radius-sm);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--orange);
+  margin-bottom: 8px;
+  animation: fade-up 0.3s ease;
+}
+
 .app-footer {
   text-align: center;
   padding: 24px 0 32px;

@@ -552,7 +552,11 @@
   .result-label {
     font-size: 14px;
     padding: 3px 12px;
-    margin-top: 10px;
+    margin-top: 4px;
+  }
+
+  .result-meta-row {
+    gap: 8px;
   }
 
   /* Hide CFG on mobile */

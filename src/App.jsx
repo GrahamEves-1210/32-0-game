@@ -58,6 +58,26 @@ export default function App() {
     setPhase(challengeCode ? 'headtohead' : 'result')
   }
 
+  function openCodeModal() {
+    document.body.style.overflow = 'hidden'
+    document.body.style.position = 'fixed'
+    document.body.style.width = '100%'
+    setShowCodeEntry(true)
+  }
+
+  function closeCodeModal() {
+    document.body.style.overflow = ''
+    document.body.style.position = ''
+    document.body.style.width = ''
+    if (document.activeElement) document.activeElement.blur()
+    window.scrollTo(0, 0)
+    setShowCodeEntry(false)
+    setCodeInput('')
+    setCodeEntryStatus('idle')
+    setCodeEntryStep('code')
+    setP2NameInput('')
+  }
+
   async function handleCodeSubmit() {
     if (codeInput.length < 6 || codeEntryStatus === 'loading') return
     setCodeEntryStatus('loading')
@@ -67,9 +87,7 @@ export default function App() {
       setChallengeCode(codeInput.toUpperCase())
       setCodeEntryStatus('idle')
       if (data.result) {
-        // Already played — just watch the replay, no name needed
-        setShowCodeEntry(false)
-        setCodeInput('')
+        closeCodeModal()
         setPhase('headtohead')
       } else {
         setCodeEntryStep('name')
@@ -82,14 +100,9 @@ export default function App() {
   function handleP2NameConfirm() {
     const trimmed = p2NameInput.trim()
     setP2Name(trimmed)
-    setShowCodeEntry(false)
-    setCodeInput('')
-    setCodeEntryStep('code')
-    setP2NameInput('')
+    closeCodeModal()
     if (challengeData?.result) {
       setPhase('headtohead')
-    } else {
-      setChallengeAccepted(true)
     }
   }
 
@@ -179,13 +192,20 @@ export default function App() {
 
       <main className="app-main">
         {phase === 'draft' && (
-          <DraftPhase
-            key={resetKey}
-            onComplete={handleDraftComplete}
-            onFirstSpinDone={() => setShowHeader(false)}
-            onSubPhase={setDraftSubPhase}
-            onChallengeEntry={() => setShowCodeEntry(true)}
-          />
+          <>
+            {challengeCode && challengeData && (
+              <div className="h2h-challenge-banner">
+                ⚔️ Challenging {challengeData.p1_name || 'a friend'} — build your lineup!
+              </div>
+            )}
+            <DraftPhase
+              key={resetKey}
+              onComplete={handleDraftComplete}
+              onFirstSpinDone={() => setShowHeader(false)}
+              onSubPhase={setDraftSubPhase}
+              onChallengeEntry={openCodeModal}
+            />
+          </>
         )}
 
         {phase === 'result' && (
@@ -250,7 +270,7 @@ export default function App() {
 
 
       {showCodeEntry && (
-        <div className="code-overlay" onClick={() => { setShowCodeEntry(false); setCodeInput(''); setCodeEntryStatus('idle'); setCodeEntryStep('code'); setP2NameInput('') }}>
+        <div className="code-overlay" onClick={closeCodeModal}>
           <div className="code-modal" onClick={e => e.stopPropagation()}>
             {codeEntryStep === 'code' ? (
               <>
@@ -276,7 +296,7 @@ export default function App() {
                   </button>
                   <button
                     className="code-modal-cancel"
-                    onClick={() => { setShowCodeEntry(false); setCodeInput(''); setCodeEntryStatus('idle'); setCodeEntryStep('code'); setP2NameInput('') }}
+                    onClick={closeCodeModal}
                   >
                     Cancel
                   </button>
@@ -307,22 +327,6 @@ export default function App() {
                 </div>
               </>
             )}
-          </div>
-        </div>
-      )}
-
-      {challengeAccepted && (
-        <div className="code-overlay" onClick={() => setChallengeAccepted(false)}>
-          <div className="code-modal challenge-accepted-modal" onClick={e => e.stopPropagation()}>
-            <div className="challenge-accepted-icon">⚔️</div>
-            <div className="challenge-accepted-title">Challenge Accepted</div>
-            <p className="challenge-accepted-sub">Build your lineup — then face off head to head!</p>
-            <button
-              className="code-modal-submit"
-              onClick={() => setChallengeAccepted(false)}
-            >
-              Build Your Lineup
-            </button>
           </div>
         </div>
       )}
