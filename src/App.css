@@ -135,7 +135,7 @@
   top: 16px;
   right: 16px;
   left: auto;
-  z-index: 200;
+  z-index: 10000;
 }
 
 .btn-menu-trigger {
@@ -160,7 +160,7 @@
 .menu-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 199;
+  z-index: 9999;
 }
 
 .app-menu-dropdown {
@@ -168,7 +168,7 @@
   top: calc(100% + 6px);
   left: auto;
   right: 0;
-  z-index: 201;
+  z-index: 10001;
   background: var(--surface2);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
@@ -192,8 +192,10 @@
   background: none;
   border: none;
   color: var(--text-dim);
-  font-size: 15px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 17px;
   font-weight: 600;
+  letter-spacing: 0.04em;
   cursor: pointer;
   text-align: left;
   text-decoration: none;
@@ -585,7 +587,7 @@
   .btn-menu-trigger {
     width: 50px;
     height: 42px;
-    font-size: 20px;
+    font-size: 26px;
   }
 
   .btn-reset {

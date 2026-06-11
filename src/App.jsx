@@ -260,13 +260,17 @@ export default function App() {
                 {darkMode ? 'Light Mode' : 'Dark Mode'}
               </button>
               <a
-                className="menu-item menu-item--link"
-                href="https://buymeacoffee.com/32and0"
+                href="https://www.buymeacoffee.com/32and0"
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setShowMenu(false)}
+                style={{ display: 'block', borderTop: '1px solid var(--border)', background: 'linear-gradient(to right, #FFDD00 50%, #f0bc20 100%)' }}
               >
-                ☕ Tip Jar
+                <img
+                  src="https://img.buymeacoffee.com/button-api/?text=Tip Jar&emoji=☕&slug=32and0&button_colour=FFDD00&font_colour=000000&font_family=Lato&outline_colour=000000&coffee_colour=ffffff"
+                  alt="Tip Jar"
+                  style={{ display: 'block', width: '100%', height: 'auto', borderRadius: '0 0 4px 4px' }}
+                />
               </a>
             </div>
           </>
