@@ -6,8 +6,16 @@
       "Bash(npx vite *)",
       "Bash(node -e ' *)",
       "WebSearch",
+      "Bash(git:*)",
+      "Bash(npm:*)",
+      "Bash(python:*)",
+      "Bash(mkdir:*)",
       "WebFetch(domain:en.wikipedia.org)",
       "Bash(node --input-type=module)"
+    ],
+      "deny": [
+      "Bash(sudo:*)",
+      "Bash(rm -rf /*)"
     ]
   }
 }

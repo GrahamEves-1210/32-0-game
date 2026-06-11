@@ -6,6 +6,10 @@
   padding-top: calc(115px + env(safe-area-inset-top));
 }
 
+.draft-phase--chrome-challenge {
+  padding-top: calc(125px + env(safe-area-inset-top));
+}
+
 .draft-header-logo {
   font-family: 'Barlow Condensed', sans-serif;
   font-size: 42px;
@@ -20,27 +24,39 @@
   color: var(--orange);
 }
 
-/* ── Pick tracker header ── */
-.draft-phase-header {
+/* ── Pick tracker chrome (fixed wrapper) ── */
+.chrome-stack {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 90;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Pick tracker header ── */
+.draft-phase-header {
   background: rgba(255,255,255,0.22);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   padding: calc(5px + env(safe-area-inset-top)) 24px 8px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   gap: 16px;
   flex-wrap: nowrap;
-  align-items: flex-start;
   padding-right: 120px;
   border-bottom: 1px solid var(--border);
-  border-radius: 0 0 16px 16px;
   overflow: visible;
+}
+
+.chrome-stack:not(:has(.draft-challenge-bar)) .draft-phase-header {
+  border-radius: 0 0 16px 16px;
+}
+
+.chrome-stack:has(.draft-challenge-bar) .draft-challenge-bar {
+  border-radius: 0 0 16px 16px;
 }
 
 .draft-header-right {
@@ -173,6 +189,21 @@
   color: var(--text-dim);
   text-transform: uppercase;
   letter-spacing: 0.12em;
+}
+
+/* ── Challenge banner below chrome header ── */
+.draft-challenge-bar {
+  text-align: center;
+  padding: 5px 16px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--orange);
+  background: color-mix(in srgb, var(--orange) 10%, rgba(255,255,255,0.22));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid color-mix(in srgb, var(--orange) 35%, transparent);
 }
 
 /* ── Body ── */
@@ -382,6 +413,10 @@
     padding-top: calc(120px + env(safe-area-inset-top));
   }
 
+  .draft-phase--chrome-challenge {
+    padding-top: calc(116px + env(safe-area-inset-top));
+  }
+
   .draft-phase-header {
     flex-wrap: wrap;
     justify-content: center;
@@ -410,6 +445,10 @@
 @media (max-width: 480px) {
   .draft-phase--chrome {
     padding-top: calc(100px + env(safe-area-inset-top));
+  }
+
+  .draft-phase--chrome-challenge {
+    padding-top: calc(112px + env(safe-area-inset-top));
   }
 
   .draft-phase-header {

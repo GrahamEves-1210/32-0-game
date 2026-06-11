@@ -1,11 +1,14 @@
 import './EraPicker.css'
 
 const ERA_DESCRIPTIONS = {
+  era0: 'Mourning, Hardaway, Grant Hill, Shaq',
   era1: 'Iverson, Duncan, Carmelo, KD',
-  era2: 'Kyrie, Kemba, Kawhi, Zion',
-  era3: 'Grayson, Zion, Trae, Lonzo',
-  era4: 'Zach Edey, Cooper Flagg, Caitlin Clark',
-  era5: 'Current Season',
+  era2: 'Jay Williams, Boozer, Chris Paul',
+  era3: 'Iverson, Duncan, Carmelo, KD',
+  era4: 'Kyrie, Kemba, Kawhi, Zion',
+  era5: 'Grayson, Zion, Trae, Lonzo',
+  era6: 'Zach Edey, Cooper Flagg, Caitlin Clark',
+  era7: 'Current Season',
 }
 
 export default function EraPicker({ conference, eras, onChoose }) {

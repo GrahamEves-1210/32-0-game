@@ -24,11 +24,16 @@ function Reel({ label, current, accentKey, subKey, spinning, landed, accentColor
   )
 }
 
-const GRADE_WEIGHTS = { A: 6, B: 4, C: 1 }
-const EMPTY_COMBOS  = new Set(['aac|era1', 'aac|era2'])
+const GRADE_WEIGHTS = { A: 6, B: 4.44, C: 0.878 }
+const EMPTY_COMBOS  = new Set([
+  'aac|era0', 'aac|era1', 'aac|era2', 'aac|era3', 'aac|era4',
+  'big12|era0',
+  'mwc|era0', 'mwc|era1',
+  'cusa|era0',
+])
 
 // Boost only the exact conf+era combos that contain Steph, Ja, or Reggie Williams
-const COMBO_BOOSTS  = { 'southern|era1': 3, 'ovc|era3': 3, 'bigsouth|era1': 3 }
+const COMBO_BOOSTS  = { 'southern|era3': 3, 'ovc|era5': 3, 'bigsouth|era3': 3 }
 
 function weightedRandomConf(conferences) {
   const weights = conferences.map(c => GRADE_WEIGHTS[c.grade] ?? 1)

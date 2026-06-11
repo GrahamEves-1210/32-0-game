@@ -1,10 +1,13 @@
 export const ERAS = [
-  { id: 'era1', label: '2005–2008', short: '05–08', start: 2005, end: 2008, static: true },
-  { id: 'era2', label: '2009–2012', short: '09–12', start: 2009, end: 2012, static: true },
-  { id: 'era3', label: '2013–2016', short: '13–16', start: 2013, end: 2016, static: true },
-  { id: 'era4', label: '2017–2020', short: '17–20', start: 2017, end: 2020, static: true },
-  { id: 'era5', label: '2021–2023', short: '21–23', start: 2021, end: 2023, static: true },
-  { id: 'era6', label: '2024–2026', short: '24–26', start: 2024, end: 2026, static: false },
+  { id: 'era0', label: '1990–1994', short: '90–94', start: 1990, end: 1994, static: true },
+  { id: 'era1', label: '1995–1999', short: '95–99', start: 1995, end: 1999, static: true },
+  { id: 'era2', label: '2000–2004', short: '00–04', start: 2000, end: 2004, static: true },
+  { id: 'era3', label: '2005–2008', short: '05–08', start: 2005, end: 2008, static: true },
+  { id: 'era4', label: '2009–2012', short: '09–12', start: 2009, end: 2012, static: true },
+  { id: 'era5', label: '2013–2016', short: '13–16', start: 2013, end: 2016, static: true },
+  { id: 'era6', label: '2017–2020', short: '17–20', start: 2017, end: 2020, static: true },
+  { id: 'era7', label: '2021–2023', short: '21–23', start: 2021, end: 2023, static: true },
+  { id: 'era8', label: '2024–2026', short: '24–26', start: 2024, end: 2026, static: false },
 ]
 
 // A = major (blue) · B = mid-major (green) · C = low-major (gold)

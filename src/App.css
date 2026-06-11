@@ -521,6 +521,8 @@
 }
 
 .h2h-challenge-banner {
+  position: relative;
+  z-index: 95;
   width: 100%;
   max-width: 1100px;
   text-align: center;
@@ -536,6 +538,7 @@
   margin-bottom: 8px;
   animation: fade-up 0.3s ease;
 }
+
 
 .app-footer {
   text-align: center;

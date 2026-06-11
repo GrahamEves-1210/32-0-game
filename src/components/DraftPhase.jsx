@@ -27,7 +27,7 @@ function getInitials(name) {
   return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
 }
 
-export default function DraftPhase({ onComplete, onFirstSpinDone, onSubPhase, onChallengeEntry }) {
+export default function DraftPhase({ onComplete, onFirstSpinDone, onSubPhase, onChallengeEntry, inChallenge, challengeLabel }) {
   const [lineup,        setLineup]        = useState({ PG: null, SG: null, SF: null, PF: null, C: null })
   const [focusedPlayer, setFocusedPlayer] = useState(null)
   const [pickNumber,    setPickNumber]    = useState(1)
@@ -156,7 +156,7 @@ export default function DraftPhase({ onComplete, onFirstSpinDone, onSubPhase, on
 
   return (
     <div
-      className={`draft-phase${showChrome ? ' draft-phase--chrome' : ''}`}
+      className={`draft-phase${showChrome ? (challengeLabel ? ' draft-phase--chrome-challenge' : ' draft-phase--chrome') : ''}`}
       onClick={() => {
         if (focusedPlayer) setFocusedPlayer(null)
         if (expandedPos) setExpandedPos(null)
@@ -165,6 +165,7 @@ export default function DraftPhase({ onComplete, onFirstSpinDone, onSubPhase, on
     >
 
       {showChrome && (
+        <div className="chrome-stack">
         <div className="draft-phase-header">
           <div className="draft-header-logo">32<span className="draft-header-logo-dash">-</span>0</div>
           <div className="draft-header-right">
@@ -252,6 +253,10 @@ export default function DraftPhase({ onComplete, onFirstSpinDone, onSubPhase, on
               </div>
             )
           })()}
+        </div>
+        {challengeLabel && (
+          <div className="draft-challenge-bar">{challengeLabel}</div>
+        )}
         </div>
       )}
 

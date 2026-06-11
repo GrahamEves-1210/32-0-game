@@ -34,6 +34,7 @@ export default function App() {
   const [p2Name,           setP2Name]           = useState('')
   const [challengeAccepted, setChallengeAccepted] = useState(false)
   const [showMenu,          setShowMenu]          = useState(false)
+  const [challengeChromeUp, setChallengeChromeUp] = useState(false)
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light')
@@ -149,6 +150,7 @@ export default function App() {
     setP2NameInput('')
     setP2Name('')
     setChallengeAccepted(false)
+    setChallengeChromeUp(false)
   }
 
   function handleTournament() {
@@ -195,7 +197,7 @@ export default function App() {
       <main className="app-main">
         {phase === 'draft' && (
           <>
-            {challengeCode && challengeData && (
+            {challengeCode && challengeData && !challengeChromeUp && (
               <div className="h2h-challenge-banner">
                 ⚔️ Challenging {challengeData.p1_name || 'a friend'} — build your lineup!
               </div>
@@ -203,9 +205,11 @@ export default function App() {
             <DraftPhase
               key={resetKey}
               onComplete={handleDraftComplete}
-              onFirstSpinDone={() => setShowHeader(false)}
+              onFirstSpinDone={() => { setShowHeader(false); setChallengeChromeUp(true) }}
               onSubPhase={setDraftSubPhase}
               onChallengeEntry={openCodeModal}
+              inChallenge={!!challengeCode}
+              challengeLabel={challengeChromeUp && challengeData ? `⚔️ Challenging ${challengeData.p1_name || 'a friend'} — build your lineup!` : null}
             />
           </>
         )}
