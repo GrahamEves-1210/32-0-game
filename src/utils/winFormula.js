@@ -3,7 +3,15 @@ import { CONFERENCES, GRADE_MULTIPLIERS } from '../data/conferences'
 
 const POSITIONS = ['PG', 'SG', 'SF', 'PF', 'C']
 
-function getGradeMultiplier(conferenceId) {
+// Conference grades that differ from their current grade in specific eras
+const CONF_ERA_GRADE_OVERRIDES = {
+  'wcc|era0': 'C',
+  'wcc|era1': 'C',
+}
+
+function getGradeMultiplier(conferenceId, era) {
+  const overrideGrade = CONF_ERA_GRADE_OVERRIDES[`${conferenceId}|${era}`]
+  if (overrideGrade) return GRADE_MULTIPLIERS[overrideGrade] ?? 0.92
   const conf = CONFERENCES.find(c => c.id === conferenceId)
   return GRADE_MULTIPLIERS[conf?.grade] ?? 0.92
 }
@@ -19,7 +27,7 @@ const STOCKS_NERF = { 'trae-young': 0 }
 
 // TS% scales PPG as a multiplier; spacing (3PM/g) rewards floor spacers who open the offense
 function playerScore(p) {
-  const mult         = getGradeMultiplier(p.conference)
+  const mult         = getGradeMultiplier(p.conference, p.era)
   const eraMult      = ERA_MULT[p.era] ?? 1.0
   const scoringBonus = p.ppg > 22 ? (p.ppg - 22) * 0.3 : 0
   const stocksMult   = STOCKS_NERF[p.id] ?? 1

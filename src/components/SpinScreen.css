@@ -298,8 +298,8 @@
 }
 
 @keyframes bball-spin {
-  from { transform: translate(-50%, -50%) rotate(0deg); }
-  to   { transform: translate(-50%, -50%) rotate(360deg); }
+  from { transform: translate(-50%, -50%) translate(0, -2px) rotate(0deg) translate(0, 2px); }
+  to   { transform: translate(-50%, -50%) translate(0, -2px) rotate(360deg) translate(0, 2px); }
 }
 
 /* ── Result card ── */
