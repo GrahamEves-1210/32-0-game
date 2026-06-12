@@ -245,7 +245,6 @@
   left: 50%;
   transform: translate(-50%, -50%);
   display: block;
-  filter: blur(0.5px);
 }
 
 .btn-spin-text {
@@ -298,8 +297,8 @@
 }
 
 @keyframes bball-spin {
-  from { transform: translate(-50%, -50%) translate(0, -2px) rotate(0deg) translate(0, 2px); }
-  to   { transform: translate(-50%, -50%) translate(0, -2px) rotate(360deg) translate(0, 2px); }
+  from { transform: translate(-50%, -50%) translate(0, -1.1px) rotate(0deg) translate(0, 1.1px); }
+  to   { transform: translate(-50%, -50%) translate(0, -1.1px) rotate(360deg) translate(0, 1.1px); }
 }
 
 /* ── Result card ── */

@@ -17,7 +17,7 @@ function getGradeMultiplier(conferenceId, era) {
 }
 
 // Hand-tuned boosts for generational players whose C-conf multiplier undersells their true impact
-const EXCEPTION_BOOST = { 'stephen-curry': 14.63, 'ja-morant': 8, 'trae-young': -0.35, 'christian-laettner': 9.338, 'anthony-davis-2': 7.68 }
+const EXCEPTION_BOOST = { 'stephen-curry': 14.63, 'ja-morant': 8, 'trae-young': -0.35, 'christian-laettner': 9.338, 'anthony-davis-2': 6.0 }
 
 // Slight discount for pre-2000 eras — stats from that period are less reliable/comparable
 const ERA_MULT = { era0: 0.93, era1: 0.95 }

@@ -113,7 +113,8 @@ export default function App() {
   async function handleGameEnd(wonChampionship) {
     const lineup = finalLineup ? Object.values(finalLineup).filter(Boolean) : []
     const score  = getMatchPercentage(lineup)
-    setPendingScore({ score, wonChampionship, statsOn })
+    const lineupNames = score >= 100 ? lineup.map(p => p.name) : null
+    setPendingScore({ score, wonChampionship, statsOn, lineup: lineupNames })
     try {
       const qualified = await isTopTen(score, wonChampionship, statsOn)
       if (qualified) setShowPrompt(true)
@@ -122,7 +123,7 @@ export default function App() {
 
   async function handleUsernameSubmit(username) {
     if (pendingScore) {
-      await submitScore({ username, score: pendingScore.score, won_championship: pendingScore.wonChampionship, stats_on: pendingScore.statsOn })
+      await submitScore({ username, score: pendingScore.score, won_championship: pendingScore.wonChampionship, stats_on: pendingScore.statsOn, lineup: pendingScore.lineup })
     }
     setShowPrompt(false)
     setPendingScore(null)

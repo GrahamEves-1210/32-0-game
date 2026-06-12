@@ -28,6 +28,18 @@ export async function isTopTen(score, wonChampionship, statsOn = true) {
   return score >= tenth.score
 }
 
-export async function submitScore({ username, score, won_championship, stats_on }) {
-  await supabase.from('leaderboard').insert({ username, score, won_championship, stats_on })
+export async function submitScore({ username, score, won_championship, stats_on, lineup }) {
+  const payload = { username, score, won_championship, stats_on }
+  if (lineup) payload.lineup = lineup
+  await supabase.from('leaderboard').insert(payload)
+}
+
+export async function fetchHOF() {
+  const { data } = await supabase
+    .from('leaderboard')
+    .select('username, lineup, created_at')
+    .eq('score', 100)
+    .not('lineup', 'is', null)
+    .order('created_at', { ascending: true })
+  return data ?? []
 }

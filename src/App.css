@@ -332,9 +332,9 @@
   .btn-leaderboard {
     top: 4px;
     left: 4px;
-    font-size: 34px;
-    width: 50px;
-    height: 42px;
+    font-size: 36px;
+    width: 53px;
+    height: 45px;
   }
 }
 
@@ -673,17 +673,17 @@
   }
 
   .btn-menu-trigger {
-    width: 50px;
-    height: 42px;
-    font-size: 26px;
+    width: 53px;
+    height: 45px;
+    font-size: 28px;
   }
 
   .btn-reset {
     top: auto;
     bottom: 6px;
     right: 6px;
-    padding: 12px 22px;
-    font-size: 14px;
+    padding: 13px 23px;
+    font-size: 15px;
     background: var(--surface);
     border-color: var(--text-dim);
     color: var(--text);
@@ -717,8 +717,8 @@
     top: auto;
     bottom: 6px;
     right: 6px;
-    padding: 12px 22px;
-    font-size: 14px;
+    padding: 13px 23px;
+    font-size: 15px;
     background: var(--surface);
     border-color: var(--text-dim);
     color: var(--text);

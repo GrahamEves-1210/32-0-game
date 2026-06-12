@@ -1,7 +1,18 @@
+import { useState } from 'react'
 import PlayerCard from './PlayerCard'
 import './PlayerPool.css'
 
+const SORT_OPTS = [
+  { key: 'name',   label: 'Name',   statsOnly: false },
+  { key: 'school', label: 'School', statsOnly: false },
+  { key: 'ppg',    label: 'PPG',    statsOnly: true },
+  { key: 'rpg',    label: 'RPG',    statsOnly: true },
+  { key: 'apg',    label: 'APG',    statsOnly: true },
+  { key: 'spg',    label: 'S+B',    statsOnly: true },
+]
+
 export default function PlayerPool({ players, lineup, focusedPlayer, onFocus, onRespin, showStats = true }) {
+  const [sortBy, setSortBy] = useState('ppg')
   if (players.length === 0) {
     return (
       <div className="pool-empty">
@@ -39,9 +50,16 @@ export default function PlayerPool({ players, lineup, focusedPlayer, onFocus, on
     }
   }
 
-  const sorted = [...players].sort((a, b) =>
-    showStats ? b.ppg - a.ppg : a.name.localeCompare(b.name)
-  )
+  const activeSortBy = (!showStats && SORT_OPTS.find(o => o.key === sortBy)?.statsOnly) ? 'name' : sortBy
+
+  const sorted = [...players].sort((a, b) => {
+    if (activeSortBy === 'name')   return a.name.localeCompare(b.name)
+    if (activeSortBy === 'school') return a.school.localeCompare(b.school)
+    if (activeSortBy === 'spg')    return ((b.spg ?? 0) + (b.bpg ?? 0)) - ((a.spg ?? 0) + (a.bpg ?? 0))
+    return (b[activeSortBy] ?? 0) - (a[activeSortBy] ?? 0)
+  })
+
+  const visibleOpts = SORT_OPTS.filter(o => showStats || !o.statsOnly)
 
   return (
     <div className="pool-wrap">
@@ -54,6 +72,15 @@ export default function PlayerPool({ players, lineup, focusedPlayer, onFocus, on
         ) : (
           <span className="pool-hint">Click a player to select them</span>
         )}
+      </div>
+      <div className="pool-sort-row">
+        {visibleOpts.map(o => (
+          <button
+            key={o.key}
+            className={`pool-sort-btn${activeSortBy === o.key ? ' pool-sort-btn--active' : ''}`}
+            onClick={() => setSortBy(o.key)}
+          >{o.label}</button>
+        ))}
       </div>
 
       <div className="pool-list">

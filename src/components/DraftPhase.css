@@ -37,9 +37,9 @@
 
 /* ── Pick tracker header ── */
 .draft-phase-header {
-  background: rgba(255,255,255,0.22);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: transparent;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   padding: calc(5px + env(safe-area-inset-top)) 24px 8px;
   display: flex;
   align-items: flex-start;
@@ -47,7 +47,7 @@
   gap: 16px;
   flex-wrap: nowrap;
   padding-right: 120px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 2.5px solid rgba(128,128,128,0.35);
   overflow: visible;
 }
 

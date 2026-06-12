@@ -1,29 +1,22 @@
 import { useEffect, useState } from 'react'
-import { fetchTop10 } from '../lib/leaderboard'
+import { fetchTop10, fetchHOF } from '../lib/leaderboard'
 import './Leaderboard.css'
 
 const MEDAL = ['🥇', '🥈', '🥉']
-
-const HOF_ENTRIES = [
-  {
-    username: 'KUspader',
-    lineup: ['Trae Young', 'Stephen Curry', 'Kevin Durant', 'Zion Williamson', 'Zach Edey'],
-  },
-  {
-    username: 'Yeag',
-    lineup: ['Trae Young', 'Stephen Curry', 'Kevin Durant', 'Zion Williamson', 'Zach Edey'],
-  },
-]
-
 const HOF_SLOTS = 12
 
 export default function Leaderboard({ onClose }) {
   const [tab,     setTab]     = useState('on')
   const [entries, setEntries] = useState(null)
+  const [hofEntries, setHofEntries] = useState(null)
   const [error,   setError]   = useState(false)
 
   useEffect(() => {
-    if (tab === 'hof') return
+    if (tab === 'hof') {
+      setHofEntries(null)
+      fetchHOF().then(setHofEntries).catch(() => setHofEntries([]))
+      return
+    }
     setEntries(null)
     setError(false)
     fetchTop10(tab === 'on')
@@ -49,14 +42,16 @@ export default function Leaderboard({ onClose }) {
 
         {tab === 'hof' ? (
           <div className="hof-grid">
-            {Array.from({ length: HOF_SLOTS }, (_, i) => {
-              const entry = HOF_ENTRIES[i]
+            {hofEntries === null ? (
+              <div className="lb-loading">Loading…</div>
+            ) : Array.from({ length: HOF_SLOTS }, (_, i) => {
+              const entry = hofEntries[i]
               if (entry) {
                 return (
                   <div key={i} className="hof-card hof-card--filled">
                     <div className="hof-card-name">{entry.username}</div>
                     <ul className="hof-card-lineup">
-                      {entry.lineup.map((player, j) => (
+                      {(entry.lineup ?? []).map((player, j) => (
                         <li key={j} className="hof-card-player">{player}</li>
                       ))}
                     </ul>
