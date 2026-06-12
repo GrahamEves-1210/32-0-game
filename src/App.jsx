@@ -19,7 +19,7 @@ export default function App() {
   const [showHeader,   setShowHeader]  = useState(true)
   const [champReached, setChampReached] = useState(false)
   const [draftSubPhase, setDraftSubPhase] = useState('spin')
-  const [darkMode,       setDarkMode]       = useState(() => localStorage.getItem('theme') === 'dark')
+  const [darkMode,       setDarkMode]       = useState(() => localStorage.getItem('theme') !== 'light')
   const [showLeaderboard,  setShowLeaderboard]  = useState(false)
   const [pendingScore,     setPendingScore]     = useState(null)
   const [showPrompt,       setShowPrompt]       = useState(false)

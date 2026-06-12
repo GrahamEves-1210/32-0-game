@@ -19,7 +19,7 @@ export const SCHOOL_COLORS = {
   Maryland: '#c53337', Rutgers: '#CC0033', UCLA: '#226699', USC: '#CC0000',
   // SEC
   Kentucky: '#0033A0', Tennessee: '#d16b00', Florida: '#0021A5',
-  LSU: '#461D7C', Alabama: '#9E1B32', Auburn: '#be621c', Arkansas: '#9D2235',
+  LSU: '#FDD023', Alabama: '#9E1B32', Auburn: '#be621c', Arkansas: '#9D2235',
   Georgia: '#BA0C2F', 'Mississippi State': '#5D1725', 'Ole Miss': '#CE1126',
   'South Carolina': '#73000A', Missouri: '#b58a22', Vanderbilt: '#766042',
   'Texas A&M': '#500000', Texas: '#a84d00',
@@ -55,7 +55,7 @@ export const SCHOOL_COLORS = {
   // MVC
   'Illinois State': '#CC0000', 'Loyola Chicago': '#8B0000', Drake: '#004D80',
   Bradley: '#CC0000', 'Indiana State': '#003E8C', 'Northern Iowa': '#4B116F',
-  'Missouri State': '#8B0000', Evansville: '#5C0A2E', 'Southern Illinois': '#721422',
+  'Missouri State': '#8B0000', 'Southwest Missouri State': '#8B0000', Evansville: '#5C0A2E', 'Southern Illinois': '#721422',
   // MAC
   Toledo: '#15397F', 'Ball State': '#BA0C2F', 'Western Michigan': '#948454',
   'Bowling Green': '#d04200', Ohio: '#00694E', 'Miami OH': '#B61E2E',
@@ -102,7 +102,7 @@ export const SCHOOL_COLORS = {
   Oakland: '#938656', 'Wright State': '#006633', 'Cleveland State': '#006633',
   'Detroit Mercy': '#CC0000', 'Purdue Fort Wayne': '#97835c',
   'Stephen F. Austin': '#702082',
-  Lamar: '#c81630', 'SE Louisiana': '#007236', 'Southeastern Louisiana': '#007236',
+  'Centenary (LA)': '#CC0000', Lamar: '#c81630', 'SE Louisiana': '#007236', 'Southeastern Louisiana': '#007236',
   McNeese: '#0057A8', 'Incarnate Word': '#582C83', 'New Orleans': '#0033A0',
   'Abilene Christian': '#582C83', 'Houston Christian': '#002868',
   'Sam Houston': '#CC0000', 'Sam Houston State': '#CC0000',
@@ -237,6 +237,54 @@ export const SCHOOL_COLORS = {
   'William & Mary': '#1A6B2A',
   Yale: '#0F4D92',
   'Youngstown State': '#CC0000',
+  // Name aliases — old/alternate school names used in players.js
+  'Alabama AM': '#CC0000',                  // Alabama A&M
+  'Augusta': '#005EB8',                     // Augusta University
+  'Birmingham-Southern': '#582C83',
+  'Brigham Young': '#002E5D',               // BYU
+  'Central Connecticut State': '#003087',   // Central Connecticut
+  'Central Florida': '#997f2d',             // UCF
+  'Charleston Baptist': '#003087',
+  'College of Charleston': '#00205B',       // Charleston
+  'Connecticut': '#000E2F',                 // UConn
+  'Florida AM': '#009B55',                  // Florida A&M
+  'Grambling State': '#231F20',             // Grambling
+  'Hardin-Simmons': '#5B2C8D',
+  "Hawai'i": '#024731',
+  'Illinois-Chicago': '#B01C2E',            // UIC
+  'LIU Brooklyn': '#003087',               // LIU
+  'Louisiana Monroe': '#800000',            // UL Monroe
+  'Louisiana State': '#FDD023',             // LSU
+  'Louisiana-Lafayette': '#CC0000',         // Louisiana
+  'Loyola (MD)': '#000000',                // Loyola Maryland
+  'McNeese State': '#0057A8',              // McNeese
+  'Miami (FL)': '#005030',                 // Miami
+  'Mount St. Marys': '#002B5C',
+  'Nicholls State': '#CC0000',             // Nicholls
+  'North Carolina AT': '#6CACE4',          // North Carolina A&T
+  'Northeast Louisiana': '#800000',         // old name of UL Monroe
+  'Northeastern Illinois': '#003087',
+  'Prairie View AM': '#4D0074',            // Prairie View A&M
+  'Saint Francis (PA)': '#003087',
+  'Saint Josephs': '#CC0000',
+  'Saint Marys': '#021830',
+  'Saint Peters': '#002147',
+  'Savannah State': '#002D62',
+  'Southern California': '#CC0000',         // USC
+  'Southern Indiana': '#CC0000',
+  'Southern Mississippi': '#000000',        // Southern Miss
+  'Southwest Texas State': '#501214',       // old Texas State
+  'Southwestern Louisiana': '#CC0000',      // old UL Lafayette
+  'St. Johns (NY)': '#CC0000',
+  'St. Marys (CA)': '#021830',
+  'Texas AM': '#500000',                   // Texas A&M
+  'Texas State San Marcos': '#501214',     // Texas State
+  'Texas-Pan American': '#002F8B',         // old UTRGV
+  'Towson State': '#b48000',               // Towson
+  'Troy State': '#7A0022',                 // Troy
+  'UMBC': '#000000',
+  'USC Coastal Carolina': '#006F71',        // Coastal Carolina
+  'William Mary': '#1A6B2A',               // William & Mary
 }
 
 export function getSchoolColor(school) {
