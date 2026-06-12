@@ -1,3 +1,11 @@
+.result-label--champ {
+  background: rgba(0,0,0,0.4);
+}
+
+[data-theme="light"] .result-label--champ {
+  background: rgba(0,0,0,0.15);
+}
+
 .tourney-wrap {
   display: flex;
   flex-direction: column;

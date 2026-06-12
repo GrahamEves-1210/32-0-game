@@ -260,7 +260,7 @@
 }
 
 /* Default — slow idle spin; rolling only changes the duration */
-.btn-ball-wrap {
+.btn-ball-icon {
   animation: bball-spin 3s linear infinite;
 }
 
@@ -288,7 +288,7 @@
     inset 0 3px 8px rgba(0, 0, 0, 0.35);
 }
 
-.btn-spin-main--rolling .btn-ball-wrap {
+.btn-spin-main--rolling .btn-ball-icon {
   animation: bball-spin 0.28s linear infinite;
   filter: blur(2.5px);
 }
@@ -298,8 +298,8 @@
 }
 
 @keyframes bball-spin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
 /* ── Result card ── */

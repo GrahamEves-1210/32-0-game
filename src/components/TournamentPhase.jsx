@@ -389,8 +389,8 @@ export default function TournamentPhase({ wins, matchPct = 0, lineup = [], onRes
               <img src="/ChatGPT_Image_Jun_12__2026__10_33_14_AM-removebg-preview.png" alt="Champion" style={{ width: '100px', height: '100px', objectFit: 'contain' }} />
             </div>
             <div className="result-below-board result-below-board--visible">
-              <div className="result-label" style={{ color: '#ffd700', background: 'rgba(0,0,0,0.4)', padding: '4px 16px', borderRadius: '20px', display: 'inline-block' }}>National Champions</div>
-              <div className="result-match">{(matchPct * 100).toFixed(1)}% of perfect lineup</div>
+              <div className="result-label result-label--champ" style={{ color: '#ffd700', padding: '4px 16px', borderRadius: '20px', display: 'inline-block' }}>National Champions</div>
+              <div className="result-match"><span style={{ fontSize: '20px', fontWeight: '700', color: '#555', letterSpacing: '0.04em' }}>{wins}–{32 - wins}</span> &nbsp;·&nbsp; {(matchPct * 100).toFixed(1)}% of perfect lineup</div>
             </div>
           </div>
 
