@@ -123,7 +123,7 @@ export function simulateHeadToHead(p1wins, p1matchPct, p2wins, p2matchPct) {
   }
 }
 
-export function simulateTournament(wins, matchPct = 0) {
+export function simulateTournament(wins, matchPct = 0, alwaysWin = false) {
   const playerSeed = winsToSeed(wins)
   const playerElo  = winsToElo(wins, matchPct)
   const oppRounds  = OPP_SEED_BY_ROUND[playerSeed] || OPP_SEED_BY_ROUND[4]
@@ -144,7 +144,7 @@ export function simulateTournament(wins, matchPct = 0) {
     const oppElo  = seedToElo(oppSeed)
     const oppName = pickName(oppSeed)
 
-    const perfect    = matchPct >= 0.95
+    const perfect    = matchPct >= 0.95 || alwaysWin
     const p          = perfect ? 1 : winProb(playerElo, oppElo)
     const playerWins = perfect || Math.random() < p
     const score      = makeScore(playerWins ? p : 1 - p)

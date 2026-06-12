@@ -9,7 +9,7 @@ function getGradeMultiplier(conferenceId) {
 }
 
 // Hand-tuned boosts for generational players whose C-conf multiplier undersells their true impact
-const EXCEPTION_BOOST = { 'stephen-curry': 14.63, 'ja-morant': 8, 'trae-young': -0.35, 'christian-laettner': 9.338 }
+const EXCEPTION_BOOST = { 'stephen-curry': 14.63, 'ja-morant': 8, 'trae-young': -0.35, 'christian-laettner': 9.338, 'anthony-davis-2': 7.68 }
 
 // Slight discount for pre-2000 eras — stats from that period are less reliable/comparable
 const ERA_MULT = { era0: 0.93, era1: 0.95 }
@@ -41,6 +41,7 @@ function isCanonicalLineup(lineup) {
   return ids.length === 5 && ids.every(id => PERFECT_IDS.has(id))
 }
 
+
 function getBenchmarks() {
   if (_cache) return _cache
   const perfectScore = 278
@@ -59,7 +60,7 @@ export function calculateWins(lineup) {
   if (isCanonicalLineup(lineup)) return 32
   const teamScore = lineup.reduce((s, p) => s + (p ? playerScore(p) : 0), 0)
   const { perfectScore } = getBenchmarks()
-  const ratio = Math.max(0, teamScore / (perfectScore * 0.85))
+  const ratio = Math.max(0, teamScore / (perfectScore * 0.83))
   const capped = Math.min(ratio, 1)
   const raw    = Math.pow(capped, 0.52)
   const exact  = (raw - 0.22) / 0.78 * 32

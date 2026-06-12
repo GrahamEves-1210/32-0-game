@@ -40,6 +40,7 @@
   background: rgba(255, 255, 255, 0.55);
   border-radius: 4px;
   padding: 1px 5px;
+  color: #111;
 }
 
 [data-theme="light"] .player-row {

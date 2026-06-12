@@ -192,7 +192,8 @@ function getGrade(conferenceId) {
 }
 
 export default function TournamentPhase({ wins, matchPct = 0, lineup = [], onReset, onChampion, onGameEnd }) {
-  const [results]     = useState(() => simulateTournament(wins, matchPct))
+  const legendaryDuo  = lineup.some(p => p?.id === 'hank-gathers') && lineup.some(p => p?.id === 'bo-kimble')
+  const [results]     = useState(() => simulateTournament(wins, matchPct, legendaryDuo))
   const [phase,       setPhase]      = useState(PHASE.SEEDING)
   const [gameIdx,     setGameIdx]    = useState(0)
   const [pScore,      setPScore]     = useState(0)
