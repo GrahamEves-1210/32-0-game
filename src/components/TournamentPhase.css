@@ -785,3 +785,57 @@
   .tgc-round    { padding: 8px 16px; font-size: 11px; }
   .ts-seed-num  { font-size: 44px; }
 }
+
+.champ-action-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.champ-match-pct {
+  text-align: center;
+  margin: 0;
+}
+
+@media (max-width: 520px) {
+  .champ-action-group {
+    gap: 8px;
+  }
+
+  .champ-roster-panel {
+    gap: 8px;
+  }
+
+  .to-title--champ {
+    font-size: 24px;
+  }
+
+  .to-trophy {
+    font-size: 38px;
+  }
+
+  .tourney-outcome--champ {
+    padding: 14px 12px;
+  }
+
+  .champ-meta-record {
+    font-size: 15px;
+  }
+
+  .btn-tourney-reset {
+    margin-top: 4px;
+    padding: 10px 0;
+    font-size: 13px;
+  }
+
+  .champ-challenge {
+    margin-top: 0;
+  }
+
+  .champ-card-wrap {
+    gap: 6px;
+  }
+}
+

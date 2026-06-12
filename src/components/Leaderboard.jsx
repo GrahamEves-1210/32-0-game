@@ -4,6 +4,18 @@ import './Leaderboard.css'
 
 const MEDAL = ['🥇', '🥈', '🥉']
 
+const HOF_ENTRIES = [
+  {
+    username: 'KUspader',
+    lineup: ['Trae Young', 'Stephen Curry', 'Kevin Durant', 'Zion Williamson', 'Zach Edey'],
+  },
+  {
+    username: 'Yeag',
+    lineup: ['Trae Young', 'Stephen Curry', 'Kevin Durant', 'Zion Williamson', 'Zach Edey'],
+  },
+]
+
+const HOF_SLOTS = 12
 
 export default function Leaderboard({ onClose }) {
   const [tab,     setTab]     = useState('on')
@@ -11,6 +23,7 @@ export default function Leaderboard({ onClose }) {
   const [error,   setError]   = useState(false)
 
   useEffect(() => {
+    if (tab === 'hof') return
     setEntries(null)
     setError(false)
     fetchTop10(tab === 'on')
@@ -20,51 +33,75 @@ export default function Leaderboard({ onClose }) {
 
   return (
     <>
-    <button className="lb-close-btn" onClick={onClose}>← Back</button>
-    <div className="lb-wrap">
-      <div className="lb-header">
-        <div className="lb-title">🏆 Leaderboard</div>
-        <p className="lb-sub">Top 10 scores of all time · % of perfect lineup</p>
-      </div>
+      <button className="lb-close-btn" onClick={onClose}>← Back</button>
 
-      <div className="lb-tabs">
-        <button className={`lb-tab ${tab === 'on' ? 'lb-tab--active' : ''}`} onClick={() => setTab('on')}>Stats On</button>
-        <button className={`lb-tab ${tab === 'off' ? 'lb-tab--active' : ''}`} onClick={() => setTab('off')}>Stats Off</button>
-      </div>
-
-      {error && (
-        <div className="lb-error">Could not load leaderboard.</div>
-      )}
-
-      {!error && entries === null && (
-        <div className="lb-loading">Loading…</div>
-      )}
-
-      {!error && entries !== null && (
-        <div className="lb-list">
-          {Array.from({ length: 10 }, (_, i) => {
-            const e = entries[i]
-            const empty = !e
-            return (
-              <div key={i} className={`lb-row ${i < 3 && !empty ? 'lb-row--top' : ''} ${empty ? 'lb-row--empty' : ''}`}>
-                <span className="lb-rank">
-                  {i < 3 && !empty ? MEDAL[i] : `${i + 1}`}
-                </span>
-                <span className="lb-name">{empty ? '———' : e.username}</span>
-                {!empty && (
-                  <span className={`lb-champ-badge ${e.won_championship ? 'lb-champ-badge--won' : 'lb-champ-badge--lost'}`}>
-                    {e.won_championship ? '✓' : '✕'} NCAA Champion
-                  </span>
-                )}
-                {empty && <span />}
-                <span className="lb-score">{empty ? '—' : `${Number(e.score).toFixed(1)}%`}</span>
-              </div>
-            )
-          })}
+      <div className="lb-wrap">
+        <div className="lb-header">
+          <div className="lb-title">🏆 Leaderboard</div>
+          <p className="lb-sub">Top 10 scores of all time · % of perfect lineup</p>
         </div>
-      )}
 
-    </div>
+        <div className="lb-tabs">
+          <button className={`lb-tab ${tab === 'on'  ? 'lb-tab--active' : ''}`} onClick={() => setTab('on')}>Stats On</button>
+          <button className={`lb-tab ${tab === 'off' ? 'lb-tab--active' : ''}`} onClick={() => setTab('off')}>Stats Off</button>
+          <button className={`lb-tab lb-tab--hof ${tab === 'hof' ? 'lb-tab--active' : ''}`} onClick={() => setTab('hof')}>100% HOF</button>
+        </div>
+
+        {tab === 'hof' ? (
+          <div className="hof-grid">
+            {Array.from({ length: HOF_SLOTS }, (_, i) => {
+              const entry = HOF_ENTRIES[i]
+              if (entry) {
+                return (
+                  <div key={i} className="hof-card hof-card--filled">
+                    <div className="hof-card-name">{entry.username}</div>
+                    <ul className="hof-card-lineup">
+                      {entry.lineup.map((player, j) => (
+                        <li key={j} className="hof-card-player">{player}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )
+              }
+              return (
+                <div key={i} className="hof-card hof-card--empty">
+                  <div className="hof-card-empty-label">—</div>
+                </div>
+              )
+            })}
+          </div>
+        ) : (
+          <>
+            {error && <div className="lb-error">Could not load leaderboard.</div>}
+
+            {!error && entries === null && <div className="lb-loading">Loading…</div>}
+
+            {!error && entries !== null && (
+              <div className="lb-list">
+                {Array.from({ length: 10 }, (_, i) => {
+                  const e = entries[i]
+                  const empty = !e
+                  return (
+                    <div key={i} className={`lb-row ${i < 3 && !empty ? 'lb-row--top' : ''} ${empty ? 'lb-row--empty' : ''}`}>
+                      <span className="lb-rank">
+                        {i < 3 && !empty ? MEDAL[i] : `${i + 1}`}
+                      </span>
+                      <span className="lb-name">{empty ? '———' : e.username}</span>
+                      {!empty && (
+                        <span className={`lb-champ-badge ${e.won_championship ? 'lb-champ-badge--won' : 'lb-champ-badge--lost'}`}>
+                          {e.won_championship ? '✓' : '✕'} NCAA Champion
+                        </span>
+                      )}
+                      {empty && <span />}
+                      <span className="lb-score">{empty ? '—' : `${Number(e.score).toFixed(1)}%`}</span>
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+          </>
+        )}
+      </div>
     </>
   )
 }

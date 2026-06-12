@@ -380,6 +380,29 @@ export default function TournamentPhase({ wins, matchPct = 0, lineup = [], onRes
 
           {champSlid && (
             <div className="champ-roster-panel">
+              <div className="champ-action-group">
+                <div className="champ-meta">
+                  <div className="champ-meta-side champ-meta-side--left">
+                    <span className="champ-meta-record">{wins}–{losses}</span>
+                  </div>
+                  <span className="champ-meta-sep">·</span>
+                  <div className="champ-meta-side champ-meta-side--right">
+                    <div className="result-stats-badge" data-on={String(statsOn)}>
+                      Stats: {statsOn ? 'On' : 'Off'}
+                    </div>
+                  </div>
+                </div>
+                <div className="result-match champ-match-pct">{(matchPct * 100).toFixed(1)}% of perfect lineup</div>
+
+                <button className="btn-play-again btn-tourney-reset" onClick={onReset}>
+                  ↺ Back to Menu
+                </button>
+
+                <div className="champ-challenge">
+                  <ChallengeButton lineup={lineup} wins={wins} matchPct={matchPct * 100} wonChamp={true} />
+                </div>
+              </div>
+
               <div className="result-roster">
                 <div className="result-roster-header">
                   <span>Player</span>
@@ -446,26 +469,6 @@ export default function TournamentPhase({ wins, matchPct = 0, lineup = [], onRes
                   <span className="rtg-label">Conf. Difficulty</span>
                   <span className="rtg-grade" style={{ color: GRADE_COLOR[confDiff.grade] }}>{confDiff.grade}</span>
                 </div>
-              </div>
-
-              <div className="champ-meta">
-                <div className="champ-meta-side champ-meta-side--left">
-                  <span className="champ-meta-record">{wins}–{losses}</span>
-                </div>
-                <span className="champ-meta-sep">·</span>
-                <div className="champ-meta-side champ-meta-side--right">
-                  <div className="result-stats-badge" data-on={String(statsOn)}>
-                    Stats: {statsOn ? 'On' : 'Off'}
-                  </div>
-                </div>
-              </div>
-
-              <button className="btn-play-again btn-tourney-reset" onClick={onReset}>
-                ↺ Back to Menu
-              </button>
-
-              <div className="champ-challenge">
-                <ChallengeButton lineup={lineup} wins={wins} matchPct={matchPct * 100} wonChamp={true} />
               </div>
             </div>
           )}

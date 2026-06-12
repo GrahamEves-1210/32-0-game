@@ -172,6 +172,24 @@
   border-color: var(--text-dim);
 }
 
+.lb-tab--hof,
+.lb-tab--hof:not(.lb-tab--active) {
+  color: var(--gold);
+  border-color: color-mix(in srgb, var(--gold) 30%, var(--border));
+}
+
+.lb-tab--hof:hover {
+  background: color-mix(in srgb, var(--gold) 12%, var(--surface2));
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.lb-tab--hof.lb-tab--active {
+  background: var(--gold) !important;
+  border-color: var(--gold) !important;
+  color: #000 !important;
+}
+
 @media (max-width: 768px) {
   .lb-close-btn {
     top: 4px;
@@ -192,5 +210,79 @@
     gap: 8px;
     padding: 8px 10px;
   }
+}
 
+/* ── 100% Hall of Fame ─────────────────────────────────────────── */
+
+.hof-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  animation: fade-up 0.2s ease;
+}
+
+.hof-card {
+  border-radius: var(--radius-sm);
+  padding: 10px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hof-card--filled {
+  background: color-mix(in srgb, var(--gold) 6%, var(--surface2));
+  border: 1px solid color-mix(in srgb, var(--gold) 50%, var(--border));
+}
+
+.hof-card--empty {
+  background: var(--surface2);
+  border: 1px dashed color-mix(in srgb, var(--gold) 25%, var(--border));
+  opacity: 0.4;
+  min-height: 90px;
+  align-items: center;
+  justify-content: center;
+}
+
+.hof-card-empty-label {
+  font-size: 18px;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+}
+
+.hof-card-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 0.03em;
+  text-align: center;
+}
+
+.hof-card-lineup {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.hof-card-player {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.03em;
+  text-align: center;
+  padding: 2px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.hof-card-player:last-child {
+  border-bottom: none;
+}
+
+@media (max-width: 380px) {
+  .hof-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
