@@ -34,6 +34,7 @@ export default function App() {
   const [p2Name,           setP2Name]           = useState('')
   const [challengeAccepted, setChallengeAccepted] = useState(false)
   const [showMenu,          setShowMenu]          = useState(false)
+  const [showAbout,         setShowAbout]         = useState(false)
   const [challengeChromeUp, setChallengeChromeUp] = useState(false)
 
   useEffect(() => {
@@ -159,6 +160,49 @@ export default function App() {
 
   const lineupArray = finalLineup ? Object.values(finalLineup).filter(Boolean) : []
 
+  if (showAbout) return (
+    <div className="app">
+      <main className="app-main">
+        <div className="about-modal">
+          <button className="lb-close-btn" onClick={() => { handleReset(); setShowAbout(false) }}>← Back</button>
+          <img src="/32-0logocutout.png" alt="32-0" className="about-logo" />
+          <p className="about-desc">
+            Spin a random conference and era, draft five men's college basketball players — one at each position — then simulate a full 32-game season and NCAA Tournament. Build the right five and you might just go <strong>32-0</strong>.
+          </p>
+          <h3 className="about-section">How to Play</h3>
+          <ol className="about-steps">
+            <li>Spin to get a random conference and era.</li>
+            <li>Two re-spins are available, 1 for the era and 1 for the conference.</li>
+            <li>Draft five players — one at each position.</li>
+            <li>See how many wins your lineup earns and simulate the tournament.</li>
+          </ol>
+          <h3 className="about-section">Credits</h3>
+          <p className="about-desc">
+            Statistical data sourced from{' '}
+            <a href="https://www.collegebasketballdata.com" target="_blank" rel="noopener noreferrer">collegebasketballdata.com</a>
+            {' '}and{' '}
+            <a href="https://www.sports-reference.com" target="_blank" rel="noopener noreferrer">sports-reference.com</a>.
+          </p>
+          <p className="about-desc" style={{ marginTop: '4px' }}>
+            Inspired by{' '}
+            <a href="https://www.82-0.com" target="_blank" rel="noopener noreferrer">82-0.com</a>
+          </p>
+          <a
+            href="https://www.buymeacoffee.com/32and0"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="about-tip-jar"
+          >
+            <img
+              src="https://img.buymeacoffee.com/button-api/?text=Tip Jar&emoji=☕&slug=32and0&button_colour=FFDD00&font_colour=000000&font_family=Lato&outline_colour=000000&coffee_colour=ffffff&coffee_count=2"
+              alt="Tip Jar"
+            />
+          </a>
+        </div>
+      </main>
+    </div>
+  )
+
   if (showLeaderboard) return (
     <div className="app">
       <main className="app-main">
@@ -271,11 +315,17 @@ export default function App() {
                 style={{ display: 'block', borderTop: '1px solid var(--border)', background: 'linear-gradient(to right, #FFDD00 50%, #f0bc20 100%)' }}
               >
                 <img
-                  src="https://img.buymeacoffee.com/button-api/?text=Tip Jar&emoji=☕&slug=32and0&button_colour=FFDD00&font_colour=000000&font_family=Lato&outline_colour=000000&coffee_colour=ffffff"
+                  src="https://img.buymeacoffee.com/button-api/?text=Tip Jar&emoji=☕&slug=32and0&button_colour=FFDD00&font_colour=000000&font_family=Lato&outline_colour=000000&coffee_colour=ffffff&coffee_count=2"
                   alt="Tip Jar"
                   style={{ display: 'block', width: '100%', height: 'auto', borderRadius: '0 0 4px 4px' }}
                 />
               </a>
+              <button
+                className="menu-item"
+                onClick={() => { setShowAbout(true); setShowMenu(false) }}
+              >
+                ℹ️ About
+              </button>
             </div>
           </>
         )}
@@ -286,13 +336,6 @@ export default function App() {
       )}
 
 
-      {showHeader && (
-        <footer className="app-footer">
-          <a href="https://www.82-0.com" target="_blank" rel="noopener noreferrer" className="footer-link">
-            Inspired by 82-0.com
-          </a>
-        </footer>
-      )}
 
       {showHeader && phase === 'draft' && (
         <button
@@ -300,7 +343,7 @@ export default function App() {
           onClick={() => setShowLeaderboard(true)}
           title="Leaderboard"
         >
-          🏆
+          <img src="/ChatGPT_Image_Jun_12__2026__10_33_14_AM-removebg-preview.png" alt="Leaderboard" className="trophy-img" style={{ width: '40px', height: '40px', objectFit: 'contain' }} />
         </button>
       )}
 
@@ -375,6 +418,7 @@ export default function App() {
           onSkip={handlePromptSkip}
         />
       )}
+
     </div>
   )
 }

@@ -353,7 +353,6 @@ export default function TournamentPhase({ wins, matchPct = 0, lineup = [], onRes
     const offRating = getOffensiveRating(lineup)
     const defRating = getDefensiveRating(lineup)
     const statsOn   = localStorage.getItem('showStats') !== 'false'
-    const losses    = 32 - wins
     const totalPPG  = lineup.reduce((s, p) => s + (p?.ppg ?? 0), 0)
     const totalRPG  = lineup.reduce((s, p) => s + (p?.rpg ?? 0), 0)
     const totalAPG  = lineup.reduce((s, p) => s + (p?.apg ?? 0), 0)
@@ -361,118 +360,122 @@ export default function TournamentPhase({ wins, matchPct = 0, lineup = [], onRes
     const validTS   = lineup.filter(p => p?.tspct)
     const avgTS     = validTS.reduce((s, p) => s + p.tspct, 0) / (validTS.length || 1)
 
-    return (
+    if (!champSlid) return (
       <div className="tourney-wrap tourney-wrap--champ">
         {netCut && <Confetti />}
-        <div className={`champ-screen ${champSlid ? 'champ-screen--slid' : ''}`}>
+        <div className="champ-card-wrap">
+          <div className="to-title to-title--champ">CHAMPIONS</div>
+          <div className="tourney-outcome tourney-outcome--champ champ-outcome-card">
+            {!netCut && <BasketballNet cutting={netCutting} cut={netCut} />}
+            {netCut && <div className="to-trophy"><img src="/ChatGPT_Image_Jun_12__2026__10_33_14_AM-removebg-preview.png" alt="Champion" className="trophy-img" style={{ width: '120px', height: '120px', objectFit: 'contain' }} /></div>}
+            {!netCutting && (
+              <button className="btn-cut-net" onClick={handleCutNet}>
+                ✂ Cut the Net
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    )
 
-          <div className="champ-card-wrap">
-            <div className="to-title to-title--champ">CHAMPIONS</div>
-            <div className="tourney-outcome tourney-outcome--champ champ-outcome-card">
-              {!netCut && <BasketballNet cutting={netCutting} cut={netCut} />}
-              {netCut && <div className="to-trophy">🏆</div>}
-              {!netCutting && (
-                <button className="btn-cut-net" onClick={handleCutNet}>
-                  ✂ Cut the Net
-                </button>
-              )}
+    return (
+      <div className="tourney-wrap tourney-wrap--champ">
+        <Confetti />
+        <div className="result-wrap">
+
+          {/* Trophy block — mirrors the record scoreboard */}
+          <div className="result-wins-block result-wins-block--done">
+            <div className="champ-trophy-block">
+              <img src="/ChatGPT_Image_Jun_12__2026__10_33_14_AM-removebg-preview.png" alt="Champion" style={{ width: '100px', height: '100px', objectFit: 'contain' }} />
+            </div>
+            <div className="result-below-board result-below-board--visible">
+              <div className="result-label" style={{ color: '#ffd700', background: 'rgba(0,0,0,0.4)', padding: '4px 16px', borderRadius: '20px', display: 'inline-block' }}>National Champions</div>
+              <div className="result-match">{(matchPct * 100).toFixed(1)}% of perfect lineup</div>
             </div>
           </div>
 
-          {champSlid && (
-            <div className="champ-roster-panel">
-              <div className="champ-action-group">
-                <div className="champ-meta">
-                  <div className="champ-meta-side champ-meta-side--left">
-                    <span className="champ-meta-record">{wins}–{losses}</span>
-                  </div>
-                  <span className="champ-meta-sep">·</span>
-                  <div className="champ-meta-side champ-meta-side--right">
-                    <div className="result-stats-badge" data-on={String(statsOn)}>
-                      Stats: {statsOn ? 'On' : 'Off'}
-                    </div>
-                  </div>
-                </div>
-                <div className="result-match champ-match-pct">{(matchPct * 100).toFixed(1)}% of perfect lineup</div>
-
-                <button className="btn-play-again btn-tourney-reset" onClick={onReset}>
-                  ↺ Back to Menu
-                </button>
-
-                <div className="champ-challenge">
-                  <ChallengeButton lineup={lineup} wins={wins} matchPct={matchPct * 100} wonChamp={true} />
-                </div>
-              </div>
-
-              <div className="result-roster">
-                <div className="result-roster-header">
-                  <span>Player</span>
-                  <span className="rr-stat-head rr-cfg-head">CFG</span>
-                  <span className="rr-stat-head">PPG</span>
-                  <span className="rr-stat-head">RPG</span>
-                  <span className="rr-stat-head">APG</span>
-                  <span className="rr-stat-head">S+B</span>
-                  <span className="rr-stat-head rr-ts-head">TS%</span>
-                </div>
-                {POSITIONS.map((pos, i) => {
-                  const p = lineup[i]
-                  if (!p) return null
-                  const sc    = getSchoolColor(p.school)
-                  const grade = getGrade(p.conference)
-                  const gc    = getGradeColor(grade)
-                  return (
-                    <div key={pos} className="result-roster-row" style={{ background:
-                      grade === 'A' ? 'color-mix(in srgb, #a8c8ff 35%, var(--surface2))'
-                    : grade === 'B' ? 'color-mix(in srgb, #86efac 30%, var(--surface2))'
-                    : 'color-mix(in srgb, #fde68a 55%, var(--surface2))' }}>
-                      <span className="rr-pos" style={{ color: POS_COLOR[pos] }}>{pos}</span>
-                      <div className="rr-player">
-                        <span className="rr-name">{p.name}</span>
-                        <span className="rr-school" style={{ color: sc || 'var(--text-muted)' }}>{p.school}</span>
-                      </div>
-                      <span className="rr-cfg-val" style={{ color: gc }}>{grade}</span>
-                      <span className="rr-stat">{p.ppg.toFixed(1)}</span>
-                      <span className="rr-stat">{p.rpg.toFixed(1)}</span>
-                      <span className="rr-stat">{p.apg.toFixed(1)}</span>
-                      <span className="rr-stat">{((p.spg ?? 0) + (p.bpg ?? 0)).toFixed(1)}</span>
-                      <span className="rr-stat rr-ts">{p.tspct ? (p.tspct * 100).toFixed(1) : '—'}</span>
-                    </div>
-                  )
-                })}
-                <div className="result-team-totals">
-                  <span className="rtt-label">Team Totals</span>
-                  <span className="rr-cfg-val" />
-                  <span className="rtt-val">{totalPPG.toFixed(1)}</span>
-                  <span className="rtt-val">{totalRPG.toFixed(1)}</span>
-                  <span className="rtt-val">{totalAPG.toFixed(1)}</span>
-                  <span className="rtt-val">{totalSB.toFixed(1)}</span>
-                  <span className="rtt-val rr-ts">{isNaN(avgTS) ? '—' : (avgTS * 100).toFixed(1)}</span>
-                </div>
-              </div>
-
-              <div className="result-team-grades">
-                <div className="rtg-item">
-                  <span className="rtg-label">OFF</span>
-                  <span className="rtg-grade rtg-grade--num" style={{ color: ratingColor(offRating) }}>{offRating}</span>
-                </div>
-                <div className="rtg-divider" />
-                <div className="rtg-item">
-                  <span className="rtg-label">DEF</span>
-                  <span className="rtg-grade rtg-grade--num" style={{ color: ratingColor(defRating) }}>{defRating}</span>
-                </div>
-                <div className="rtg-divider" />
-                <div className="rtg-item">
-                  <span className="rtg-label">Spacing</span>
-                  <span className="rtg-grade" style={{ color: GRADE_COLOR[spacing.grade] }}>{spacing.grade}</span>
-                </div>
-                <div className="rtg-divider" />
-                <div className="rtg-item">
-                  <span className="rtg-label">Conf. Difficulty</span>
-                  <span className="rtg-grade" style={{ color: GRADE_COLOR[confDiff.grade] }}>{confDiff.grade}</span>
-                </div>
-              </div>
+          {/* Stats badge + challenge */}
+          <div className="result-meta-row">
+            <div className="result-stats-badge" data-on={String(statsOn)}>
+              Stats: {statsOn ? 'On' : 'Off'}
             </div>
-          )}
+            <ChallengeButton lineup={lineup} wins={wins} matchPct={matchPct * 100} wonChamp={true} />
+          </div>
+
+          {/* Roster */}
+          <div className="result-roster">
+            <div className="result-roster-header">
+              <span>Player</span>
+              <span className="rr-stat-head rr-cfg-head">CFG</span>
+              <span className="rr-stat-head">PPG</span>
+              <span className="rr-stat-head">RPG</span>
+              <span className="rr-stat-head">APG</span>
+              <span className="rr-stat-head">S+B</span>
+              <span className="rr-stat-head rr-ts-head">TS%</span>
+            </div>
+            {POSITIONS.map((pos, i) => {
+              const p = lineup[i]
+              if (!p) return null
+              const sc    = getSchoolColor(p.school)
+              const grade = getGrade(p.conference)
+              const gc    = getGradeColor(grade)
+              return (
+                <div key={pos} className="result-roster-row" style={{ background:
+                  grade === 'A' ? 'color-mix(in srgb, #a8c8ff 35%, var(--surface2))'
+                : grade === 'B' ? 'color-mix(in srgb, #86efac 30%, var(--surface2))'
+                : 'color-mix(in srgb, #fde68a 55%, var(--surface2))' }}>
+                  <span className="rr-pos" style={{ color: POS_COLOR[pos] }}>{pos}</span>
+                  <div className="rr-player">
+                    <span className="rr-name">{p.name}</span>
+                    <span className="rr-school" style={{ color: sc || 'var(--text-muted)' }}>{p.school}</span>
+                  </div>
+                  <span className="rr-cfg-val" style={{ color: gc }}>{grade}</span>
+                  <span className="rr-stat">{p.ppg.toFixed(1)}</span>
+                  <span className="rr-stat">{p.rpg.toFixed(1)}</span>
+                  <span className="rr-stat">{p.apg.toFixed(1)}</span>
+                  <span className="rr-stat">{((p.spg ?? 0) + (p.bpg ?? 0)).toFixed(1)}</span>
+                  <span className="rr-stat rr-ts">{p.tspct ? (p.tspct * 100).toFixed(1) : '—'}</span>
+                </div>
+              )
+            })}
+            <div className="result-team-totals">
+              <span className="rtt-label">Team Totals</span>
+              <span className="rr-cfg-val" />
+              <span className="rtt-val">{totalPPG.toFixed(1)}</span>
+              <span className="rtt-val">{totalRPG.toFixed(1)}</span>
+              <span className="rtt-val">{totalAPG.toFixed(1)}</span>
+              <span className="rtt-val">{totalSB.toFixed(1)}</span>
+              <span className="rtt-val rr-ts">{isNaN(avgTS) ? '—' : (avgTS * 100).toFixed(1)}</span>
+            </div>
+          </div>
+
+          {/* Team grades */}
+          <div className="result-team-grades">
+            <div className="rtg-item">
+              <span className="rtg-label">OFF</span>
+              <span className="rtg-grade rtg-grade--num" style={{ color: ratingColor(offRating) }}>{offRating}</span>
+            </div>
+            <div className="rtg-divider" />
+            <div className="rtg-item">
+              <span className="rtg-label">DEF</span>
+              <span className="rtg-grade rtg-grade--num" style={{ color: ratingColor(defRating) }}>{defRating}</span>
+            </div>
+            <div className="rtg-divider" />
+            <div className="rtg-item">
+              <span className="rtg-label">Spacing</span>
+              <span className="rtg-grade" style={{ color: GRADE_COLOR[spacing.grade] }}>{spacing.grade}</span>
+            </div>
+            <div className="rtg-divider" />
+            <div className="rtg-item">
+              <span className="rtg-label">Conf. Difficulty</span>
+              <span className="rtg-grade" style={{ color: GRADE_COLOR[confDiff.grade] }}>{confDiff.grade}</span>
+            </div>
+          </div>
+
+          {/* Actions — play again only */}
+          <div className="result-actions">
+            <button className="btn-play-again" onClick={onReset}>↺ Play Again</button>
+          </div>
 
         </div>
       </div>
@@ -490,10 +493,10 @@ export default function TournamentPhase({ wins, matchPct = 0, lineup = [], onRes
           <BracketSVG gameIdx={gameIdx} />
         </div>
         <div className="mm-bracket">
-          {['64','32','16','8','4','🏆'].map((label, i) => (
+          {['64','32','16','8','4','trophy'].map((label, i) => (
             <div key={i} className="mm-bracket-step">
               <div className={`mm-bracket-node ${i < gameIdx ? 'mm-bracket-node--done' : i === gameIdx ? 'mm-bracket-node--active' : ''}`}>
-                {label}
+                {label === 'trophy' ? <img src="/ChatGPT_Image_Jun_12__2026__10_33_14_AM-removebg-preview.png" alt="🏆" className="trophy-img" style={{ width: '22px', height: '22px', objectFit: 'contain', verticalAlign: 'middle' }} /> : label}
               </div>
               {i < 5 && <div className={`mm-bracket-line ${i < gameIdx ? 'mm-bracket-line--done' : ''}`} />}
             </div>

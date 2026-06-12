@@ -222,7 +222,7 @@ export default function SpinScreen({ conferences, eras, onChoose, lockedConf = n
         <div className="spin-action-row">
           {onChallengeEntry && (
             <button className="btn-h2h-entry" onClick={onChallengeEntry} title="Enter Challenge Code">
-              ⚔️
+              <span className="btn-h2h-label"><span className="btn-h2h-h">H</span><span className="btn-h2h-two">2</span><span className="btn-h2h-h">H</span></span>
             </button>
           )}
           <button

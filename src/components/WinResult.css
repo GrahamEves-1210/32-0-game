@@ -498,10 +498,10 @@
 
 .btn-split-bar__half {
   flex: 1;
-  padding: 13px 16px;
-  font-size: 15px;
+  padding: 13px 10px;
+  font-size: 13px;
   font-weight: 700;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.02em;
   color: #fff;
   transition: filter 0.15s;
   white-space: nowrap;

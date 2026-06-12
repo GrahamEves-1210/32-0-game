@@ -79,6 +79,11 @@ button {
   border-radius: 3px;
 }
 
+button {
+  position: relative;
+  z-index: 2;
+}
+
 [data-theme="dark"] #grain-overlay {
   opacity: 0.06 !important;
 }
