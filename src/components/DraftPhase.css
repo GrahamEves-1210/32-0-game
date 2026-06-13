@@ -730,15 +730,17 @@
   line-height: 1.45;
 }
 
-.customize-chip:hover {
-  border-color: var(--text-dim);
-  color: var(--text);
-}
 
 .customize-chip--on {
   border-color: var(--chip-c, var(--orange));
   color: var(--chip-c, var(--orange));
-  background: color-mix(in srgb, var(--chip-c, var(--orange)) 12%, var(--surface2));
+  background: color-mix(in srgb, var(--chip-c, var(--orange)) 24%, var(--surface2));
+  box-shadow: 0 0 0 1px var(--chip-c, var(--orange));
+}
+
+.customize-chip:active {
+  opacity: 0.7;
+  transform: scale(0.95);
 }
 
 .customize-chip--era.customize-chip--on {
