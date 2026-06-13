@@ -32,8 +32,9 @@ const EMPTY_COMBOS  = new Set([
   'cusa|era0',
 ])
 
-// Boost only the exact conf+era combos that contain Steph, Ja, or Reggie Williams
-const COMBO_BOOSTS  = { 'southern|era3': 3, 'ovc|era5': 3, 'bigsouth|era3': 3 }
+const COMBO_BOOSTS = {
+  'southern|era3': 3, 'ovc|era5': 3, 'bigsouth|era3': 3,
+}
 
 function weightedRandomConf(conferences) {
   const weights = conferences.map(c => GRADE_WEIGHTS[c.grade] ?? 1)
@@ -88,7 +89,7 @@ function pickReroll(conferences, eras, lockedConf, lockedEra, excludeConf, exclu
   return pickValidCombo(conferences, eras)
 }
 
-export default function SpinScreen({ conferences, eras, onChoose, lockedConf = null, lockedEra = null, excludeConf = null, excludeEra = null, onChallengeEntry = null }) {
+export default function SpinScreen({ conferences, eras, onChoose, lockedConf = null, lockedEra = null, excludeConf = null, excludeEra = null, onChallengeEntry = null, onCustomize = null, isCustomGame = false, showStats = null, onToggleStats = null }) {
   const isReroll = lockedConf != null || lockedEra != null
   const [spinning, setSpinning] = useState(isReroll)
   const [confIdx,  setConfIdx]  = useState(() => lockedConf ? conferences.indexOf(lockedConf) : 0)
@@ -187,34 +188,59 @@ export default function SpinScreen({ conferences, eras, onChoose, lockedConf = n
 
   return (
     <div className="spin-screen">
-      <div className="spin-machine">
-        <h2 className="spin-instruction">
-          {results ? 'Your draw' : isReroll ? 'Rerolling…' : 'Spin to build your lineup'}
-        </h2>
+      <div className="spin-card-group">
+        {onToggleStats && (
+          <div className="spin-top-bar">
+            <div />
+            <button
+              className={`stats-toggle-btn ${showStats ? 'stats-toggle-btn--on' : ''}`}
+              onClick={onToggleStats}
+            >
+              {showStats ? 'Stats: On' : 'Stats: Off'}
+            </button>
+            <div className="spin-top-bar__right">
+              {onCustomize && (
+                <button
+                  className={`btn-gear ${isCustomGame ? 'btn-gear--active' : ''}`}
+                  onClick={onCustomize}
+                >
+                  <img src="/Gemini_Generated_Image_67ttmy67ttmy67tt-Photoroom.png" alt="Customize" />
+                  <span className="btn-gear-label">Custom Game</span>
+                  {isCustomGame && <span className="btn-gear-dot" />}
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+        <div className="spin-machine">
+          <h2 className="spin-instruction">
+            {results ? 'Your draw' : isReroll ? 'Rerolling…' : 'Spin to build your lineup'}
+          </h2>
 
-        <div className="reels-row">
-          <Reel
-            label="Conference"
-            current={currentConf}
-            accentKey="name"
-            subKey="fullName"
-            spinning={spinning}
-            landed={landed}
-            accentColor={confColor}
-            tick={tick}
-            locked={!!lockedConf}
-          />
-          <div className="reels-x">×</div>
-          <Reel
-            label="Era"
-            current={currentEra}
-            accentKey="label"
-            spinning={spinning}
-            landed={landed}
-            accentColor='#38B6E8'
-            tick={tick}
-            locked={!!lockedEra}
-          />
+          <div className="reels-row">
+            <Reel
+              label="Conference"
+              current={currentConf}
+              accentKey="name"
+              subKey="fullName"
+              spinning={spinning}
+              landed={landed}
+              accentColor={confColor}
+              tick={tick}
+              locked={!!lockedConf}
+            />
+            <div className="reels-x">×</div>
+            <Reel
+              label="Era"
+              current={currentEra}
+              accentKey="label"
+              spinning={spinning}
+              landed={landed}
+              accentColor='#38B6E8'
+              tick={tick}
+              locked={!!lockedEra}
+            />
+          </div>
         </div>
       </div>
 

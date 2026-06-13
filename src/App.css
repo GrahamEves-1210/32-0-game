@@ -16,7 +16,7 @@
   max-width: 1100px;
   height: 1px;
   background: var(--border);
-  margin: 16px 0;
+  margin: 16px 0 6px;
 }
 
 .app-logo {
@@ -700,7 +700,7 @@
   }
 
   .app-header-divider {
-    margin: 5px 0;
+    margin: 5px 0 3px;
   }
 
   .app-logo {

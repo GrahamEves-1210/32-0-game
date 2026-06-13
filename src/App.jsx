@@ -36,6 +36,7 @@ export default function App() {
   const [showMenu,          setShowMenu]          = useState(false)
   const [showAbout,         setShowAbout]         = useState(false)
   const [challengeChromeUp, setChallengeChromeUp] = useState(false)
+  const [isCustomGame,      setIsCustomGame]      = useState(false)
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light')
@@ -55,9 +56,10 @@ export default function App() {
     }
   }, [phase])
 
-  function handleDraftComplete(lineup, showStats) {
+  function handleDraftComplete(lineup, showStats, isCustom) {
     setFinalLineup(lineup)
     setStatsOn(showStats)
+    setIsCustomGame(isCustom ?? false)
     setPhase(challengeCode ? 'headtohead' : 'result')
   }
 
@@ -115,10 +117,12 @@ export default function App() {
     const score  = getMatchPercentage(lineup)
     const lineupNames = score >= 100 ? lineup.map(p => p.name) : null
     setPendingScore({ score, wonChampionship, statsOn, lineup: lineupNames })
-    try {
-      const qualified = await isTopTen(score, wonChampionship, statsOn)
-      if (qualified) setShowPrompt(true)
-    } catch (_) { /* silently skip prompt on network error */ }
+    if (!isCustomGame) {
+      try {
+        const qualified = await isTopTen(score, wonChampionship, statsOn)
+        if (qualified) setShowPrompt(true)
+      } catch (_) { /* silently skip prompt on network error */ }
+    }
   }
 
   async function handleUsernameSubmit(username) {
@@ -153,6 +157,7 @@ export default function App() {
     setP2Name('')
     setChallengeAccepted(false)
     setChallengeChromeUp(false)
+    setIsCustomGame(false)
   }
 
   function handleTournament() {
@@ -180,9 +185,7 @@ export default function App() {
           <h3 className="about-section">Credits</h3>
           <p className="about-desc">
             Statistical data sourced from{' '}
-            <a href="https://www.collegebasketballdata.com" target="_blank" rel="noopener noreferrer">collegebasketballdata.com</a>
-            {' '}and{' '}
-            <a href="https://www.sports-reference.com" target="_blank" rel="noopener noreferrer">sports-reference.com</a>.
+            <a href="https://www.collegebasketballdata.com" target="_blank" rel="noopener noreferrer">collegebasketballdata.com</a>.
           </p>
           <p className="about-desc" style={{ marginTop: '4px' }}>
             Inspired by{' '}
