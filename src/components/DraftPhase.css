@@ -625,6 +625,24 @@
   background: var(--surface2);
 }
 
+.preset-chip--active {
+  border-color: var(--orange);
+  color: var(--orange);
+  background: color-mix(in srgb, var(--orange) 14%, var(--surface2));
+}
+
+.preset-chip--active-reset {
+  border-color: var(--text-dim);
+  color: var(--text-dim);
+  background: var(--surface2);
+}
+
+.customize-conf-presets {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
 /* ── Sections ── */
 .customize-section {
   display: flex;

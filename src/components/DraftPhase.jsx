@@ -323,75 +323,96 @@ export default function DraftPhase({ onComplete, onFirstSpinDone, onSubPhase, on
                       <button className="btn-customize-close" onClick={() => setShowCustomize(false)}>✕</button>
                     </div>
 
-                    <div className="customize-presets">
-                      <button className="preset-chip preset-chip--reset" onClick={() => { setEditConfs(new Set(CONFERENCES.map(c => c.id))); setEditEras(new Set(ERAS.map(e => e.id))) }}>Default</button>
-                      <button className="preset-chip" onClick={() => { setEditConfs(new Set(CONFERENCES.filter(c => c.grade === 'A').map(c => c.id))); setEditEras(new Set(ERAS.map(e => e.id))) }}>Power 6</button>
-                      <button className="preset-chip" onClick={() => { setEditConfs(new Set(CONFERENCES.filter(c => c.grade !== 'A').map(c => c.id))); setEditEras(new Set(ERAS.map(e => e.id))) }}>Mid-Majors</button>
-                      <button className="preset-chip" onClick={() => { setEditConfs(new Set(CONFERENCES.map(c => c.id))); setEditEras(new Set(ERAS.filter(e => e.start >= 2013).map(e => e.id))) }}>Modern</button>
-                      <button className="preset-chip" onClick={() => { setEditConfs(new Set(CONFERENCES.map(c => c.id))); setEditEras(new Set(ERAS.filter(e => e.start < 2013).map(e => e.id))) }}>Classic</button>
-                    </div>
+                    {(() => {
+                      const setsEq = (a, b) => a && b && a.size === b.size && [...a].every(x => b.has(x))
+                      const allC = new Set(CONFERENCES.map(c => c.id))
+                      const allE = new Set(ERAS.map(e => e.id))
+                      const p6C  = new Set(CONFERENCES.filter(c => c.grade === 'A').map(c => c.id))
+                      const mmC  = new Set(CONFERENCES.filter(c => c.grade !== 'A').map(c => c.id))
+                      const modE = new Set(ERAS.filter(e => e.start >= 2013).map(e => e.id))
+                      const clsE = new Set(ERAS.filter(e => e.start < 2013).map(e => e.id))
+                      const ap =
+                        setsEq(editConfs, allC) && setsEq(editEras, allE) ? 'default' :
+                        setsEq(editConfs, p6C)  && setsEq(editEras, allE) ? 'power6' :
+                        setsEq(editConfs, mmC)  && setsEq(editEras, allE) ? 'midmajors' :
+                        setsEq(editConfs, allC) && setsEq(editEras, modE) ? 'modern' :
+                        setsEq(editConfs, allC) && setsEq(editEras, clsE) ? 'classic' : null
+                      return (
+                        <>
+                          <div className="customize-presets">
+                            <button className={`preset-chip preset-chip--reset ${ap === 'default' ? 'preset-chip--active-reset' : ''}`} onClick={() => { setEditConfs(new Set(CONFERENCES.map(c => c.id))); setEditEras(new Set(ERAS.map(e => e.id))) }}>Default</button>
+                            <button className={`preset-chip ${ap === 'modern'  ? 'preset-chip--active' : ''}`} onClick={() => { setEditConfs(new Set(CONFERENCES.map(c => c.id))); setEditEras(new Set(ERAS.filter(e => e.start >= 2013).map(e => e.id))) }}>Modern</button>
+                            <button className={`preset-chip ${ap === 'classic' ? 'preset-chip--active' : ''}`} onClick={() => { setEditConfs(new Set(CONFERENCES.map(c => c.id))); setEditEras(new Set(ERAS.filter(e => e.start < 2013).map(e => e.id))) }}>Classic</button>
+                          </div>
 
-                    <div className="customize-section">
-                      <div className="customize-section-hdr">
-                        <span className="customize-sect-label">ERAS</span>
-                        <div className="customize-all-none">
-                          <button onClick={() => setEditEras(new Set(ERAS.map(e => e.id)))}>All</button>
-                          <span>·</span>
-                          <button onClick={() => setEditEras(new Set())}>None</button>
-                        </div>
-                      </div>
-                      <div className="customize-chips">
-                        {ERAS.map(era => (
-                          <button key={era.id} className={`customize-chip customize-chip--era ${editEras?.has(era.id) ? 'customize-chip--on' : ''}`}
-                            onClick={() => toggleEra(era.id)}>
-                            {era.short}
+                          <div className="customize-section">
+                            <div className="customize-section-hdr">
+                              <span className="customize-sect-label">ERAS</span>
+                              <div className="customize-all-none">
+                                <button onClick={() => setEditEras(new Set(ERAS.map(e => e.id)))}>All</button>
+                                <span>·</span>
+                                <button onClick={() => setEditEras(new Set())}>None</button>
+                              </div>
+                            </div>
+                            <div className="customize-chips">
+                              {ERAS.map(era => (
+                                <button key={era.id} className={`customize-chip customize-chip--era ${editEras?.has(era.id) ? 'customize-chip--on' : ''}`}
+                                  onClick={() => toggleEra(era.id)}>
+                                  {era.short}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+
+                          <div className="customize-section">
+                            <div className="customize-section-hdr">
+                              <span className="customize-sect-label">CONFERENCES</span>
+                              <div className="customize-grade-pills">
+                                {['A', 'B', 'C'].map(grade => {
+                                  const gConfs = CONFERENCES.filter(c => c.grade === grade)
+                                  const allOn  = gConfs.every(c => editConfs?.has(c.id))
+                                  const noneOn = gConfs.every(c => !editConfs?.has(c.id))
+                                  return (
+                                    <button key={grade}
+                                      className={`cgpill ${allOn ? 'cgpill--on' : noneOn ? 'cgpill--off' : 'cgpill--partial'}`}
+                                      style={{ '--gc': getGradeColor(grade) }}
+                                      onClick={() => toggleGrade(grade)}
+                                    >
+                                      {grade}
+                                    </button>
+                                  )
+                                })}
+                              </div>
+                            </div>
+                            <div className="customize-conf-presets">
+                              <button className={`preset-chip ${ap === 'power6'    ? 'preset-chip--active' : ''}`} onClick={() => { setEditConfs(new Set(CONFERENCES.filter(c => c.grade === 'A').map(c => c.id))); setEditEras(new Set(ERAS.map(e => e.id))) }}>Power 6</button>
+                              <button className={`preset-chip ${ap === 'midmajors' ? 'preset-chip--active' : ''}`} onClick={() => { setEditConfs(new Set(CONFERENCES.filter(c => c.grade !== 'A').map(c => c.id))); setEditEras(new Set(ERAS.map(e => e.id))) }}>Mid-Majors</button>
+                            </div>
+                            <div className="customize-chips">
+                              {['A', 'B', 'C'].flatMap((grade, gi) => [
+                                ...(gi > 0 ? [<div key={`br-${grade}`} className="customize-chip-break" />] : []),
+                                ...CONFERENCES.filter(c => c.grade === grade).map(conf => (
+                                  <button key={conf.id}
+                                    className={`customize-chip ${editConfs?.has(conf.id) ? 'customize-chip--on' : ''}`}
+                                    style={editConfs?.has(conf.id) ? { '--chip-c': getGradeColor(conf.grade) } : {}}
+                                    onClick={() => toggleConf(conf.id)}
+                                  >
+                                    {conf.name}
+                                  </button>
+                                )),
+                              ])}
+                            </div>
+                          </div>
+
+                          <button className="btn-customize-apply"
+                            disabled={!editConfs || editConfs.size === 0 || !editEras || editEras.size === 0}
+                            onClick={applyCustomize}
+                          >
+                            Apply
                           </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="customize-section">
-                      <div className="customize-section-hdr">
-                        <span className="customize-sect-label">CONFERENCES</span>
-                        <div className="customize-grade-pills">
-                          {['A', 'B', 'C'].map(grade => {
-                            const gConfs = CONFERENCES.filter(c => c.grade === grade)
-                            const allOn  = gConfs.every(c => editConfs?.has(c.id))
-                            const noneOn = gConfs.every(c => !editConfs?.has(c.id))
-                            return (
-                              <button key={grade}
-                                className={`cgpill ${allOn ? 'cgpill--on' : noneOn ? 'cgpill--off' : 'cgpill--partial'}`}
-                                style={{ '--gc': getGradeColor(grade) }}
-                                onClick={() => toggleGrade(grade)}
-                              >
-                                {grade}
-                              </button>
-                            )
-                          })}
-                        </div>
-                      </div>
-                      <div className="customize-chips">
-                        {['A', 'B', 'C'].flatMap((grade, gi) => [
-                          ...(gi > 0 ? [<div key={`br-${grade}`} className="customize-chip-break" />] : []),
-                          ...CONFERENCES.filter(c => c.grade === grade).map(conf => (
-                            <button key={conf.id}
-                              className={`customize-chip ${editConfs?.has(conf.id) ? 'customize-chip--on' : ''}`}
-                              style={editConfs?.has(conf.id) ? { '--chip-c': getGradeColor(conf.grade) } : {}}
-                              onClick={() => toggleConf(conf.id)}
-                            >
-                              {conf.name}
-                            </button>
-                          )),
-                        ])}
-                      </div>
-                    </div>
-
-                    <button className="btn-customize-apply"
-                      disabled={!editConfs || editConfs.size === 0 || !editEras || editEras.size === 0}
-                      onClick={applyCustomize}
-                    >
-                      Apply
-                    </button>
+                        </>
+                      )
+                    })()}
                   </div>
               ) : (
                 <SpinScreen
