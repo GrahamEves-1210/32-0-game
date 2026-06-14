@@ -73,10 +73,19 @@ export async function fetchUserStats(userId) {
   return { games, perfect, avgScore, champCount, championships, best }
 }
 
+export async function fetchAllGamesForBadges(userId) {
+  const { data } = await supabase
+    .from('game_results')
+    .select('wins, is_champion, lineup, played_at, score')
+    .eq('user_id', userId)
+    .eq('stats_on', true)
+  return data ?? []
+}
+
 export async function checkDailyChallenge(userId, dateStr, checkFn) {
   const { data } = await supabase
     .from('game_results')
-    .select('wins, is_champion, lineup')
+    .select('wins, is_champion, lineup, score')
     .eq('user_id', userId)
     .gte('played_at', `${dateStr}T00:00:00`)
     .lte('played_at', `${dateStr}T23:59:59`)
