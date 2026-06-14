@@ -570,11 +570,28 @@
 
 @media (max-width: 768px) {
   .result-wrap {
-    padding: 2px 8px 10px;
-    gap: 5px;
+    padding: 2px 8px 8px;
+    gap: 4px;
     max-height: 100svh;
     overflow: hidden;
     justify-content: space-between;
+  }
+
+  .champ-trophy-block {
+    padding: 0;
+  }
+
+  .trophy-img {
+    width: 92px !important;
+    height: 92px !important;
+  }
+
+  .result-below-board {
+    margin-top: 4px;
+  }
+
+  .result-match {
+    margin-top: 4px;
   }
 
   .result-scoreboard {
@@ -596,11 +613,12 @@
   .result-label {
     font-size: 14px;
     padding: 3px 12px;
-    margin-top: 3px;
+    margin-top: 1px;
   }
 
   .result-meta-row {
     gap: 8px;
+    margin-top: 0;
   }
 
   /* Hide CFG on mobile */
@@ -670,7 +688,16 @@
   }
 
   .rtg-item {
-    padding: 7px 2px;
+    padding: 5px 2px;
+  }
+
+  .result-actions {
+    margin-top: 0;
+    gap: 6px;
+  }
+
+  [data-theme="dark"] .result-actions {
+    margin-top: 0;
   }
 
   .btn-play-again,

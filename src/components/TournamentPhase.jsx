@@ -386,7 +386,7 @@ export default function TournamentPhase({ wins, matchPct = 0, lineup = [], onRes
           {/* Trophy block — mirrors the record scoreboard */}
           <div className="result-wins-block result-wins-block--done">
             <div className="champ-trophy-block">
-              <img src="/ChatGPT_Image_Jun_12__2026__10_33_14_AM-removebg-preview.png" alt="Champion" style={{ width: '100px', height: '100px', objectFit: 'contain' }} />
+              <img src="/ChatGPT_Image_Jun_12__2026__10_33_14_AM-removebg-preview.png" alt="Champion" className="trophy-img" style={{ width: '100px', height: '100px', objectFit: 'contain' }} />
             </div>
             <div className="result-below-board result-below-board--visible">
               <div className="result-label result-label--champ" style={{ color: '#ffd700', padding: '4px 16px', borderRadius: '20px', display: 'inline-block' }}>National Champions</div>
