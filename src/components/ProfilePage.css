@@ -1,0 +1,895 @@
+.prof-signout-btn {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: none;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  border-radius: var(--radius-sm);
+  color: #ef4444;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  z-index: 2;
+}
+
+.prof-signout-btn:hover {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.65);
+}
+
+.prof-wrap {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 64px 16px 56px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  animation: fade-up 0.25s ease;
+}
+
+/* ── Hero ── */
+.prof-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 24px 16px 20px;
+  background: color-mix(in srgb, var(--orange) 6%, var(--surface2));
+  border: 1px solid color-mix(in srgb, #e0a800 30%, var(--border));
+  border-radius: var(--radius);
+  position: relative;
+  overflow: hidden;
+}
+
+.prof-hero-avatar {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  animation: prof-avatar-drop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes prof-avatar-drop {
+  from { opacity: 0; transform: translateY(-18px) scale(0.85); }
+  to   { opacity: 1; transform: none; }
+}
+
+.prof-hero-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.06em;
+}
+
+.prof-hero-stats {
+  display: flex;
+  align-items: center;
+  margin-top: 6px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  width: 100%;
+}
+
+.prof-hero-stats + .prof-hero-stats {
+  margin-top: 0;
+  border-top: none;
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+}
+
+.prof-hero-stats:has(+ .prof-hero-stats) {
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+
+.prof-hero-stat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 4px;
+  gap: 2px;
+}
+
+.prof-hero-sep {
+  width: 1px;
+  align-self: stretch;
+  background: var(--border);
+}
+
+.prof-hero-val {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--orange);
+  line-height: 1;
+}
+
+.prof-hero-lbl {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.prof-hero-val--perfect {
+  color: #e0a800;
+  font-size: 26px;
+}
+
+.prof-hero-lbl--perfect {
+  color: #e0a800;
+  opacity: 0.8;
+  font-size: 13px;
+  text-transform: none;
+}
+
+/* ── Section ── */
+.prof-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.prof-section-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 6px;
+}
+
+/* ── Hall of Championships header ── */
+.prof-hall-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.prof-hall-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #e0a800, transparent);
+  opacity: 0.5;
+}
+
+.prof-hall-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #e0a800;
+  white-space: nowrap;
+}
+
+/* ── Keyframes ── */
+@keyframes prof-card-in {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes prof-sweep {
+  0%   { transform: translateX(-200%); }
+  35%  { transform: translateX(350%); }
+  100% { transform: translateX(350%); }
+}
+
+
+@keyframes prof-slot-pulse {
+  0%, 100% { opacity: 0.35; }
+  50%       { opacity: 0.6; }
+}
+
+/* ── Championship card ── */
+.prof-champ-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.prof-champ-card {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1.5px solid color-mix(in srgb, #e0a800 55%, var(--border));
+  background: color-mix(in srgb, #e0a800 6%, var(--surface2));
+  animation: prof-card-in 0.4s ease both;
+}
+
+/* gold bar across the top */
+.prof-champ-card-top-bar {
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #e0a800 30%, #ffd700 50%, #e0a800 70%, transparent);
+}
+
+/* animated light sweep */
+.prof-champ-card-sweep {
+  position: absolute;
+  inset: 0;
+  width: 40%;
+  background: linear-gradient(105deg, transparent 0%, rgba(255,215,0,0.08) 50%, transparent 100%);
+  animation: prof-sweep 4s linear infinite;
+  animation-delay: inherit;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* championship number badge */
+.prof-champ-badge-num {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: rgba(224, 168, 0, 0.5);
+  z-index: 2;
+}
+
+/* perfect game glow */
+.prof-champ-card--perfect {
+  border-color: #e0a800;
+  box-shadow: 0 0 18px rgba(224, 168, 0, 0.22), inset 0 0 24px rgba(224, 168, 0, 0.05);
+}
+
+.prof-champ-card--perfect .prof-champ-card-sweep {
+  background: linear-gradient(105deg, transparent 0%, rgba(255,215,0,0.14) 50%, transparent 100%);
+  animation-duration: 2.8s;
+}
+
+.prof-champ-card--perfect .prof-champ-badge-num {
+  color: #e0a800;
+}
+
+.prof-champ-card-inner {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px 4px;
+}
+
+.prof-champ-card-left {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.prof-champ-trophy-img {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+}
+
+/* ── Cut net image ── */
+.prof-mini-net-img {
+  width: 92px;
+  height: auto;
+  object-fit: contain;
+  opacity: 0.85;
+  margin-left: -10px;
+}
+
+
+/* ── Card center text ── */
+.prof-champ-card-center {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.prof-champ-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #e0a800;
+  opacity: 0.9;
+  text-align: center;
+  width: 100%;
+  padding: 6px 0 0;
+}
+
+.prof-champ-record {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+.prof-champ-record--perfect {
+  color: #e0a800;
+}
+
+.prof-champ-score {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+
+.prof-champ-date {
+  font-size: 11px;
+  color: var(--text-muted);
+  opacity: 0.7;
+  margin-top: 2px;
+}
+
+/* ── Expand chevron ── */
+.prof-champ-expand-chevron {
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+  font-size: 9px;
+  color: rgba(224,168,0,0.5);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.prof-champ-card {
+  cursor: pointer;
+}
+
+/* ── Expanded detail panel ── */
+.prof-champ-detail {
+  border-top: 1px solid color-mix(in srgb, #e0a800 20%, var(--border));
+  background: color-mix(in srgb, #e0a800 3%, var(--surface));
+  display: flex;
+  flex-direction: column;
+}
+
+.prof-champ-detail-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 16px;
+  border-bottom: 1px solid color-mix(in srgb, #e0a800 10%, var(--border));
+}
+
+.prof-champ-detail-row:last-child {
+  border-bottom: none;
+}
+
+.prof-champ-detail-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.02em;
+}
+
+.prof-champ-detail-school {
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.prof-champ-detail-meta {
+  font-size: 10px;
+  font-weight: 600;
+  color: color-mix(in srgb, #e0a800 70%, var(--text-muted));
+  white-space: nowrap;
+  letter-spacing: 0.04em;
+}
+
+/* ── Roster strip ── */
+.prof-champ-roster {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  padding: 7px 16px;
+  border-top: 1px solid color-mix(in srgb, #e0a800 20%, var(--border));
+  background: color-mix(in srgb, #e0a800 4%, var(--surface));
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.prof-champ-player {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: color-mix(in srgb, #e0a800 80%, var(--text-muted));
+  text-transform: uppercase;
+}
+
+.prof-champ-player:not(:last-child)::after {
+  content: ' ·';
+  color: var(--text-muted);
+  margin-right: 4px;
+}
+
+/* ── Empty championship slots ── */
+.prof-champ-card--empty {
+  border: 1.5px dashed color-mix(in srgb, #e0a800 25%, var(--border));
+  background: var(--surface2);
+  animation: prof-slot-pulse 2.4s ease-in-out infinite, prof-card-in 0.4s ease both;
+}
+
+.prof-champ-empty-inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 20px;
+}
+
+.prof-champ-empty-trophy {
+  font-size: 28px;
+  opacity: 0.4;
+  filter: grayscale(1);
+}
+
+.prof-champ-empty-text {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+
+.prof-show-more {
+  width: 100%;
+  padding: 9px;
+  background: none;
+  border: 1px solid color-mix(in srgb, #e0a800 30%, var(--border));
+  border-radius: var(--radius-sm);
+  color: #e0a800;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.prof-show-more:hover {
+  background: color-mix(in srgb, #e0a800 8%, var(--surface2));
+}
+
+
+/* ── Personal Bests ── */
+.prof-best-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.prof-best-row {
+  display: grid;
+  grid-template-columns: 32px 1fr auto auto;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.prof-best-row--top {
+  border-color: color-mix(in srgb, var(--orange) 40%, var(--border));
+}
+
+.prof-best-rank {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.prof-best-row--top .prof-best-rank { font-size: 20px; }
+
+.prof-best-wins {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.03em;
+}
+
+.prof-best-champ {
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  opacity: 0.5;
+}
+
+.prof-best-champ--won {
+  color: #22c55e;
+  opacity: 1;
+}
+
+.prof-best-score {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--orange);
+  text-align: right;
+}
+
+/* ── Badges journal ── */
+.prof-journal {
+  position: relative;
+  display: flex;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: #f7f3eb;
+  border: 1px solid #d8cdb8;
+  background-image: repeating-linear-gradient(
+    180deg,
+    transparent,
+    transparent 27px,
+    rgba(160, 180, 220, 0.25) 27px,
+    rgba(160, 180, 220, 0.25) 28px
+  );
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+
+.prof-journal-margin {
+  width: 3px;
+  background: rgba(220, 80, 80, 0.35);
+  flex-shrink: 0;
+  align-self: stretch;
+}
+
+.prof-journal-body {
+  flex: 1;
+  padding: 16px 20px 20px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.prof-journal-heading {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(0,0,0,0.3);
+}
+
+
+.prof-badges-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 88px);
+  gap: 10px;
+  justify-items: center;
+  align-items: center;
+}
+
+.prof-daily-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.prof-badge-slot,
+.prof-badge-slot-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.prof-badge-slot {
+  position: relative;
+  width: 66px;
+  height: 76px;
+  flex-shrink: 0;
+}
+
+.prof-badge-slot::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  background: rgba(0,0,0,0.14);
+}
+
+.prof-badge-slot::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  background: rgba(0,0,0,0.04);
+}
+
+.prof-badge-slot-btn {
+  width: 66px;
+  height: 76px;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.prof-badge-slot-btn:hover { opacity: 0.8; }
+
+.prof-ach-slot {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 2px dashed rgba(0,0,0,0.18);
+  background: rgba(0,0,0,0.03);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.prof-ach-coming {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(0,0,0,0.22);
+  text-align: center;
+  line-height: 1.4;
+}
+
+.prof-journal-detail {
+  margin-top: 12px;
+  padding: 12px 14px;
+  background: rgba(0,0,0,0.04);
+  border-radius: 4px;
+  border: 1px solid rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.prof-journal-detail-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: rgba(0,0,0,0.65);
+}
+
+.prof-journal-detail-desc {
+  font-size: 12px;
+  color: rgba(0,0,0,0.5);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.prof-journal-detail-pending {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(0,0,0,0.35);
+  letter-spacing: 0.04em;
+}
+
+.prof-badge-inner {
+  position: relative;
+  z-index: 1;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: rgba(0,0,0,0.12);
+  user-select: none;
+}
+
+
+.prof-journal-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 14px;
+  border-bottom: 1.5px solid rgba(0,0,0,0.12);
+}
+
+.prof-journal-tab {
+  flex: 1;
+  background: none;
+  border: none;
+  border-bottom: 2.5px solid transparent;
+  margin-bottom: -1.5px;
+  padding: 6px 4px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(0,0,0,0.3);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.prof-journal-tab--active {
+  color: rgba(0,0,0,0.65);
+  border-bottom-color: rgba(0,0,0,0.5);
+}
+
+.prof-journal-tab:hover:not(.prof-journal-tab--active) {
+  color: rgba(0,0,0,0.45);
+}
+
+/* ── Daily challenge ── */
+.prof-daily-wrap {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--surface2);
+}
+
+.prof-daily-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.prof-daily-header:hover {
+  background: color-mix(in srgb, var(--orange) 4%, var(--surface2));
+}
+
+/* Badge shape */
+.prof-daily-badge {
+  flex-shrink: 0;
+  position: relative;
+  width: 66px;
+  height: 76px;
+}
+
+.prof-daily-badge::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(224,168,0,0.55);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  transition: background 0.3s;
+}
+
+.prof-daily-badge--done::before {
+  background: #e0a800;
+}
+
+.prof-daily-badge-inner {
+  position: absolute;
+  inset: 3px;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  background: var(--surface2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  transition: background 0.3s;
+}
+
+.prof-daily-badge--done .prof-daily-badge-inner {
+  background: color-mix(in srgb, #e0a800 25%, var(--surface2));
+}
+
+.prof-badge-month {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #e0a800;
+  line-height: 1;
+}
+
+.prof-badge-day {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+}
+
+.prof-badge-check {
+  font-size: 22px;
+  color: #e0a800;
+  font-weight: 700;
+}
+
+.prof-daily-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.prof-daily-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.03em;
+}
+
+.prof-daily-subtitle {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.prof-daily-chevron {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.prof-daily-body {
+  padding: 0 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+}
+
+.prof-daily-desc {
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.55;
+  margin: 0;
+}
+
+
+.prof-daily-done {
+  font-size: 13px;
+  font-weight: 700;
+  color: #22c55e;
+  letter-spacing: 0.04em;
+}
+
+/* ── Coming soon ── */
+.prof-coming-soon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 28px;
+  background: var(--surface2);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.prof-coming-icon { font-size: 18px; }
+
+/* ── Mobile ── */
+@media (max-width: 520px) {
+  .prof-wrap {
+    padding: 72px 12px 48px;
+    gap: 22px;
+  }
+
+  .prof-champ-record {
+    font-size: 28px;
+  }
+
+  .prof-champ-trophy-img {
+    width: 58px;
+    height: 58px;
+  }
+
+  .prof-best-row {
+    grid-template-columns: 28px 1fr auto auto;
+    gap: 8px;
+    padding: 8px 10px;
+  }
+}

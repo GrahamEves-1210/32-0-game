@@ -5,9 +5,13 @@ import TournamentPhase from './components/TournamentPhase'
 import Leaderboard from './components/Leaderboard'
 import HeadToHead from './components/HeadToHead'
 import UsernamePrompt from './components/UsernamePrompt'
+import AuthModal from './components/AuthModal'
+import ProfilePage from './components/ProfilePage'
 import { calculateWins, getMatchPercentage } from './utils/winFormula'
 import { isTopTen, submitScore } from './lib/leaderboard'
 import { getChallenge } from './lib/challenges'
+import { getProfile, saveGameResult, signOut } from './lib/auth'
+import supabase from './lib/supabase'
 import './App.css'
 
 // Phases: 'draft' → 'result' → 'tournament'
@@ -37,6 +41,10 @@ export default function App() {
   const [showAbout,         setShowAbout]         = useState(false)
   const [challengeChromeUp, setChallengeChromeUp] = useState(false)
   const [isCustomGame,      setIsCustomGame]      = useState(false)
+  const [user,              setUser]              = useState(null)
+  const [userProfile,       setUserProfile]       = useState(null)
+  const [showAuth,          setShowAuth]          = useState(false)
+  const [showProfile,       setShowProfile]       = useState(false)
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light')
@@ -44,6 +52,31 @@ export default function App() {
     const color = darkMode ? '#0d1f4e' : '#bdd8f5'
     document.querySelectorAll('meta[name="theme-color"]').forEach(m => m.setAttribute('content', color))
   }, [darkMode])
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) loadUser(session.user)
+    })
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) loadUser(session.user)
+      else { setUser(null); setUserProfile(null) }
+    })
+    return () => subscription.unsubscribe()
+  }, [])
+
+  async function loadUser(u) {
+    setUser(u)
+    const profile = await getProfile(u.id)
+    setUserProfile(profile)
+  }
+
+  async function handleSignOut() {
+    await signOut()
+    setUser(null)
+    setUserProfile(null)
+    setShowMenu(false)
+    setShowProfile(false)
+  }
 
   useEffect(() => {
     if (phase === 'tournament') {
@@ -115,13 +148,31 @@ export default function App() {
   async function handleGameEnd(wonChampionship) {
     const lineup = finalLineup ? Object.values(finalLineup).filter(Boolean) : []
     const score  = getMatchPercentage(lineup)
+    const wins   = calculateWins(lineup)
     const lineupNames = score >= 100 ? lineup.map(p => p.name) : null
-    setPendingScore({ score, wonChampionship, statsOn, lineup: lineupNames })
-    if (!isCustomGame) {
+
+    if (user && userProfile) {
+      // Save to personal history
       try {
-        const qualified = await isTopTen(score, wonChampionship, statsOn)
-        if (qualified) setShowPrompt(true)
-      } catch (_) { /* silently skip prompt on network error */ }
+        await saveGameResult({ userId: user.id, score, wins, isChampion: wonChampionship, statsOn, lineup })
+      } catch (_) {}
+      // Auto-submit leaderboard with verified username
+      if (!isCustomGame) {
+        try {
+          const qualified = await isTopTen(score, wonChampionship, statsOn)
+          if (qualified) {
+            await submitScore({ username: userProfile.username, score, won_championship: wonChampionship, stats_on: statsOn, lineup: lineupNames, user_id: user.id })
+          }
+        } catch (_) {}
+      }
+    } else {
+      setPendingScore({ score, wonChampionship, statsOn, lineup: lineupNames })
+      if (!isCustomGame) {
+        try {
+          const qualified = await isTopTen(score, wonChampionship, statsOn)
+          if (qualified) setShowPrompt(true)
+        } catch (_) {}
+      }
     }
   }
 
@@ -198,7 +249,7 @@ export default function App() {
             className="about-tip-jar"
           >
             <img
-              src="https://img.buymeacoffee.com/button-api/?text=Tip Jar&emoji=☕&slug=32and0&button_colour=FFDD00&font_colour=000000&font_family=Lato&outline_colour=000000&coffee_colour=ffffff&coffee_count=2"
+              src="https://img.buymeacoffee.com/button-api/?text=Tip Jar&emoji=☕&slug=32and0&button_colour=FFDD00&font_colour=000000&font_family=Lato&outline_colour=000000&coffee_colour=ffffff&coffee_count=3"
               alt="Tip Jar"
             />
           </a>
@@ -212,6 +263,40 @@ export default function App() {
       <main className="app-main">
         <Leaderboard onClose={() => setShowLeaderboard(false)} />
       </main>
+    </div>
+  )
+
+  if (showProfile && user && userProfile) return (
+    <div className="app">
+      <main className="app-main">
+        <ProfilePage user={user} profile={userProfile} darkMode={darkMode} onClose={() => setShowProfile(false)} onSignOut={handleSignOut} />
+      </main>
+      <div className="app-menu-wrap">
+        <button className="btn-menu-trigger" onClick={() => setShowMenu(m => !m)} aria-label="Menu">☰</button>
+        {showMenu && (
+          <>
+            <div className="menu-backdrop" onClick={() => setShowMenu(false)} />
+            <div className="app-menu-dropdown">
+              <button className="menu-item menu-item--user" onClick={() => setShowMenu(false)}>
+                <img src={darkMode ? '/c2ddcacb-46e1-4a31-a0db-2141434d8269 (1).png' : '/67401335254.png'} alt="" className="menu-user-icon" style={{ width: '25px', height: '25px', objectFit: 'contain', filter: darkMode ? 'brightness(0.7)' : 'none' }} />
+                <span className="menu-username">{userProfile.username}</span>
+              </button>
+              <button className="menu-item" onClick={() => setDarkMode(d => !d)}>
+                <span className={`menu-toggle-pill ${darkMode ? 'menu-toggle-pill--dark' : ''}`}>
+                  <span className="toggle-icon toggle-icon--moon">🌙</span>
+                  <span className="toggle-knob" />
+                  <span className="toggle-icon toggle-icon--sun">☀️</span>
+                </span>
+                {darkMode ? 'Light Mode' : 'Dark Mode'}
+              </button>
+              <button className="menu-item" onClick={() => { setShowAbout(true); setShowProfile(false); setShowMenu(false) }}>ℹ️ About</button>
+              <a href="https://www.buymeacoffee.com/32and0" target="_blank" rel="noopener noreferrer" onClick={() => setShowMenu(false)} style={{ display: 'block', borderTop: '1px solid var(--border)', background: 'linear-gradient(to right, #FFDD00 50%, #f0bc20 100%)' }}>
+                <img src="https://img.buymeacoffee.com/button-api/?text=Tip Jar&emoji=☕&slug=32and0&button_colour=FFDD00&font_colour=000000&font_family=Lato&outline_colour=000000&coffee_colour=ffffff&coffee_count=3" alt="Tip Jar" style={{ display: 'block', width: '100%', height: 'auto', borderRadius: '0 0 4px 4px' }} />
+              </a>
+            </div>
+          </>
+        )}
+      </div>
     </div>
   )
 
@@ -300,6 +385,16 @@ export default function App() {
           <>
             <div className="menu-backdrop" onClick={() => setShowMenu(false)} />
             <div className="app-menu-dropdown">
+              {user && userProfile ? (
+                <button className="menu-item menu-item--user" onClick={() => { setShowProfile(true); setShowMenu(false) }}>
+                  <img src={darkMode ? '/c2ddcacb-46e1-4a31-a0db-2141434d8269 (1).png' : '/67401335254.png'} alt="" className="menu-user-icon" style={{ width: '25px', height: '25px', objectFit: 'contain', filter: darkMode ? 'brightness(0.7)' : 'none' }} />
+                  <span className="menu-username">{userProfile.username}</span>
+                </button>
+              ) : (
+                <button className="menu-item menu-item--signin" onClick={() => { setShowAuth(true); setShowMenu(false) }}>
+                  🔑 Sign In / Create Account
+                </button>
+              )}
               <button
                 className="menu-item"
                 onClick={() => setDarkMode(d => !d)}
@@ -311,6 +406,12 @@ export default function App() {
                 </span>
                 {darkMode ? 'Light Mode' : 'Dark Mode'}
               </button>
+              <button
+                className="menu-item"
+                onClick={() => { setShowAbout(true); setShowMenu(false) }}
+              >
+                ℹ️ About
+              </button>
               <a
                 href="https://www.buymeacoffee.com/32and0"
                 target="_blank"
@@ -319,17 +420,11 @@ export default function App() {
                 style={{ display: 'block', borderTop: '1px solid var(--border)', background: 'linear-gradient(to right, #FFDD00 50%, #f0bc20 100%)' }}
               >
                 <img
-                  src="https://img.buymeacoffee.com/button-api/?text=Tip Jar&emoji=☕&slug=32and0&button_colour=FFDD00&font_colour=000000&font_family=Lato&outline_colour=000000&coffee_colour=ffffff&coffee_count=2"
+                  src="https://img.buymeacoffee.com/button-api/?text=Tip Jar&emoji=☕&slug=32and0&button_colour=FFDD00&font_colour=000000&font_family=Lato&outline_colour=000000&coffee_colour=ffffff&coffee_count=3"
                   alt="Tip Jar"
                   style={{ display: 'block', width: '100%', height: 'auto', borderRadius: '0 0 4px 4px' }}
                 />
               </a>
-              <button
-                className="menu-item"
-                onClick={() => { setShowAbout(true); setShowMenu(false) }}
-              >
-                ℹ️ About
-              </button>
             </div>
           </>
         )}
@@ -420,6 +515,13 @@ export default function App() {
           wonChampionship={pendingScore.wonChampionship}
           onSubmit={handleUsernameSubmit}
           onSkip={handlePromptSkip}
+        />
+      )}
+
+      {showAuth && (
+        <AuthModal
+          onClose={() => setShowAuth(false)}
+          onAuth={loadUser}
         />
       )}
 

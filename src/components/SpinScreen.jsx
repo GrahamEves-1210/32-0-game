@@ -41,6 +41,8 @@ const COMBO_BOOSTS = {
   'big12|era3': 7, 'big12|era6': 7,
   'sec|era4': 7,
   'big10|era7': 7, 'big10|era8': 7,
+  // C-USA was a legitimate B-tier conf in the late 90s (Cincinnati, Louisville, etc.)
+  'cusa|era1': 4.44,
 }
 
 function weightedRandomConf(conferences) {

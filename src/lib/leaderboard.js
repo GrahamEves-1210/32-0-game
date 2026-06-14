@@ -28,9 +28,10 @@ export async function isTopTen(score, wonChampionship, statsOn = true) {
   return score >= tenth.score
 }
 
-export async function submitScore({ username, score, won_championship, stats_on, lineup }) {
+export async function submitScore({ username, score, won_championship, stats_on, lineup, user_id }) {
   const payload = { username, score, won_championship, stats_on }
-  if (lineup) payload.lineup = lineup
+  if (lineup)   payload.lineup   = lineup
+  if (user_id)  payload.user_id  = user_id
   await supabase.from('leaderboard').insert(payload)
 }
 

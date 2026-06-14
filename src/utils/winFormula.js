@@ -7,6 +7,7 @@ const POSITIONS = ['PG', 'SG', 'SF', 'PF', 'C']
 const CONF_ERA_GRADE_OVERRIDES = {
   'wcc|era0': 'C',
   'wcc|era1': 'C',
+  'cusa|era1': 'B',
 }
 
 function getGradeMultiplier(conferenceId, era) {

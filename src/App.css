@@ -223,6 +223,28 @@
   background: #f0bc20;
 }
 
+.menu-item--signin {
+  color: var(--orange);
+}
+
+.menu-item--user {
+  gap: 8px;
+}
+
+.menu-user-icon {
+  flex-shrink: 0;
+}
+
+.menu-username {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* Inline toggle pill inside the menu */
 .menu-toggle-pill {
   position: relative;
@@ -675,7 +697,7 @@
   .btn-menu-trigger {
     width: 53px;
     height: 45px;
-    font-size: 28px;
+    font-size: 34px;
   }
 
   .btn-reset {
