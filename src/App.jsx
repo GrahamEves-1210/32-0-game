@@ -55,6 +55,19 @@ export default function App() {
 
   const gameEndSavedRef = useRef(false)
 
+  // Clear any overflow:hidden from body/html while profile is open so the
+  // fixed overlay can scroll on iOS (tournament phase sets these to 'hidden')
+  useEffect(() => {
+    if (!showProfile) return
+    const prevBody = document.body.style.overflow
+    const prevHtml = document.documentElement.style.overflow
+    document.body.style.overflow = ''
+    document.documentElement.style.overflow = ''
+    return () => {
+      document.body.style.overflow = prevBody
+      document.documentElement.style.overflow = prevHtml
+    }
+  }, [showProfile])
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
