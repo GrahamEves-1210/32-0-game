@@ -515,6 +515,8 @@
   border: 1.5px solid var(--border);
   border-radius: 14px;
   padding: 14px 14px 16px;
+  position: relative;
+  z-index: 101;
   display: flex;
   flex-direction: column;
   gap: 13px;
@@ -615,14 +617,17 @@
 }
 
 .preset-chip--reset {
-  border-color: var(--text-muted);
-  color: var(--text-muted);
+  border-color: var(--text-dim);
+  color: var(--text);
+  background: var(--surface2);
+  font-weight: 800;
+  font-size: 15px;
+  padding: 6px 14px;
 }
 
 .preset-chip--reset:hover {
-  border-color: var(--text-dim);
-  color: var(--text-dim);
-  background: var(--surface2);
+  border-color: var(--text);
+  background: color-mix(in srgb, var(--text) 10%, var(--surface2));
 }
 
 .preset-chip--active {

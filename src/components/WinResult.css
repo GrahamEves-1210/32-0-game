@@ -487,6 +487,10 @@
   margin-top: 5px;
 }
 
+[data-theme="dark"] .result-actions {
+  margin-top: 1px;
+}
+
 
 .btn-split-bar {
   width: 100%;
