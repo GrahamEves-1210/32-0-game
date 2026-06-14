@@ -266,39 +266,6 @@ export default function App() {
     </div>
   )
 
-  if (showProfile && user && userProfile) return (
-    <div className="app">
-      <main className="app-main">
-        <ProfilePage user={user} profile={userProfile} darkMode={darkMode} onClose={() => setShowProfile(false)} onSignOut={handleSignOut} />
-      </main>
-      <div className="app-menu-wrap">
-        <button className="btn-menu-trigger" onClick={() => setShowMenu(m => !m)} aria-label="Menu">☰</button>
-        {showMenu && (
-          <>
-            <div className="menu-backdrop" onClick={() => setShowMenu(false)} />
-            <div className="app-menu-dropdown">
-              <button className="menu-item menu-item--user" onClick={() => setShowMenu(false)}>
-                <img src={darkMode ? '/c2ddcacb-46e1-4a31-a0db-2141434d8269 (1).png' : '/67401335254.png'} alt="" className="menu-user-icon" style={{ width: '25px', height: '25px', objectFit: 'contain', filter: darkMode ? 'brightness(0.7)' : 'none' }} />
-                <span className="menu-username">{userProfile.username}</span>
-              </button>
-              <button className="menu-item" onClick={() => setDarkMode(d => !d)}>
-                <span className={`menu-toggle-pill ${darkMode ? 'menu-toggle-pill--dark' : ''}`}>
-                  <span className="toggle-icon toggle-icon--moon">🌙</span>
-                  <span className="toggle-knob" />
-                  <span className="toggle-icon toggle-icon--sun">☀️</span>
-                </span>
-                {darkMode ? 'Light Mode' : 'Dark Mode'}
-              </button>
-              <button className="menu-item" onClick={() => { setShowAbout(true); setShowProfile(false); setShowMenu(false) }}>ℹ️ About</button>
-              <a href="https://www.buymeacoffee.com/32and0" target="_blank" rel="noopener noreferrer" onClick={() => setShowMenu(false)} style={{ display: 'block', borderTop: '1px solid var(--border)', background: 'linear-gradient(to right, #FFDD00 50%, #f0bc20 100%)' }}>
-                <img src="https://img.buymeacoffee.com/button-api/?text=Tip Jar&emoji=☕&slug=32and0&button_colour=FFDD00&font_colour=000000&font_family=Lato&outline_colour=000000&coffee_colour=ffffff&coffee_count=3" alt="Tip Jar" style={{ display: 'block', width: '100%', height: 'auto', borderRadius: '0 0 4px 4px' }} />
-              </a>
-            </div>
-          </>
-        )}
-      </div>
-    </div>
-  )
 
   if (phase === 'headtohead' && challengeData) return (
     <div className="app">
@@ -523,6 +490,18 @@ export default function App() {
           onClose={() => setShowAuth(false)}
           onAuth={loadUser}
         />
+      )}
+
+      {showProfile && user && userProfile && (
+        <div className="profile-overlay">
+          <ProfilePage
+            user={user}
+            profile={userProfile}
+            darkMode={darkMode}
+            onClose={() => setShowProfile(false)}
+            onSignOut={handleSignOut}
+          />
+        </div>
       )}
 
     </div>

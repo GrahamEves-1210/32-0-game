@@ -60,6 +60,15 @@
   max-width: 1100px;
 }
 
+.profile-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: var(--bg);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 /* Draft layout */
 .draft-layout {
   width: 100%;
