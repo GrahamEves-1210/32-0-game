@@ -233,7 +233,7 @@ const ACHIEVEMENTS = [
   {
     id: 'goat',
     title: 'The GOAT',
-    description: 'Build a 100% lineup quality score. The best team ever? The debate is over before it starts.',
+    description: 'Build a lineup with a 100% quality score. Only the greatest players alive can get you there. The debate is over before it starts.',
     color: '#dc2626',
     checkFn: games => games.some(g => Number(g.score) >= 100),
   },
