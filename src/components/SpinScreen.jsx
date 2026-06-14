@@ -33,7 +33,14 @@ const EMPTY_COMBOS  = new Set([
 ])
 
 const COMBO_BOOSTS = {
-  'southern|era3': 3, 'ovc|era5': 3, 'bigsouth|era3': 3,
+  // Mid/low-major boosts (existing)
+  'southern|era3': 3, 'southern|era4': 3,
+  'ovc|era5': 3, 'bigsouth|era3': 3,
+  // Slight boost for combos containing a top-10 scoring player
+  'acc|era0': 7, 'acc|era3': 7, 'acc|era6': 7,
+  'big12|era3': 7, 'big12|era6': 7,
+  'sec|era4': 7,
+  'big10|era7': 7, 'big10|era8': 7,
 }
 
 function weightedRandomConf(conferences) {

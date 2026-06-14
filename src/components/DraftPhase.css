@@ -582,11 +582,11 @@
 
 .preset-chip {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  padding: 4px 10px;
+  padding: 5px 12px;
   border-radius: 20px;
   border: 1.5px solid var(--border);
   background: var(--surface2);
@@ -602,8 +602,8 @@
     gap: 4px;
   }
   .preset-chip {
-    font-size: 10px;
-    padding: 3px 7px;
+    font-size: 12px;
+    padding: 4px 9px;
     letter-spacing: 0.04em;
   }
 }
@@ -661,7 +661,7 @@
   border: none;
   cursor: pointer;
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.06em;
   color: var(--text-dim);
@@ -679,10 +679,10 @@
 
 .cgpill {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.06em;
-  padding: 2px 7px;
+  padding: 3px 9px;
   border-radius: 20px;
   border: 1.5px solid;
   cursor: pointer;
