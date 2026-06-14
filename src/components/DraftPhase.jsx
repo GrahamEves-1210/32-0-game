@@ -42,8 +42,12 @@ export default function DraftPhase({ onComplete, onFirstSpinDone, onSubPhase, on
   const [spinLockedEra,  setSpinLockedEra]  = useState(null)
   const [swapFrom,       setSwapFrom]       = useState(null)
   const [showCustomize,  setShowCustomize]  = useState(false)
-  const [customConfs,    setCustomConfs]    = useState(null) // null = all conferences active
-  const [customEras,     setCustomEras]     = useState(null) // null = all eras active
+  const [customConfs,    setCustomConfs]    = useState(() => {
+    try { const s = localStorage.getItem('customConfs'); return s ? new Set(JSON.parse(s)) : null } catch { return null }
+  })
+  const [customEras,     setCustomEras]     = useState(() => {
+    try { const s = localStorage.getItem('customEras'); return s ? new Set(JSON.parse(s)) : null } catch { return null }
+  })
   const [editConfs,      setEditConfs]      = useState(null)
   const [editEras,       setEditEras]       = useState(null)
   const hoverTimer  = useRef(null)
@@ -62,8 +66,14 @@ export default function DraftPhase({ onComplete, onFirstSpinDone, onSubPhase, on
   function applyCustomize() {
     const allConfs = CONFERENCES.every(c => editConfs.has(c.id))
     const allEras  = ERAS.every(e => editEras.has(e.id))
-    setCustomConfs(allConfs ? null : new Set(editConfs))
-    setCustomEras(allEras   ? null : new Set(editEras))
+    const newConfs = allConfs ? null : new Set(editConfs)
+    const newEras  = allEras  ? null : new Set(editEras)
+    setCustomConfs(newConfs)
+    setCustomEras(newEras)
+    if (newConfs) localStorage.setItem('customConfs', JSON.stringify([...newConfs]))
+    else localStorage.removeItem('customConfs')
+    if (newEras) localStorage.setItem('customEras', JSON.stringify([...newEras]))
+    else localStorage.removeItem('customEras')
     setShowCustomize(false)
   }
 
