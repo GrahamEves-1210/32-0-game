@@ -70,22 +70,126 @@ function EmptyChampSlot({ index }) {
   )
 }
 
-const DAILY_CHALLENGES = [
+// ── Daily challenge rotation ──────────────────────────────────────────────
+
+function getTodayEST() {
+  return new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' })
+}
+
+const CHALLENGE_EPOCH = '2026-06-14'
+
+const CHALLENGE_BANK = [
   {
-    id: '2026-06-14',
-    date: '2026-06-14',
     title: "90's Nostalgia",
-    description: 'Win the championship with an entire lineup from the 1990s (1990–1994 or 1995–1999). Any era settings are available — all five players must come from either 90s era.',
-    checkFn: (game) => game.is_champion && (game.lineup ?? []).length > 0 && (game.lineup ?? []).every(p => p.era === 'era0' || p.era === 'era1'),
+    description: 'Win the championship with an entire lineup from the 1990s (1990–1994 or 1995–1999). All five players must come from either 90s era.',
+    checkFn: g => g.is_champion && (g.lineup ?? []).length > 0 && g.lineup.every(p => p.era === 'era0' || p.era === 'era1'),
+  },
+  {
+    title: 'Y2K',
+    description: 'Win the championship with an entire lineup from the early 2000s (2000–2004).',
+    checkFn: g => g.is_champion && (g.lineup ?? []).length > 0 && g.lineup.every(p => p.era === 'era2'),
+  },
+  {
+    title: 'Perfect Season',
+    description: 'Go 32-0 in the regular season — win every single game with any lineup.',
+    checkFn: g => g.wins === 32,
+  },
+  {
+    title: 'The Aughts',
+    description: 'Win the championship with an entire lineup from the 2000s (2000–2008).',
+    checkFn: g => g.is_champion && (g.lineup ?? []).length > 0 && g.lineup.every(p => p.era === 'era2' || p.era === 'era3'),
+  },
+  {
+    title: 'Modern Dynasty',
+    description: 'Win the championship with an entire lineup from 2017 or later (2017–2026).',
+    checkFn: g => g.is_champion && (g.lineup ?? []).length > 0 && g.lineup.every(p => ['era6','era7','era8'].includes(p.era)),
+  },
+  {
+    title: 'Mid-2000s Glory',
+    description: 'Win the championship with an entire lineup from 2005–2012.',
+    checkFn: g => g.is_champion && (g.lineup ?? []).length > 0 && g.lineup.every(p => p.era === 'era3' || p.era === 'era4'),
+  },
+  {
+    title: 'Pure Perfection',
+    description: 'Go 32-0 in the regular season AND win the championship — the ultimate run.',
+    checkFn: g => g.wins === 32 && g.is_champion,
+  },
+  {
+    title: 'The 2010s',
+    description: 'Win the championship with an entire lineup from 2009–2016.',
+    checkFn: g => g.is_champion && (g.lineup ?? []).length > 0 && g.lineup.every(p => p.era === 'era4' || p.era === 'era5'),
+  },
+  {
+    title: 'New Wave',
+    description: 'Win the championship with an entire lineup from 2021 or later (2021–2026).',
+    checkFn: g => g.is_champion && (g.lineup ?? []).length > 0 && g.lineup.every(p => p.era === 'era7' || p.era === 'era8'),
+  },
+  {
+    title: 'The Last Decade',
+    description: 'Win the championship with an entire lineup from 2013–2023.',
+    checkFn: g => g.is_champion && (g.lineup ?? []).length > 0 && g.lineup.every(p => ['era5','era6','era7'].includes(p.era)),
+  },
+  {
+    title: 'Millennium',
+    description: 'Win the championship with an entire lineup from 1995–2004.',
+    checkFn: g => g.is_champion && (g.lineup ?? []).length > 0 && g.lineup.every(p => p.era === 'era1' || p.era === 'era2'),
+  },
+  {
+    title: 'Era Blend',
+    description: 'Win the championship with players spanning at least 4 different eras in your lineup.',
+    checkFn: g => g.is_champion && (g.lineup ?? []).length >= 5 && new Set(g.lineup.map(p => p.era)).size >= 4,
+  },
+  {
+    title: 'Recent History',
+    description: 'Win the championship with an entire lineup from 2017–2023.',
+    checkFn: g => g.is_champion && (g.lineup ?? []).length > 0 && g.lineup.every(p => p.era === 'era6' || p.era === 'era7'),
+  },
+  {
+    title: 'Old School Champion',
+    description: 'Win the championship with an entire lineup strictly from 1990–1994.',
+    checkFn: g => g.is_champion && (g.lineup ?? []).length > 0 && g.lineup.every(p => p.era === 'era0'),
   },
 ]
 
-function DailyBadge({ month, day, completed }) {
+function bankIndex(dateStr) {
+  const ms = new Date(dateStr + 'T12:00:00').getTime() - new Date(CHALLENGE_EPOCH + 'T12:00:00').getTime()
+  const days = Math.round(ms / 86400000)
+  return ((days % CHALLENGE_BANK.length) + CHALLENGE_BANK.length) % CHALLENGE_BANK.length
+}
+
+function challengeForDate(dateStr) {
+  return { ...CHALLENGE_BANK[bankIndex(dateStr)], id: dateStr, date: dateStr }
+}
+
+function getTodayDayIndex() {
+  const today = getTodayEST()
+  return Math.round(
+    (new Date(today + 'T12:00:00').getTime() - new Date(CHALLENGE_EPOCH + 'T12:00:00').getTime()) / 86400000
+  )
+}
+
+function getDefaultBadgePage() {
+  return Math.floor(Math.max(0, getTodayDayIndex()) / 6)
+}
+
+function getPageChallenges(pageNum) {
+  return Array.from({ length: 6 }, (_, i) => {
+    const dayIndex = pageNum * 6 + i
+    const d = new Date(CHALLENGE_EPOCH + 'T12:00:00')
+    d.setDate(d.getDate() + dayIndex)
+    const dateStr = d.toLocaleDateString('en-CA')
+    return { ...CHALLENGE_BANK[bankIndex(dateStr)], id: dateStr, date: dateStr, dayIndex }
+  })
+}
+
+function DailyBadge({ month, day, completed, future }) {
   return (
-    <div className={`prof-daily-badge ${completed ? 'prof-daily-badge--done' : ''}`}>
+    <div className={`prof-daily-badge${completed ? ' prof-daily-badge--done' : ''}${future ? ' prof-daily-badge--future' : ''}`}>
       <div className="prof-daily-badge-inner">
-        <span className="prof-badge-month">{month}</span>
-        <span className="prof-badge-day">{day}</span>
+        {future
+          ? <span className="prof-badge-lock">?</span>
+          : <><span className="prof-badge-month">{month}</span><span className="prof-badge-day">{day}</span></>
+        }
       </div>
     </div>
   )
@@ -114,38 +218,41 @@ function ChallengeRow({ challenge, completed, month, day }) {
 }
 
 function DailyChallengeSection({ completedDailies }) {
-  const today    = new Date().toISOString().slice(0, 10)
-  const todays   = DAILY_CHALLENGES.filter(c => c.date === today)
-  const dateObj  = new Date(today + 'T12:00:00')
-  const month    = dateObj.toLocaleDateString('en-US', { month: 'short' })
-  const day      = dateObj.getDate()
-
-  if (todays.length === 0) {
-    return (
-      <div className="prof-coming-soon">
-        <span className="prof-coming-icon">📅</span>
-        <span>Coming soon</span>
-      </div>
-    )
-  }
+  const today     = getTodayEST()
+  const challenge = challengeForDate(today)
+  const dateObj   = new Date(today + 'T12:00:00')
+  const month     = dateObj.toLocaleDateString('en-US', { month: 'short' })
+  const day       = dateObj.getDate()
 
   return (
     <div className="prof-daily-list">
-      {todays.map(c => (
-        <ChallengeRow key={c.id} challenge={c} completed={!!completedDailies[c.id]} month={month} day={day} />
-      ))}
+      <ChallengeRow challenge={challenge} completed={!!completedDailies[challenge.id]} month={month} day={day} />
     </div>
   )
 }
 
-function BadgeLog({ completedDailies }) {
-  const [page,     setPage]     = useState('daily')
-  const [selected, setSelected] = useState(null)
+function BadgeLog({ user }) {
+  const [page,      setPage]      = useState('daily')
+  const [badgePage, setBadgePage] = useState(() => getDefaultBadgePage())
+  const [achPage,   setAchPage]   = useState(0)
+  const [selected,  setSelected]  = useState(null)
+  const [completed, setCompleted] = useState({})
+
+  const todayIdx   = getTodayDayIndex()
+  const challenges = getPageChallenges(badgePage)
+  const isFuture   = c => c.dayIndex > todayIdx
+
+  useEffect(() => {
+    const toCheck = challenges.filter(c => !isFuture(c) && !(c.id in completed))
+    if (!toCheck.length) return
+    Promise.all(
+      toCheck.map(c => checkDailyChallenge(user.id, c.date, c.checkFn).then(done => [c.id, done]))
+    ).then(pairs => setCompleted(prev => ({ ...prev, ...Object.fromEntries(pairs) })))
+  }, [badgePage, user.id]) // eslint-disable-line
 
   function switchPage(p) { setPage(p); setSelected(null) }
-  function toggle(id)    { setSelected(s => s === id ? null : id) }
 
-  const selectedChallenge = selected ? DAILY_CHALLENGES.find(c => c.id === selected) : null
+  const selectedChallenge = selected ? challenges.find(c => c.id === selected) : null
 
   return (
     <div className="prof-section">
@@ -154,31 +261,44 @@ function BadgeLog({ completedDailies }) {
         <div className="prof-journal-margin" />
         <div className="prof-journal-body">
           <div className="prof-journal-tabs">
-            <button className={`prof-journal-tab ${page === 'daily' ? 'prof-journal-tab--active' : ''}`} onClick={() => switchPage('daily')}>Daily Challenges</button>
+            <button className={`prof-journal-tab ${page === 'daily' ? 'prof-journal-tab--active' : ''}`} onClick={() => switchPage('daily')}>Daily Challenge</button>
             <button className={`prof-journal-tab ${page === 'achievements' ? 'prof-journal-tab--active' : ''}`} onClick={() => switchPage('achievements')}>Achievements</button>
           </div>
 
           {page === 'daily' && (
             <>
               <div className="prof-badges-grid">
-                {DAILY_CHALLENGES.map(c => {
-                  const done = !!completedDailies[c.id]
-                  const d    = new Date(c.date + 'T12:00:00')
+                {challenges.map(c => {
+                  const future = isFuture(c)
+                  const done   = !future && !!completed[c.id]
+                  const d      = new Date(c.date + 'T12:00:00')
                   return (
-                    <div key={c.id} className="prof-badge-slot-btn" onClick={() => toggle(c.id)}>
-                      <DailyBadge month={d.toLocaleDateString('en-US', { month: 'short' })} day={d.getDate()} completed={done} />
+                    <div
+                      key={c.id}
+                      className={`prof-badge-slot-btn${future ? ' prof-badge-slot-btn--future' : ''}`}
+                      onClick={() => !future && setSelected(s => s === c.id ? null : c.id)}
+                    >
+                      <DailyBadge
+                        month={d.toLocaleDateString('en-US', { month: 'short' })}
+                        day={d.getDate()}
+                        completed={done}
+                        future={future}
+                      />
                     </div>
                   )
                 })}
-                {Array.from({ length: Math.max(0, 6 - DAILY_CHALLENGES.length) }, (_, i) => (
-                  <div key={`e${i}`} className="prof-badge-slot"><div className="prof-badge-inner">?</div></div>
-                ))}
               </div>
-              {selectedChallenge && (
+              <div className="prof-badge-nav">
+                {badgePage > 0 && (
+                  <button className="prof-badge-nav-btn" onClick={() => { setBadgePage(p => p - 1); setSelected(null) }}>‹</button>
+                )}
+                <button className="prof-badge-nav-btn prof-badge-nav-btn--right" onClick={() => { setBadgePage(p => p + 1); setSelected(null) }}>›</button>
+              </div>
+              {selectedChallenge && !isFuture(selectedChallenge) && (
                 <div className="prof-journal-detail">
                   <div className="prof-journal-detail-title">{selectedChallenge.title}</div>
                   <p className="prof-journal-detail-desc">{selectedChallenge.description}</p>
-                  {completedDailies[selectedChallenge.id]
+                  {completed[selectedChallenge.id]
                     ? <div className="prof-daily-done">✓ Challenge completed!</div>
                     : <div className="prof-journal-detail-pending">Not yet completed</div>
                   }
@@ -188,13 +308,21 @@ function BadgeLog({ completedDailies }) {
           )}
 
           {page === 'achievements' && (
-            <div className="prof-badges-grid">
-              {Array.from({ length: 6 }, (_, i) => (
-                <div key={i} className="prof-ach-slot">
-                  <span className="prof-ach-coming">Coming<br/>Soon</span>
-                </div>
-              ))}
-            </div>
+            <>
+              <div className="prof-badges-grid">
+                {Array.from({ length: 6 }, (_, i) => (
+                  <div key={i} className="prof-ach-slot">
+                    {achPage === 0 && <span className="prof-ach-coming">Coming<br/>Soon</span>}
+                  </div>
+                ))}
+              </div>
+              <div className="prof-badge-nav">
+                {achPage > 0 && (
+                  <button className="prof-badge-nav-btn" onClick={() => setAchPage(p => p - 1)}>‹</button>
+                )}
+                <button className="prof-badge-nav-btn prof-badge-nav-btn--right" onClick={() => setAchPage(p => p + 1)}>›</button>
+              </div>
+            </>
           )}
         </div>
       </div>
@@ -216,14 +344,9 @@ export default function ProfilePage({ user, profile, darkMode, onClose, onSignOu
   }, [user.id])
 
   useEffect(() => {
-    async function checkAll() {
-      const results = {}
-      for (const c of DAILY_CHALLENGES) {
-        results[c.id] = await checkDailyChallenge(user.id, c.date, c.checkFn)
-      }
-      setCompletedDailies(results)
-    }
-    checkAll()
+    const today = challengeForDate(getTodayEST())
+    checkDailyChallenge(user.id, today.date, today.checkFn)
+      .then(done => setCompletedDailies({ [today.id]: done }))
   }, [user.id])
 
   return (
@@ -332,14 +455,14 @@ export default function ProfilePage({ user, profile, darkMode, onClose, onSignOu
               )}
             </div>
 
-            {/* Daily Challenges */}
+            {/* Daily Challenge */}
             <div className="prof-section">
-              <div className="prof-section-title">Daily Challenges</div>
+              <div className="prof-section-title">Daily Challenge</div>
               <DailyChallengeSection completedDailies={completedDailies} />
             </div>
 
             {/* Badge Log */}
-            <BadgeLog completedDailies={completedDailies} />
+            <BadgeLog user={user} />
           </>
         )}
       </div>

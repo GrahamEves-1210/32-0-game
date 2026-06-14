@@ -67,6 +67,7 @@
   background: var(--bg);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
 }
 
 /* Draft layout */

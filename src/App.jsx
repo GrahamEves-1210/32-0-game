@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import DraftPhase from './components/DraftPhase'
 import WinResult from './components/WinResult'
 import TournamentPhase from './components/TournamentPhase'
@@ -52,6 +52,23 @@ export default function App() {
     const color = darkMode ? '#0d1f4e' : '#bdd8f5'
     document.querySelectorAll('meta[name="theme-color"]').forEach(m => m.setAttribute('content', color))
   }, [darkMode])
+
+  const gameEndSavedRef = useRef(false)
+
+  // Lock body scroll while profile overlay is open (prevents iOS touch-through)
+  useEffect(() => {
+    if (!showProfile) return
+    const scrollY = window.scrollY
+    document.body.style.position = 'fixed'
+    document.body.style.top = `-${scrollY}px`
+    document.body.style.width = '100%'
+    return () => {
+      document.body.style.position = ''
+      document.body.style.top = ''
+      document.body.style.width = ''
+      window.scrollTo(0, scrollY)
+    }
+  }, [showProfile])
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -146,6 +163,8 @@ export default function App() {
   }
 
   async function handleGameEnd(wonChampionship) {
+    if (gameEndSavedRef.current) return
+    gameEndSavedRef.current = true
     const lineup = finalLineup ? Object.values(finalLineup).filter(Boolean) : []
     const score  = getMatchPercentage(lineup)
     const wins   = calculateWins(lineup)
@@ -190,6 +209,7 @@ export default function App() {
   }
 
   function handleReset() {
+    gameEndSavedRef.current = false
     setFinalLineup(null)
     setPhase('draft')
     setResetKey(k => k + 1)
@@ -216,6 +236,12 @@ export default function App() {
   }
 
   const lineupArray = finalLineup ? Object.values(finalLineup).filter(Boolean) : []
+
+  // Stable callbacks for TournamentPhase — new references on every render caused
+  // stale closures and duplicate onGameEnd calls when App re-rendered (e.g. opening profile)
+  const onChampion = useCallback(() => setChampReached(true), [])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const onGameEnd  = useCallback(handleGameEnd, [])
 
   if (showAbout) return (
     <div className="app">
@@ -324,12 +350,13 @@ export default function App() {
 
         {phase === 'tournament' && (
           <TournamentPhase
+            key="tournament"
             wins={calculateWins(lineupArray)}
             matchPct={getMatchPercentage(lineupArray) / 100}
             lineup={lineupArray}
             onReset={handleReset}
-            onChampion={() => setChampReached(true)}
-            onGameEnd={handleGameEnd}
+            onChampion={onChampion}
+            onGameEnd={onGameEnd}
           />
         )}
       </main>

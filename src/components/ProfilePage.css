@@ -755,13 +755,17 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(224,168,0,0.55);
+  background: rgba(140,140,140,0.4);
   clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
   transition: background 0.3s;
 }
 
 .prof-daily-badge--done::before {
-  background: #e0a800;
+  background: #2563eb;
+}
+
+.prof-daily-badge--future::before {
+  background: rgba(140,140,140,0.15);
 }
 
 .prof-daily-badge-inner {
@@ -778,7 +782,11 @@
 }
 
 .prof-daily-badge--done .prof-daily-badge-inner {
-  background: color-mix(in srgb, #e0a800 25%, var(--surface2));
+  background: color-mix(in srgb, #2563eb 18%, var(--surface2));
+}
+
+.prof-daily-badge--future .prof-daily-badge-inner {
+  background: color-mix(in srgb, var(--surface2) 95%, transparent);
 }
 
 .prof-badge-month {
@@ -787,9 +795,11 @@
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #e0a800;
+  color: #2563eb;
   line-height: 1;
 }
+
+.prof-daily-badge--done .prof-badge-month { color: #2563eb; }
 
 .prof-badge-day {
   font-family: 'Barlow Condensed', sans-serif;
@@ -799,11 +809,42 @@
   line-height: 1;
 }
 
-.prof-badge-check {
-  font-size: 22px;
-  color: #e0a800;
-  font-weight: 700;
+.prof-badge-lock {
+  font-size: 18px;
+  opacity: 0.18;
+  line-height: 1;
 }
+
+.prof-badge-slot-btn--future {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.prof-badge-nav {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.prof-badge-nav-btn {
+  background: none;
+  border: 1px solid rgba(0,0,0,0.14);
+  border-radius: 4px;
+  padding: 2px 10px;
+  font-size: 26px;
+  line-height: 1.2;
+  color: rgba(0,0,0,0.35);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.prof-badge-nav-btn:hover {
+  background: rgba(0,0,0,0.05);
+  color: rgba(0,0,0,0.65);
+}
+
+.prof-badge-nav-btn--right { margin-left: auto; }
 
 .prof-daily-info {
   flex: 1;
