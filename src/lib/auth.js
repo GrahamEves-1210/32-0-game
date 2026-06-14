@@ -73,6 +73,13 @@ export async function fetchUserStats(userId) {
   return { games, perfect, avgScore, champCount, championships, best }
 }
 
+export async function saveProfileRating(userId, rating) {
+  await supabase
+    .from('profiles')
+    .update({ profile_rating: rating })
+    .eq('id', userId)
+}
+
 export async function fetchAllGamesForBadges(userId) {
   const { data } = await supabase
     .from('game_results')

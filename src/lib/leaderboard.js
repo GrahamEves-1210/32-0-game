@@ -35,6 +35,16 @@ export async function submitScore({ username, score, won_championship, stats_on,
   await supabase.from('leaderboard').insert(payload)
 }
 
+export async function fetchProfileLeaderboard() {
+  const { data } = await supabase
+    .from('profiles')
+    .select('username, profile_rating')
+    .not('profile_rating', 'is', null)
+    .order('profile_rating', { ascending: false })
+    .limit(10)
+  return data ?? []
+}
+
 export async function fetchHOF() {
   const { data } = await supabase
     .from('leaderboard')

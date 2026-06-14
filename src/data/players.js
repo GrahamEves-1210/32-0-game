@@ -5299,6 +5299,7 @@ export const ALL_PLAYERS = [
   p('cam-mack','Cam Mack','Nebraska','big10','era6',2020,12,4.5,6.4,1.3,0.4,0.48,1.5,["PG","SG"]),
   p('isaiah-roby','Isaiah Roby','Nebraska','big10','era6',2019,11.8,6.9,1.9,1.3,1.9,0.538,0.8,["SF","PF"]),
   p('jon-teske','Jon Teske','Michigan','big10','era6',2020,11.6,6.7,1.1,1,1.8,0.542,0.5,["C","PF"]),
+  p('og-anunoby','OG Anunoby','Indiana','big10','era6',2017,11.0,4.5,1.7,2.0,1.3,0.590,0.5,["SF","PF"]),
   p('trae-young','Trae Young','Oklahoma','big12','era6',2018,27.4,3.9,8.7,1.7,0.3,0.593,3.7,["PG","SG"]),
   p('frank-mason-iii-2','Frank Mason III','Kansas','big12','era6',2017,20.9,4.2,5.2,1.3,0.1,0.631,2.3,["PG","SG"]),
   p('dedric-lawson-3','Dedric Lawson','Kansas','big12','era6',2019,19.4,10.3,1.7,1.3,1.1,0.585,1,["PF","C"]),

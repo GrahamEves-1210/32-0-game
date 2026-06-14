@@ -170,7 +170,7 @@ export default function App() {
           }
         } catch (_) {}
       }
-    } else {
+    } else if (!user) {
       setPendingScore({ score, wonChampionship, statsOn, lineup: lineupNames })
       if (!isCustomGame) {
         try {
@@ -215,6 +215,28 @@ export default function App() {
     setChallengeAccepted(false)
     setChallengeChromeUp(false)
     setIsCustomGame(false)
+  }
+
+  async function handleResultReset() {
+    if (!gameEndSavedRef.current && user && userProfile) {
+      gameEndSavedRef.current = true
+      const lineup = finalLineup ? Object.values(finalLineup).filter(Boolean) : []
+      const score  = getMatchPercentage(lineup)
+      const wins   = calculateWins(lineup)
+      const lineupNames = score >= 100 ? lineup.map(p => p.name) : null
+      try {
+        await saveGameResult({ userId: user.id, score, wins, isChampion: false, statsOn, lineup })
+      } catch (_) {}
+      if (!isCustomGame) {
+        try {
+          const qualified = await isTopTen(score, false, statsOn)
+          if (qualified) {
+            await submitScore({ username: userProfile.username, score, won_championship: false, stats_on: statsOn, lineup: lineupNames, user_id: user.id })
+          }
+        } catch (_) {}
+      }
+    }
+    handleReset()
   }
 
   function handleTournament() {
@@ -341,7 +363,7 @@ export default function App() {
         {phase === 'result' && (
           <WinResult
             lineup={lineupArray}
-            onReset={handleReset}
+            onReset={handleResultReset}
             onTournament={handleTournament}
           />
         )}

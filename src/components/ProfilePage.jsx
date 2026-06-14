@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { fetchUserStats, checkDailyChallenge, fetchAllGamesForBadges } from '../lib/auth'
+import { fetchUserStats, checkDailyChallenge, fetchAllGamesForBadges, saveProfileRating } from '../lib/auth'
 import { ALL_PLAYERS } from '../data/players'
 import { getOffensiveRating, getDefensiveRating } from '../utils/winFormula'
 import './ProfilePage.css'
@@ -259,8 +259,8 @@ function AchievementIcon({ id, color, done }) {
     )
     case 'dynasty': return (
       <svg viewBox="0 0 24 24" {...s}>
-        <path d="M2 20h20v-3H2v3z"/>
-        <path d="M2 9l4 4 5.5-8.5 5.5 8.5 4-4v8H2V9z"/>
+        <path d="M3 18h18v-3H3v3z"/>
+        <path d="M3 8l4 4 5-8 5 8 4-4v7H3V8z"/>
       </svg>
     )
     case 'magic': return (
@@ -293,6 +293,29 @@ function AchievementIcon({ id, color, done }) {
   }
 }
 
+const SPECIAL_CHALLENGES = {
+  '2026-06-15': {
+    title: 'Knicks in 5',
+    description: "Build the starting 5 of the 2026 champions: Jalen Brunson, Mikal Bridges, Josh Hart, OG Anunoby, and Karl-Anthony Towns. Hint: spin Big East + 2017–2020 to find Brunson, Bridges & Hart. Find OG Anunoby via Big Ten + 2017–2020, and KAT via SEC + 2013–2016.",
+    checkFn: g => ['jalen-brunson','mikal-bridges','josh-hart-2','og-anunoby','karl-anthony-towns'].every(id => (g.lineup ?? []).some(p => p.id === id)),
+  },
+  '2026-06-16': {
+    title: 'Nova Boys',
+    description: "All Villanova, all the time. Build a lineup of all 5 Villanova players and win the championship. Hint: spin Big East + era6.",
+    checkFn: g => g.is_champion && (g.lineup ?? []).length >= 5 && g.lineup.every(p => p.school === 'Villanova'),
+  },
+  '2026-06-17': {
+    title: 'Y2K',
+    description: 'Win the championship with an entire lineup from the early 2000s (2000–2004).',
+    checkFn: g => g.is_champion && (g.lineup ?? []).length > 0 && g.lineup.every(p => p.era === 'era2'),
+  },
+  '2026-06-18': {
+    title: 'Modern Dynasty',
+    description: 'Win the championship with an entire lineup from 2017 or later (2017–2026).',
+    checkFn: g => g.is_champion && (g.lineup ?? []).length > 0 && g.lineup.every(p => ['era6','era7','era8'].includes(p.era)),
+  },
+}
+
 function bankIndex(dateStr) {
   const ms = new Date(dateStr + 'T12:00:00').getTime() - new Date(CHALLENGE_EPOCH + 'T12:00:00').getTime()
   const days = Math.round(ms / 86400000)
@@ -300,6 +323,7 @@ function bankIndex(dateStr) {
 }
 
 function challengeForDate(dateStr) {
+  if (SPECIAL_CHALLENGES[dateStr]) return { ...SPECIAL_CHALLENGES[dateStr], id: dateStr, date: dateStr }
   return { ...CHALLENGE_BANK[bankIndex(dateStr)], id: dateStr, date: dateStr }
 }
 
@@ -337,6 +361,37 @@ function ChallengeRow({ challenge, completed, month, day }) {
   )
 }
 
+function calcProfileRating(allGames, earnedBadges, achDone) {
+  const games = allGames.length
+  if (games === 0) return 0
+  const perfect    = allGames.filter(g => g.wins === 32).length
+  const champCount = allGames.filter(g => g.is_champion).length
+  const avgScore   = allGames.reduce((s, g) => s + Number(g.score), 0) / games
+  const perfRate   = perfect / games
+  const badgeCount = earnedBadges.length
+  const achCount   = Object.values(achDone).filter(Boolean).length
+  return Math.round(
+    avgScore * 2 +
+    perfect * 30 +
+    perfRate * 200 +
+    champCount * 8 +
+    Math.log2(games + 1) * 20 +
+    achCount * 100 +
+    badgeCount * 25
+  )
+}
+
+function ratingTier(r) {
+  if (r >= 2000) return { label: 'Legend',   color: '#dc2626' }
+  if (r >= 1500) return { label: 'All-Time', color: '#d97706' }
+  if (r >= 1000) return { label: 'Elite',    color: '#7c3aed' }
+  if (r >= 750)  return { label: 'All-Star', color: '#2563eb' }
+  if (r >= 500)  return { label: 'Starter',  color: '#059669' }
+  if (r >= 250)  return { label: 'Rising',   color: '#0891b2' }
+  if (r >= 100)  return { label: 'Prospect', color: '#6b7280' }
+  return               { label: 'Rookie',    color: '#9ca3af' }
+}
+
 function DailyChallengeSection({ completedDailies }) {
   const today     = getTodayEST()
   const challenge = challengeForDate(today)
@@ -351,7 +406,7 @@ function DailyChallengeSection({ completedDailies }) {
   )
 }
 
-function BadgeLog({ user }) {
+function BadgeLog({ user, onRating }) {
   const [page,      setPage]      = useState('daily')
   const [badgePage, setBadgePage] = useState(0)
   const [selected,  setSelected]  = useState(null)
@@ -377,12 +432,17 @@ function BadgeLog({ user }) {
         const challenge = challengeForDate(dateStr)
         if (games.some(challenge.checkFn)) result.push({ ...challenge })
       }
-      setEarned(result.sort((a, b) => a.date.localeCompare(b.date)))
+      const sortedResult = result.sort((a, b) => a.date.localeCompare(b.date))
+      setEarned(sortedResult)
 
       // Achievements
       const done = {}
       ACHIEVEMENTS.forEach(a => { done[a.id] = a.checkFn(allGames) })
       setAchDone(done)
+
+      const rating = calcProfileRating(allGames, sortedResult, done)
+      onRating?.(rating)
+      saveProfileRating(user.id, rating).catch(() => {})
     })
   }, [user.id])
 
@@ -489,6 +549,7 @@ export default function ProfilePage({ user, profile, darkMode, onClose, onSignOu
   const [loading,         setLoading]         = useState(true)
   const [showAllChamps,   setShowAllChamps]   = useState(false)
   const [completedDailies, setCompletedDailies] = useState({})
+  const [profileRating,   setProfileRating]   = useState(null)
 
   useEffect(() => {
     fetchUserStats(user.id)
@@ -548,6 +609,30 @@ export default function ProfilePage({ user, profile, darkMode, onClose, onSignOu
                   <span className="prof-hero-lbl prof-hero-lbl--perfect">32–0 Rate</span>
                 </div>
               </div>
+              {profileRating !== null && (() => {
+                const tier = ratingTier(profileRating)
+                return (
+                  <div
+                    className="prof-rating-badge"
+                    style={{
+                      borderColor: tier.color + '55',
+                      background: `linear-gradient(160deg, ${tier.color}1a 0%, ${tier.color}06 100%)`,
+                    }}
+                  >
+                    <div className="prof-rating-top-bar" style={{ background: tier.color }} />
+                    <span className="prof-rating-lbl">Profile Score</span>
+                    <span
+                      className="prof-rating-num"
+                      style={{
+                        color: tier.color,
+                        textShadow: `0 0 40px ${tier.color}55, 0 2px 12px ${tier.color}33`,
+                      }}
+                    >
+                      {profileRating.toLocaleString()}
+                    </span>
+                  </div>
+                )
+              })()}
             </>
           )}
         </div>
@@ -616,7 +701,7 @@ export default function ProfilePage({ user, profile, darkMode, onClose, onSignOu
             </div>
 
             {/* Badge Log */}
-            <BadgeLog user={user} />
+            <BadgeLog user={user} onRating={setProfileRating} />
           </>
         )}
       </div>
