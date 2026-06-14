@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { signUp, signIn } from '../lib/auth'
 import './AuthModal.css'
 
@@ -9,6 +9,19 @@ export default function AuthModal({ onClose, onAuth }) {
   const [showPw,    setShowPw]    = useState(false)
   const [status,    setStatus]    = useState('idle')
   const [errMsg,    setErrMsg]    = useState('')
+
+  useEffect(() => {
+    const scrollY = window.scrollY
+    document.body.style.position = 'fixed'
+    document.body.style.top = `-${scrollY}px`
+    document.body.style.width = '100%'
+    return () => {
+      document.body.style.position = ''
+      document.body.style.top = ''
+      document.body.style.width = ''
+      window.scrollTo(0, scrollY)
+    }
+  }, [])
 
   function switchMode(m) {
     setMode(m)
@@ -53,7 +66,6 @@ export default function AuthModal({ onClose, onAuth }) {
           onChange={e => setUsername(e.target.value.replace(/\s/g, '').slice(0, 15))}
           autoComplete="username"
           spellCheck={false}
-          autoFocus
         />
         <div className="auth-pw-wrap">
           <input
