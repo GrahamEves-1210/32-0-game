@@ -800,6 +800,11 @@
   line-height: 1.5;
   padding: 0 8px;
 }
+.about-privacy-link {
+  color: var(--text-muted);
+  text-decoration: underline;
+  opacity: 0.7;
+}
 
 .about-tip-jar img {
   display: block;

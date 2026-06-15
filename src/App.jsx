@@ -317,6 +317,7 @@ export default function App() {
           </div>
           <p className="about-privacy">
             Your username and game history are stored to power your profile and the leaderboard. No personal data is collected or sold.
+            {' '}<a href="/privacy.html" target="_blank" rel="noopener" className="about-privacy-link">Privacy Policy</a>
           </p>
         </div>
       </main>
