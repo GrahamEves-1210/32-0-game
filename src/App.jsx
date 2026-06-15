@@ -291,17 +291,33 @@ export default function App() {
             Inspired by{' '}
             <a href="https://www.82-0.com" target="_blank" rel="noopener noreferrer">82-0.com</a>
           </p>
-          <a
-            href="https://www.buymeacoffee.com/32and0"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="about-tip-jar"
-          >
-            <img
-              src="https://img.buymeacoffee.com/button-api/?text=Tip Jar&emoji=☕&slug=32and0&button_colour=FFDD00&font_colour=000000&font_family=Lato&outline_colour=000000&coffee_colour=ffffff&coffee_count=3"
-              alt="Tip Jar"
-            />
-          </a>
+          <div className="about-social-row">
+            <a
+              href="https://www.buymeacoffee.com/32and0"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="about-tip-jar"
+            >
+              <img
+                src="https://img.buymeacoffee.com/button-api/?text=Tip Jar&emoji=☕&slug=32and0&button_colour=FFDD00&font_colour=000000&font_family=Lato&outline_colour=000000&coffee_colour=ffffff&coffee_count=3"
+                alt="Tip Jar"
+              />
+            </a>
+            <a
+              href="https://x.com/32and0game"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="about-x-btn"
+            >
+              <svg viewBox="0 0 24 24" className="about-x-icon" fill="currentColor">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.261 5.632 5.902-5.632Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+              @32and0game
+            </a>
+          </div>
+          <p className="about-privacy">
+            Your username and game history are stored to power your profile and the leaderboard. No personal data is collected or sold.
+          </p>
         </div>
       </main>
     </div>
