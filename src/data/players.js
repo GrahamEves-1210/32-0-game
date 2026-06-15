@@ -271,7 +271,7 @@ export const ALL_PLAYERS = [
   p('rich-mcbride','Rich McBride','Illinois','big10','era3',2006,10,1.7,2,0.7,0,0.577,2.5,["SG","SF"]),
   p('lester-abram','Lester Abram','Michigan','big10','era3',2006,9.9,3.3,1.1,0.9,0.3,0.66,0.9,["SG","SF"]),
   p('korey-spates','Korey Spates','Purdue','big10','era3',2006,9.9,2.6,1.7,0.6,0.1,0.483,0.9,["SG","SF"]),
-  p('michael-beasley','Michael Beasley','Kansas State','big12','era3',2008,26.2,12.4,1.2,1.3,1.6,0.619,1.1,["PF","C"]),
+  p('michael-beasley','Michael Beasley','Kansas State','big12','era3',2008,26.2,12.4,1.2,1.3,1.6,0.619,1.1,["SF","PF"]),
   p('kevin-durant','Kevin Durant','Texas','big12','era3',2007,25.8,11.1,1.3,1.9,1.9,0.594,2.3,["SG","SF"]),
   p('jarrius-jackson','Jarrius Jackson','Texas Tech','big12','era3',2006,20.5,4.1,2.9,1.7,0.1,0.568,2.3,["SG","SF"]),
   p('wayne-simien','Wayne Simien','Kansas','big12','era3',2005,20.1,10.8,1.5,0.7,0.6,0.619,0.1,["PF","C"]),
