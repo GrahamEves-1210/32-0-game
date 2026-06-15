@@ -53,7 +53,14 @@ export async function getProfile(userId) {
     .select('username')
     .eq('id', userId)
     .single()
-  return data
+  if (data) return data
+
+  // Profile row missing — create it from auth metadata (handles failed signup inserts)
+  const { data: { user } } = await supabase.auth.getUser()
+  const username = user?.user_metadata?.username
+  if (!username) return null
+  await supabase.from('profiles').insert({ id: userId, username }).select().single()
+  return { username }
 }
 
 export async function fetchUserStats(userId) {
@@ -61,7 +68,6 @@ export async function fetchUserStats(userId) {
     .from('game_results')
     .select('score, wins, is_champion, stats_on, lineup, played_at')
     .eq('user_id', userId)
-    .eq('stats_on', true)
     .order('played_at', { ascending: false })
   if (!data || !data.length) return { games: 0, perfect: 0, avgScore: 0, champCount: 0, championships: [], best: [] }
   const games         = data.length
@@ -85,7 +91,6 @@ export async function fetchAllGamesForBadges(userId) {
     .from('game_results')
     .select('wins, is_champion, lineup, played_at, score')
     .eq('user_id', userId)
-    .eq('stats_on', true)
   return data ?? []
 }
 

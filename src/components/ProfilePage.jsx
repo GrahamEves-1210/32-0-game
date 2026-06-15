@@ -212,9 +212,9 @@ const ACHIEVEMENTS = [
   {
     id: 'magic',
     title: 'March Magic',
-    description: 'Win the championship with a lineup quality score under 60%. They said this team had no business winning. The final scoreboard disagreed.',
+    description: 'Win the championship with a lineup quality score under 70%. They said this team had no business winning. The final scoreboard disagreed.',
     color: '#db2777',
-    checkFn: games => games.some(g => g.is_champion && Number(g.score) < 60),
+    checkFn: games => games.some(g => g.is_champion && Number(g.score) < 70),
   },
   {
     id: 'unguardable',
