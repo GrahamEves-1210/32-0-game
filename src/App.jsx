@@ -53,7 +53,18 @@ export default function App() {
     document.querySelectorAll('meta[name="theme-color"]').forEach(m => m.setAttribute('content', color))
   }, [darkMode])
 
-  const gameEndSavedRef = useRef(false)
+  const gameEndSavedRef   = useRef(false)
+  const userRef           = useRef(user)
+  const userProfileRef    = useRef(userProfile)
+  const finalLineupRef    = useRef(finalLineup)
+  const statsOnRef        = useRef(statsOn)
+  const isCustomGameRef   = useRef(isCustomGame)
+
+  useEffect(() => { userRef.current        = user },        [user])
+  useEffect(() => { userProfileRef.current = userProfile }, [userProfile])
+  useEffect(() => { finalLineupRef.current = finalLineup }, [finalLineup])
+  useEffect(() => { statsOnRef.current     = statsOn },     [statsOn])
+  useEffect(() => { isCustomGameRef.current = isCustomGame }, [isCustomGame])
 
 
   useEffect(() => {
@@ -151,17 +162,21 @@ export default function App() {
   async function handleGameEnd(wonChampionship) {
     if (gameEndSavedRef.current) return
     gameEndSavedRef.current = true
-    const lineup = finalLineup ? Object.values(finalLineup).filter(Boolean) : []
-    const score  = getMatchPercentage(lineup)
-    const wins   = calculateWins(lineup)
+    // Read from refs so the memoized callback always gets current values
+    const user        = userRef.current
+    const userProfile = userProfileRef.current
+    const fl          = finalLineupRef.current
+    const statsOn     = statsOnRef.current
+    const isCustomGame = isCustomGameRef.current
+    const lineup      = fl ? Object.values(fl).filter(Boolean) : []
+    const score       = getMatchPercentage(lineup)
+    const wins        = calculateWins(lineup)
     const lineupNames = score >= 100 ? lineup.map(p => p.name) : null
 
     if (user && userProfile) {
-      // Save to personal history
       try {
         await saveGameResult({ userId: user.id, score, wins, isChampion: wonChampionship, statsOn, lineup })
       } catch (_) {}
-      // Auto-submit leaderboard with verified username
       if (!isCustomGame) {
         try {
           const qualified = await isTopTen(score, wonChampionship, statsOn)
