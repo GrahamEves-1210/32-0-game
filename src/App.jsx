@@ -14,7 +14,7 @@ import { getProfile, saveGameResult, signOut } from './lib/auth'
 import supabase from './lib/supabase'
 import './App.css'
 
-// Phases: 'draft' → 'result' → 'tournament'
+//* Phases: 'draft' → 'result' → 'tournament'
 
 export default function App() {
   const [phase,       setPhase]       = useState('draft')
