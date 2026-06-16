@@ -45,20 +45,18 @@ let _cache = null // invalidated when playerScore formula changes
 // regardless of their individual scores. The 278 threshold applies to everyone else.
 const PERFECT_IDS = new Set(['stephen-curry', 'trae-young', 'kevin-durant', 'zion-williamson', 'zach-edey-2'])
 
-// Players whose individual scores are high enough to organically reach 278 with the right 4 teammates
+// Players whose individual scores are high enough to organically reach 278 with the right 4 teammates.
+// Any 5 of these together (or Edey-2 + any 4 of these) = 100%.
 const HUNDRED_PCT_IDS = new Set([
   'shaquille-oneal', 'stephen-curry', 'gary-payton', 'trae-young', 'kevin-durant',
   'zion-williamson', 'michael-beasley', 'christian-laettner', 'jj-redick',
-  'glenn-robinson', 'anthony-davis-2',
+  'glenn-robinson', 'anthony-davis-2', 'zach-edey-2',
 ])
 
 function isCanonicalLineup(lineup) {
   const ids = lineup.filter(Boolean).map(p => p.id)
   if (ids.length !== 5) return false
-  // Original hardcoded 5
-  if (ids.every(id => PERFECT_IDS.has(id))) return true
-  // Edey + any 4 of the 100% caliber players
-  if (ids.includes('zach-edey-2') && ids.filter(id => id !== 'zach-edey-2').every(id => HUNDRED_PCT_IDS.has(id))) return true
+  if (ids.every(id => HUNDRED_PCT_IDS.has(id))) return true
   return false
 }
 
