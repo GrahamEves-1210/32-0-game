@@ -301,7 +301,7 @@ const SPECIAL_CHALLENGES = {
   },
   '2026-06-16': {
     title: 'Nova Boys',
-    description: "All Villanova, all the time. Build a lineup of all 5 Villanova players and win the championship. Hint: spin Big East + era6.",
+    description: "All Villanova, all the time. Build a lineup of all 5 Villanova players and win the championship. Hint: spin Big East.",
     checkFn: g => g.is_champion && (g.lineup ?? []).length >= 5 && g.lineup.every(p => p.school === 'Villanova'),
   },
   '2026-06-17': {
