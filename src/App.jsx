@@ -299,7 +299,7 @@ export default function App() {
               className="about-tip-jar"
             >
               <img
-                src="https://img.buymeacoffee.com/button-api/?text=Tip Jar&emoji=☕&slug=32and0&button_colour=FFDD00&font_colour=000000&font_family=Lato&outline_colour=000000&coffee_colour=ffffff&coffee_count=3"
+                src="https://img.buymeacoffee.com/button-api/?text=Tip Jar&emoji=☕&slug=32and0&button_colour=FFDD00&font_colour=000000&font_family=Lato&outline_colour=000000&coffee_colour=ffffff&coffee_count=4"
                 alt="Tip Jar"
               />
             </a>
@@ -383,7 +383,8 @@ export default function App() {
             <DraftPhase
               key={resetKey}
               onComplete={handleDraftComplete}
-              onFirstSpinDone={() => { setShowHeader(false); setChallengeChromeUp(true) }}
+              onShowHeader={setShowHeader}
+              onFirstSpinDone={() => setChallengeChromeUp(true)}
               onSubPhase={setDraftSubPhase}
               onChallengeEntry={openCodeModal}
               inChallenge={!!challengeCode}
@@ -466,7 +467,7 @@ export default function App() {
                 style={{ display: 'block', borderTop: '1px solid var(--border)', background: 'linear-gradient(to right, #FFDD00 50%, #f0bc20 100%)' }}
               >
                 <img
-                  src="https://img.buymeacoffee.com/button-api/?text=Tip Jar&emoji=☕&slug=32and0&button_colour=FFDD00&font_colour=000000&font_family=Lato&outline_colour=000000&coffee_colour=ffffff&coffee_count=3"
+                  src="https://img.buymeacoffee.com/button-api/?text=Tip Jar&emoji=☕&slug=32and0&button_colour=FFDD00&font_colour=000000&font_family=Lato&outline_colour=000000&coffee_colour=ffffff&coffee_count=4"
                   alt="Tip Jar"
                   style={{ display: 'block', width: '100%', height: 'auto', borderRadius: '0 0 4px 4px' }}
                 />

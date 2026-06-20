@@ -314,6 +314,36 @@ const SPECIAL_CHALLENGES = {
     description: 'Win the championship with an entire lineup from 2017 or later (2017–2026).',
     checkFn: g => g.is_champion && (g.lineup ?? []).length > 0 && g.lineup.every(p => ['era6','era7','era8'].includes(p.era)),
   },
+  '2026-06-21': {
+    title: 'Mid-Major Miracle',
+    description: 'Win the championship without a single Power 6 player. No ACC, Big Ten, Big 12, Big East, SEC, or Pac-12. Pure underdogs, all the way.',
+    checkFn: g => g.is_champion && (g.lineup ?? []).length >= 5 && g.lineup.every(p => !['acc','big10','big12','bigeast','sec','pac12'].includes(p.conference)),
+  },
+  '2026-06-22': {
+    title: 'ACC Country',
+    description: 'Win the championship with an all-ACC lineup. Duke, UNC, NC State.',
+    checkFn: g => g.is_champion && (g.lineup ?? []).length >= 5 && g.lineup.every(p => p.conference === 'acc'),
+  },
+  '2026-06-23': {
+    title: 'Generation Gap',
+    description: 'Win the championship with players spanning at least 4 different eras. Past meets present on the biggest stage.',
+    checkFn: g => g.is_champion && new Set((g.lineup ?? []).map(p => p.era)).size >= 4,
+  },
+  '2026-06-24': {
+    title: 'Conference Crasher',
+    description: 'Win the championship with players from 5 completely different conferences. One from everywhere, dominant from nowhere.',
+    checkFn: g => g.is_champion && new Set((g.lineup ?? []).map(p => p.conference)).size >= 5,
+  },
+  '2026-06-25': {
+    title: 'Dynasty',
+    description: 'Win the championship with at least 3 players from the same school.',
+    checkFn: g => g.is_champion && Object.values((g.lineup ?? []).reduce((acc, p) => { acc[p.school] = (acc[p.school] || 0) + 1; return acc }, {})).some(c => c >= 3),
+  },
+  '2026-06-26': {
+    title: 'Glass Slipper',
+    description: 'Win the championship with a lineup scoring under 80%. Nobody believed in this team. Prove them wrong.',
+    checkFn: g => g.is_champion && Number(g.score) < 80,
+  },
 }
 
 function bankIndex(dateStr) {

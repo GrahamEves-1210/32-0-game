@@ -27,7 +27,7 @@ function getInitials(name) {
   return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
 }
 
-export default function DraftPhase({ onComplete, onFirstSpinDone, onSubPhase, onChallengeEntry, inChallenge, challengeLabel }) {
+export default function DraftPhase({ onComplete, onFirstSpinDone, onShowHeader, onSubPhase, onChallengeEntry, inChallenge, challengeLabel }) {
   const [lineup,        setLineup]        = useState({ PG: null, SG: null, SF: null, PF: null, C: null })
   const [focusedPlayer, setFocusedPlayer] = useState(null)
   const [pickNumber,    setPickNumber]    = useState(1)
@@ -136,6 +136,10 @@ export default function DraftPhase({ onComplete, onFirstSpinDone, onSubPhase, on
 
   // Hide the header and sidebar on the very first spin (nothing picked yet)
   const showChrome = filledCount > 0 || subPhase === 'pool'
+
+  // Keep parent's header visibility in sync with DraftPhase's actual state.
+  // Fires on mount (ensures header shows on fresh game) and when showChrome first flips true.
+  useEffect(() => { onShowHeader?.(!showChrome) }, [showChrome])
 
   function handleRerollConf() {
     setSpinLockedConf(null)

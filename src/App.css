@@ -1,9 +1,15 @@
+/* Ad banner height + iOS safe area inset. 0px on desktop, full value on mobile. */
+:root { --ad-bottom: 0px; }
+@media (max-width: 768px) {
+  :root { --ad-bottom: calc(50px + env(safe-area-inset-bottom)); }
+}
+
 .app {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 16px 80px;
+  padding: 0 16px calc(80px + var(--ad-bottom));
 }
 
 .app-header {
@@ -661,7 +667,7 @@
 @media (max-width: 768px) {
   .app-footer {
     position: fixed;
-    bottom: 23px;
+    bottom: calc(23px + var(--ad-bottom));
     left: 0;
     right: 0;
     padding: 0;
@@ -707,7 +713,7 @@
 
   .btn-reset {
     top: auto;
-    bottom: 60px;
+    bottom: calc(60px + var(--ad-bottom));
     right: 6px;
     padding: 10.5px 19px;
     font-size: 13.5px;
@@ -719,7 +725,7 @@
 
 @media (max-width: 480px) {
   .app {
-    padding: 0 10px 80px;
+    padding: 0 10px calc(80px + var(--ad-bottom));
   }
 
   .app-header {
@@ -742,7 +748,7 @@
 
   .btn-reset {
     top: auto;
-    bottom: 60px;
+    bottom: calc(60px + var(--ad-bottom));
     right: 6px;
     padding: 10.5px 19px;
     font-size: 13.5px;
