@@ -321,7 +321,7 @@ const SPECIAL_CHALLENGES = {
   },
   '2026-06-22': {
     title: 'ACC Country',
-    description: 'Win the championship with an all-ACC lineup. Duke, UNC, NC State.',
+    description: 'Win the championship with an all-ACC lineup. Duke, UNC, NC State, Syracuse, Louisville, Miami, Virginia, Georgia Tech, Pittsburgh, Notre Dame, Clemson, Florida State, Maryland, Wake Forest, Virginia Tech, Boston College, Stanford, California, SMU.',
     checkFn: g => g.is_champion && (g.lineup ?? []).length >= 5 && g.lineup.every(p => p.conference === 'acc'),
   },
   '2026-06-23': {
