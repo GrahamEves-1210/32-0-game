@@ -63,10 +63,34 @@ export async function getProfile(userId) {
   return { username }
 }
 
+const CACHE_TTL = 5 * 60 * 1000 // 5 minutes
+
+function readCache(key) {
+  try {
+    const raw = localStorage.getItem(key)
+    if (!raw) return null
+    const { ts, value } = JSON.parse(raw)
+    if (Date.now() - ts > CACHE_TTL) { localStorage.removeItem(key); return null }
+    return value
+  } catch { return null }
+}
+
+function writeCache(key, value) {
+  try { localStorage.setItem(key, JSON.stringify({ ts: Date.now(), value })) } catch {}
+}
+
+export function bustProfileCache(userId) {
+  localStorage.removeItem(`stats_${userId}`)
+  localStorage.removeItem(`badges_${userId}`)
+}
+
 export async function fetchUserStats(userId) {
+  const cached = readCache(`stats_${userId}`)
+  if (cached) return cached
+
   const { data } = await supabase
     .from('game_results')
-    .select('score, wins, is_champion, stats_on, lineup, played_at')
+    .select('score, wins, is_champion, stats_on, played_at')
     .eq('user_id', userId)
     .order('played_at', { ascending: false })
   if (!data || !data.length) return { games: 0, perfect: 0, avgScore: 0, champCount: 0, championships: [], best: [] }
@@ -76,7 +100,9 @@ export async function fetchUserStats(userId) {
   const champCount    = data.filter(r => r.is_champion).length
   const championships = data.filter(r => r.is_champion).reverse()
   const best          = [...data].sort((a, b) => Number(b.score) - Number(a.score)).slice(0, 5)
-  return { games, perfect, avgScore, champCount, championships, best }
+  const result = { games, perfect, avgScore, champCount, championships, best }
+  writeCache(`stats_${userId}`, result)
+  return result
 }
 
 export async function saveProfileRating(userId, rating) {
@@ -87,11 +113,17 @@ export async function saveProfileRating(userId, rating) {
 }
 
 export async function fetchAllGamesForBadges(userId) {
+  const cached = readCache(`badges_${userId}`)
+  if (cached) return cached
+
   const { data } = await supabase
     .from('game_results')
     .select('wins, is_champion, lineup, played_at, score')
     .eq('user_id', userId)
-  return data ?? []
+    .limit(500)
+  const result = data ?? []
+  writeCache(`badges_${userId}`, result)
+  return result
 }
 
 export async function checkDailyChallenge(userId, dateStr, checkFn) {
@@ -117,4 +149,5 @@ export async function saveGameResult({ userId, score, wins, isChampion, statsOn,
     stats_on: statsOn,
     lineup: lineupData,
   })
+  bustProfileCache(userId)
 }
