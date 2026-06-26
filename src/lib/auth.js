@@ -120,6 +120,7 @@ export async function fetchAllGamesForBadges(userId) {
     .from('game_results')
     .select('wins, is_champion, lineup, played_at, score')
     .eq('user_id', userId)
+    .order('played_at', { ascending: false })
     .limit(500)
   const result = data ?? []
   writeCache(`badges_${userId}`, result)

@@ -226,11 +226,11 @@ export default function TournamentPhase({ wins, matchPct = 0, lineup = [], onRes
   }, [phase])
 
   useEffect(() => {
-    if (champSlid && !gameEndFired.current) {
+    if (phase === PHASE.CHAMPION && !gameEndFired.current) {
       gameEndFired.current = true
       onGameEnd?.(true)
     }
-  }, [champSlid])
+  }, [phase])
 
   useEffect(() => {
     if (phase === PHASE.BETWEEN && game && !game.playerWins) {
