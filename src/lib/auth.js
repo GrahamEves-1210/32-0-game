@@ -118,7 +118,7 @@ export async function fetchAllGamesForBadges(userId) {
 
   const { data } = await supabase
     .from('game_results')
-    .select('wins, is_champion, lineup, played_at, score')
+    .select('wins, is_champion, lineup, played_at, score, off_rating, def_rating')
     .eq('user_id', userId)
     .order('played_at', { ascending: false })
     .limit(500)
@@ -138,7 +138,7 @@ export async function checkDailyChallenge(userId, dateStr, checkFn) {
   return data.some(checkFn)
 }
 
-export async function saveGameResult({ userId, score, wins, isChampion, statsOn, lineup }) {
+export async function saveGameResult({ userId, score, wins, isChampion, statsOn, lineup, offRating, defRating }) {
   const lineupData = lineup
     ? lineup.map(p => ({ id: p.id, name: p.name, school: p.school, conference: p.conference, era: p.era }))
     : null
@@ -149,6 +149,8 @@ export async function saveGameResult({ userId, score, wins, isChampion, statsOn,
     is_champion: isChampion,
     stats_on: statsOn,
     lineup: lineupData,
+    off_rating: offRating ?? null,
+    def_rating: defRating ?? null,
   })
   bustProfileCache(userId)
 }

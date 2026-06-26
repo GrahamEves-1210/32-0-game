@@ -221,14 +221,14 @@ const ACHIEVEMENTS = [
     title: 'Unguardable',
     description: 'Win the championship with a 99-rated offensive lineup. Every possession is a bucket. There is no answer.',
     color: '#2563eb',
-    checkFn: games => games.some(g => g.is_champion && getOffensiveRating(fullLineup(g.lineup)) >= 99),
+    checkFn: games => games.some(g => g.is_champion && (g.off_rating != null ? g.off_rating : getOffensiveRating(fullLineup(g.lineup))) >= 99),
   },
   {
     id: 'clamps',
     title: 'Clamps',
     description: 'Win the championship with a 99-rated defensive lineup. The whole country hated playing you. Defense wins championships.',
     color: '#059669',
-    checkFn: games => games.some(g => g.is_champion && getDefensiveRating(fullLineup(g.lineup)) >= 99),
+    checkFn: games => games.some(g => g.is_champion && (g.def_rating != null ? g.def_rating : getDefensiveRating(fullLineup(g.lineup))) >= 99),
   },
   {
     id: 'goat',

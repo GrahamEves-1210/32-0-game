@@ -7,7 +7,7 @@ import HeadToHead from './components/HeadToHead'
 import UsernamePrompt from './components/UsernamePrompt'
 import AuthModal from './components/AuthModal'
 import ProfilePage from './components/ProfilePage'
-import { calculateWins, getMatchPercentage } from './utils/winFormula'
+import { calculateWins, getMatchPercentage, getOffensiveRating, getDefensiveRating } from './utils/winFormula'
 import { isTopTen, submitScore } from './lib/leaderboard'
 import { getChallenge } from './lib/challenges'
 import { getProfile, saveGameResult, signOut } from './lib/auth'
@@ -171,11 +171,13 @@ export default function App() {
     const lineup      = fl ? Object.values(fl).filter(Boolean) : []
     const score       = getMatchPercentage(lineup)
     const wins        = calculateWins(lineup)
+    const offRating   = getOffensiveRating(lineup)
+    const defRating   = getDefensiveRating(lineup)
     const lineupNames = score >= 100 ? lineup.map(p => p.name) : null
 
     if (user && userProfile) {
       try {
-        await saveGameResult({ userId: user.id, score, wins, isChampion: wonChampionship, statsOn, lineup })
+        await saveGameResult({ userId: user.id, score, wins, isChampion: wonChampionship, statsOn, lineup, offRating, defRating })
       } catch (_) {}
       if (!isCustomGame) {
         try {
