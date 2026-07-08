@@ -290,7 +290,7 @@ export default function App() {
             <a href="https://www.collegebasketballdata.com" target="_blank" rel="noopener noreferrer">collegebasketballdata.com</a>.
           </p>
           <p className="about-desc" style={{ marginTop: '4px' }}>
-            Inspired by{' '}
+            Not affiliated with{' '}
             <a href="https://www.82-0.com" target="_blank" rel="noopener noreferrer">82-0.com</a>
           </p>
           <div className="about-social-row">

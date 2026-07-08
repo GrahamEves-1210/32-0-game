@@ -253,6 +253,13 @@ export default function SpinScreen({ conferences, eras, onChoose, lockedConf = n
         </div>
       </div>
 
+      {!spinning && !results && !isReroll && (
+        <p className="spin-disclaimer">
+          Not affiliated with{' '}
+          <a href="https://www.82-0.com" target="_blank" rel="noopener noreferrer">82-0.com</a>
+        </p>
+      )}
+
       {!results ? (
         <div className="spin-action-row">
           {onChallengeEntry && (
