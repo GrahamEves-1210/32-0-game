@@ -8,8 +8,6 @@
   <script>
     self.__VM = self.__VM || [];
     self.__VM.push(function(admanager, scope) {
-      scope.Config.get('leaderboard').display('slot-desktop');
-      scope.Config.get('mobile_banner').display('slot-mobile');
       scope.Config.get('horizontal_sticky').displayBody();
     });
   </script>
@@ -49,9 +47,6 @@
   <div class="container">
     <h1>32-0 — Ad Implementation Test</h1>
     <p>This page is used to verify Venatus ad tag implementation for <strong>32-0game.com</strong>. It is not linked from the main site.</p>
-
-    <div id="slot-desktop" class="ad-slot"></div>
-    <div id="slot-mobile"  class="ad-slot"></div>
 
     <h2>About 32-0</h2>
     <p>32-0 is a free men's college basketball strategy game. Draft five players across eras and conferences, simulate a full season and NCAA Tournament, and see if your team can go 32-0.</p>
