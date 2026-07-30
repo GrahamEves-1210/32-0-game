@@ -572,8 +572,9 @@
   }
 
   .btn-spin-main {
-    width: 138px;
-    height: 138px;
+    width: 131px;
+    height: 131px;
+    margin-bottom: 5px;
   }
 
   .btn-ball-wrap {
