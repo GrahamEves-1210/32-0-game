@@ -11,6 +11,7 @@ import { calculateWins, getMatchPercentage, getOffensiveRating, getDefensiveRati
 import { isTopTen, submitScore } from './lib/leaderboard'
 import { getChallenge } from './lib/challenges'
 import { getProfile, saveGameResult, signOut } from './lib/auth'
+import VenatusBanner from './components/VenatusBanner'
 import supabase from './lib/supabase'
 import './App.css'
 
@@ -366,6 +367,7 @@ export default function App() {
 
   return (
     <div className="app">
+      <VenatusBanner phase={phase} />
       {(showHeader || phase === 'result' || champReached) && (
         <header className="app-header">
           <div className="app-logo"><span className="logo-number">32<span className="logo-dash">-</span>0</span></div>
