@@ -11,7 +11,8 @@ import { calculateWins, getMatchPercentage, getOffensiveRating, getDefensiveRati
 import { isTopTen, submitScore } from './lib/leaderboard'
 import { getChallenge } from './lib/challenges'
 import { getProfile, saveGameResult, signOut } from './lib/auth'
-import VenatusBanner from './components/VenatusBanner'
+import { initAdMob, showBanner, showInterstitial } from './lib/admob'
+import { SplashScreen } from '@capacitor/splash-screen'
 import supabase from './lib/supabase'
 import './App.css'
 
@@ -78,6 +79,19 @@ export default function App() {
     })
     return () => subscription.unsubscribe()
   }, [])
+
+  useEffect(() => {
+    SplashScreen.hide({ fadeOutDuration: 300 }).catch(() => {})
+    initAdMob().then(() => showBanner()).catch(() => {})
+  }, [])
+
+  const prevPhaseRef = useRef(null)
+  useEffect(() => {
+    if (prevPhaseRef.current !== null && prevPhaseRef.current !== phase) {
+      showInterstitial().catch(() => {})
+    }
+    prevPhaseRef.current = phase
+  }, [phase])
 
   async function loadUser(u) {
     setUser(u)
@@ -367,7 +381,6 @@ export default function App() {
 
   return (
     <div className="app">
-      <VenatusBanner phase={phase} />
       {(showHeader || phase === 'result' || champReached) && (
         <header className="app-header">
           <div className="app-logo"><span className="logo-number">32<span className="logo-dash">-</span>0</span></div>
