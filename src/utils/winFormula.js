@@ -171,7 +171,7 @@ export function getDefensiveRating(lineup) {
 export function getWinLabel(wins) {
   if (wins >= 32) return { text: 'Championship Locks',        color: '#e0a800' }
   if (wins >= 28) return { text: 'Championship Favorites',   color: '#4ade80' }
-  if (wins >= 22) return { text: 'NCAA Tournament Bound',    color: '#38B6E8' }
+  if (wins >= 22) return { text: 'Tournament Bound',    color: '#38B6E8' }
   if (wins >= 16) return { text: 'Bubble Team',              color: '#8b5cf6' }
   if (wins >= 10) return { text: 'Rebuilding Year',          color: '#f97316' }
   return            { text: 'Relegated',                     color: '#d93030' }

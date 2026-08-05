@@ -290,7 +290,7 @@ export default function App() {
           <button className="lb-close-btn" onClick={() => { handleReset(); setShowAbout(false) }}>← Back</button>
           <img src="/32-0logocutout.png" alt="32-0" className="about-logo" />
           <p className="about-desc">
-            Spin a random conference and era, draft five men's college basketball players — one at each position — then simulate a full 32-game season and NCAA Tournament. Build the right five and you might just go <strong>32-0</strong>.
+            Spin a random conference and era, draft five men's college basketball players — one at each position — then simulate a full 32-game season and college tournament. Build the right five and you might just go <strong>32-0</strong>.
           </p>
           <h3 className="about-section">How to Play</h3>
           <ol className="about-steps">

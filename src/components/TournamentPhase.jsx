@@ -310,7 +310,7 @@ export default function TournamentPhase({ wins, matchPct = 0, lineup = [], onRes
   if (phase === PHASE.SEEDING) return (
     <div className="tourney-wrap tourney-wrap--seeding">
       <div className="tourney-seeding">
-        <div className="ts-badge">NCAA Tournament</div>
+        <div className="ts-badge">College Tournament</div>
         <div className="ts-seed-line">
           <span className="ts-seed-num">{SEED_SUFFIX(results.playerSeed)}</span>
           <span className="ts-seed-label"> Seed</span>
@@ -503,7 +503,7 @@ export default function TournamentPhase({ wins, matchPct = 0, lineup = [], onRes
           ))}
         </div>
         <div className="mm-logo">
-          <span className="mm-logo-left">NCAA</span>
+          <span className="mm-logo-left">COLLEGE</span>
           <span className="mm-logo-right">TOURNAMENT</span>
           <span className="mm-logo-ball">🏀</span>
         </div>

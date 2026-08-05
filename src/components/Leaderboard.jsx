@@ -132,7 +132,7 @@ export default function Leaderboard({ onClose }) {
                       <span className="lb-name">{empty ? '———' : e.username}</span>
                       {!empty && (
                         <span className={`lb-champ-badge ${e.won_championship ? 'lb-champ-badge--won' : 'lb-champ-badge--lost'}`}>
-                          {e.won_championship ? '✓' : '✕'} NCAA Champion
+                          {e.won_championship ? '✓' : '✕'} Champion
                         </span>
                       )}
                       {empty && <span />}
