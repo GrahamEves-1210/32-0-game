@@ -131,6 +131,14 @@ export default function DraftPhase({ onComplete, onFirstSpinDone, onShowHeader, 
     }
   }, [subPhase])
 
+  useEffect(() => {
+    if (subPhase !== 'pool') return
+    self.__VM = self.__VM || []
+    self.__VM.push((admanager, scope) => {
+      try { scope.Config.get('mobile_banner').display('draft-pool-ad') } catch (_) {}
+    })
+  }, [subPhase])
+
   const filledCount = Object.values(lineup).filter(Boolean).length
   const players = currentConf && currentEra ? getPlayers(currentConf.id, currentEra.id) : []
 
@@ -471,6 +479,7 @@ export default function DraftPhase({ onComplete, onFirstSpinDone, onShowHeader, 
                   ↺ Era {eraRerolls > 0 ? `(${eraRerolls})` : '(0)'}
                 </button>
               </div>
+              <div id="draft-pool-ad" style={{ margin: '6px auto', minHeight: 50, width: 320, maxWidth: '100%', display: 'flex', justifyContent: 'center' }} />
               <PlayerPool
                 players={players}
                 lineup={lineup}
