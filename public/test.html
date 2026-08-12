@@ -10,7 +10,6 @@
     self.__VM.push(function(admanager, scope) {
       scope.Config.get('leaderboard').display('slot-desktop');
       scope.Config.get('mobile_banner').display('slot-mobile');
-      scope.Config.get('mpu').display('slot-mpu');
     });
   </script>
   <style>
@@ -36,8 +35,7 @@
       margin: 24px auto;
     }
     #slot-desktop { display: block; min-height: 90px; }
-    #slot-mobile  { display: none;  min-height: 50px; width: 320px; max-width: 100%; }
-    #slot-mpu     { min-height: 250px; width: 300px; max-width: 100%; }
+    #slot-mobile  { display: none; min-height: 50px; width: 320px; max-width: 100%; }
     @media (max-width: 768px) {
       #slot-desktop { display: none; }
       #slot-mobile  { display: flex; }
@@ -55,10 +53,6 @@
 
     <h2>About 32-0</h2>
     <p>32-0 is a free men's college basketball strategy game. Draft five players across eras and conferences, simulate a full season and college tournament, and see if your team can go 32-0.</p>
-
-    <h2>MPU Placement</h2>
-    <p>The MPU (300×250) would appear between content sections:</p>
-    <div id="slot-mpu" class="ad-slot"></div>
 
     <h2>How It Works</h2>
     <p>Players spin to receive a random conference and era combination, then draft one player per position — PG, SG, SF, PF, and C — from a pool of hundreds of real college basketball legends.</p>
