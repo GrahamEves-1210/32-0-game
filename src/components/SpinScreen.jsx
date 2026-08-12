@@ -191,6 +191,16 @@ export default function SpinScreen({ conferences, eras, onChoose, lockedConf = n
     clearTimeout(transitionRef.current)
   }, [])
 
+  useEffect(() => {
+    if (!results) return
+    self.__VM = self.__VM || []
+    self.__VM.push((admanager, scope) => {
+      try {
+        scope.Config.get('mobile_banner').display('spin-result-ad')
+      } catch (_) {}
+    })
+  }, [results])
+
   const currentConf = conferences[confIdx]
   const currentEra  = eras[eraIdx]
   const confColor = getGradeColor(currentConf?.grade)
@@ -307,6 +317,10 @@ export default function SpinScreen({ conferences, eras, onChoose, lockedConf = n
             ))}
           </div>
         </div>
+      )}
+
+      {results && (
+        <div id="spin-result-ad" style={{ margin: '6px auto 0', textAlign: 'center' }} />
       )}
     </div>
   )
