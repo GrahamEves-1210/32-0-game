@@ -10,6 +10,7 @@
     self.__VM.push(function(admanager, scope) {
       scope.Config.get('leaderboard').display('slot-desktop');
       scope.Config.get('mobile_banner').display('slot-mobile');
+      scope.Config.get('mobile_banner').display('slot-mobile-inline');
     });
   </script>
   <style>
@@ -51,6 +52,14 @@
 
     <div id="slot-desktop" class="ad-slot"></div>
     <div id="slot-mobile"  class="ad-slot"></div>
+
+    <h2>Ad Placement Preview — After Spin Result</h2>
+    <p style="margin-bottom:8px">This is where the mobile_banner appears after a user spins and sees their conference/era:</p>
+    <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:16px;text-align:center;margin-bottom:6px">
+      <div style="font-size:20px;font-weight:800;color:#38B6E8;margin-bottom:4px">Atlantic Coast Conference</div>
+      <div style="font-size:13px;color:#93b4e8">Conference Grade A · 2010s Era</div>
+    </div>
+    <div id="slot-mobile-inline" class="ad-slot" style="margin:6px 0 24px;min-height:50px"></div>
 
     <h2>About 32-0</h2>
     <p>32-0 is a free men's college basketball strategy game. Draft five players across eras and conferences, simulate a full season and NCAA Tournament, and see if your team can go 32-0.</p>
