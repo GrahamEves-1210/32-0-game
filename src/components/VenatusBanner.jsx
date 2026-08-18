@@ -3,12 +3,14 @@ import { useEffect, useRef } from 'react'
 export default function VenatusBanner({ phase, draftSubPhase }) {
   const desktopRef   = useRef(null)
   const mobileRef    = useRef(null)
+  const verticalRef  = useRef(null)
   const prevPhaseRef = useRef(null)
   const prevSubPhase = useRef(null)
 
   function mountAds(scope) {
-    desktopRef.current = scope.Config.get('horizontal_sticky').displayBody()
-    mobileRef.current  = scope.Config.get('mobile_horizontal_sticky').displayBody()
+    desktopRef.current  = scope.Config.get('horizontal_sticky').displayBody()
+    mobileRef.current   = scope.Config.get('mobile_horizontal_sticky').displayBody()
+    verticalRef.current = scope.Config.verticalSticky().display()
     if (document.getElementById('draft-pool-ad')) {
       try { scope.Config.get('mobile_banner').display('draft-pool-ad') } catch (_) {}
     }
@@ -17,6 +19,7 @@ export default function VenatusBanner({ phase, draftSubPhase }) {
   function removeAds() {
     desktopRef.current?.remove()
     mobileRef.current?.remove()
+    verticalRef.current?.remove()
   }
 
   useEffect(() => {
