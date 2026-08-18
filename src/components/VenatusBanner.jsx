@@ -1,13 +1,17 @@
 import { useEffect, useRef } from 'react'
 
-export default function VenatusBanner({ phase }) {
+export default function VenatusBanner({ phase, draftSubPhase }) {
   const desktopRef   = useRef(null)
   const mobileRef    = useRef(null)
   const prevPhaseRef = useRef(null)
+  const prevSubPhase = useRef(null)
 
   function mountAds(scope) {
     desktopRef.current = scope.Config.get('horizontal_sticky').displayBody()
     mobileRef.current  = scope.Config.get('mobile_horizontal_sticky').displayBody()
+    if (document.getElementById('draft-pool-ad')) {
+      try { scope.Config.get('mobile_banner').display('draft-pool-ad') } catch (_) {}
+    }
   }
 
   function removeAds() {
@@ -30,7 +34,10 @@ export default function VenatusBanner({ phase }) {
   }, [])
 
   useEffect(() => {
-    if (prevPhaseRef.current !== null && prevPhaseRef.current !== phase) {
+    const phaseChanged    = prevPhaseRef.current !== null && prevPhaseRef.current !== phase
+    const subPhaseChanged = prevSubPhase.current !== null && prevSubPhase.current !== draftSubPhase
+
+    if (phaseChanged || subPhaseChanged) {
       self.__VM = self.__VM || []
       self.__VM.push((admanager, scope) => {
         removeAds()
@@ -38,8 +45,10 @@ export default function VenatusBanner({ phase }) {
         mountAds(scope)
       })
     }
+
     prevPhaseRef.current = phase
-  }, [phase])
+    prevSubPhase.current = draftSubPhase
+  }, [phase, draftSubPhase])
 
   return null
 }

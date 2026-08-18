@@ -131,14 +131,6 @@ export default function DraftPhase({ onComplete, onFirstSpinDone, onShowHeader, 
     }
   }, [subPhase])
 
-  useEffect(() => {
-    if (subPhase !== 'pool') return
-    self.__VM = self.__VM || []
-    self.__VM.push((admanager, scope) => {
-      try { scope.Config.get('mobile_banner').display('draft-pool-ad') } catch (_) {}
-    })
-  }, [subPhase])
-
   const filledCount = Object.values(lineup).filter(Boolean).length
   const players = currentConf && currentEra ? getPlayers(currentConf.id, currentEra.id) : []
 
