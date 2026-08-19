@@ -27,7 +27,7 @@ export default function VenatusBanner({ phase, draftSubPhase }) {
     self.__VM.push((admanager, scope) => {
       mountAds(scope)
       scope.Instances.pageManager.on('navigated', () => {
-        scope.Instances.pageManager.newPageSession(false)
+        scope.Instances.pageManager.newPageSession()
       }, false)
     })
     return () => {
