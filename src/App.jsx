@@ -366,7 +366,7 @@ export default function App() {
         user={user}
         profile={userProfile}
         darkMode={darkMode}
-        onClose={() => setShowProfile(false)}
+        onClose={() => { setShowProfile(false); vmRefresh() }}
         onSignOut={handleSignOut}
       />
     </div>
@@ -444,7 +444,7 @@ export default function App() {
             <div className="menu-backdrop" onClick={() => setShowMenu(false)} />
             <div className="app-menu-dropdown">
               {user && userProfile ? (
-                <button className="menu-item menu-item--user" onClick={() => { setShowProfile(true); setShowMenu(false) }}>
+                <button className="menu-item menu-item--user" onClick={() => { setShowProfile(true); setShowMenu(false); vmRefresh() }}>
                   <img src={darkMode ? '/c2ddcacb-46e1-4a31-a0db-2141434d8269 (1).png' : '/67401335254.png'} alt="" className="menu-user-icon" style={{ width: '25px', height: '25px', objectFit: 'contain', filter: darkMode ? 'brightness(0.7)' : 'none' }} />
                   <span className="menu-username">{userProfile.username}</span>
                 </button>
