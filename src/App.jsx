@@ -212,6 +212,13 @@ export default function App() {
     setPendingScore(null)
   }
 
+  function vmRefresh() {
+    self.__VM = self.__VM || []
+    self.__VM.push((admanager, scope) => {
+      scope.Instances.pageManager.newPageSession()
+    })
+  }
+
   function handleReset() {
     gameEndSavedRef.current = false
     setFinalLineup(null)
@@ -273,7 +280,7 @@ export default function App() {
     <div className="app">
       <main className="app-main">
         <div className="about-modal">
-          <button className="lb-close-btn" onClick={() => { handleReset(); setShowAbout(false) }}>← Back</button>
+          <button className="lb-close-btn" onClick={() => { handleReset(); setShowAbout(false); vmRefresh() }}>← Back</button>
           <img src="/32-0logocutout.png" alt="32-0" className="about-logo" />
           <p className="about-desc">
             Spin a random conference and era, draft five men's college basketball players — one at each position — then simulate a full 32-game season and NCAA Tournament. Build the right five and you might just go <strong>32-0</strong>.
@@ -330,7 +337,7 @@ export default function App() {
   if (showLeaderboard) return (
     <div className="app">
       <main className="app-main">
-        <Leaderboard onClose={() => setShowLeaderboard(false)} />
+        <Leaderboard onClose={() => { setShowLeaderboard(false); vmRefresh() }} />
       </main>
     </div>
   )
@@ -459,7 +466,7 @@ export default function App() {
               </button>
               <button
                 className="menu-item"
-                onClick={() => { setShowAbout(true); setShowMenu(false) }}
+                onClick={() => { setShowAbout(true); setShowMenu(false); vmRefresh() }}
               >
                 ℹ️ About
               </button>
@@ -490,7 +497,7 @@ export default function App() {
       {showHeader && phase === 'draft' && (
         <button
           className="btn-leaderboard"
-          onClick={() => setShowLeaderboard(true)}
+          onClick={() => { setShowLeaderboard(true); vmRefresh() }}
           title="Leaderboard"
         >
           <img src="/ChatGPT_Image_Jun_12__2026__10_33_14_AM-removebg-preview.png" alt="Leaderboard" className="trophy-img" style={{ width: '40px', height: '40px', objectFit: 'contain' }} />
