@@ -488,7 +488,7 @@ export default function TournamentPhase({ wins, matchPct = 0, lineup = [], onRes
 
   return (
     <div className="tourney-wrap">
-      <div id="tournament-top-ad" style={{ margin: '4px auto 0', minHeight: 50, width: 320, maxWidth: '100%', display: window.innerWidth <= 768 ? 'flex' : 'none', justifyContent: 'center' }} />
+      <div id="tournament-top-ad" style={{ margin: '4px auto 0', minHeight: 0, width: 320, maxWidth: '100%', display: window.innerWidth <= 768 ? 'flex' : 'none', justifyContent: 'center' }} />
       <div className="mm-header" aria-hidden="true">
         <div className="mm-bracket-full">
           <BracketSVG gameIdx={gameIdx} />
