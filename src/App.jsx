@@ -374,7 +374,7 @@ export default function App() {
 
   return (
     <div className="app">
-      <VenatusBanner phase={phase} draftSubPhase={draftSubPhase} />
+      <VenatusBanner phase={phase} />
       {(showHeader || phase === 'result' || champReached) && (
         <header className="app-header">
           <div className="app-logo"><span className="logo-number">32<span className="logo-dash">-</span>0</span></div>

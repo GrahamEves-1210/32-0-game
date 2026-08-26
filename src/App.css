@@ -318,7 +318,7 @@
 /* Reset button */
 .btn-reset {
   position: fixed;
-  bottom: calc(24px + var(--ad-bottom));
+  bottom: calc(29px + var(--ad-bottom));
   right: 24px;
   top: auto;
   background: var(--surface2);
