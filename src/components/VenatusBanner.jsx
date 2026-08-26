@@ -13,6 +13,9 @@ export default function VenatusBanner({ phase }) {
     if (document.getElementById('draft-pool-ad')) {
       try { scope.Config.get('mobile_banner').display('draft-pool-ad') } catch (_) {}
     }
+    if (document.getElementById('tournament-top-ad')) {
+      try { scope.Config.get('mobile_banner').display('tournament-top-ad') } catch (_) {}
+    }
   }
 
   function removeAds() {
@@ -36,7 +39,7 @@ export default function VenatusBanner({ phase }) {
   }, [])
 
   useEffect(() => {
-    if (prevPhaseRef.current !== null && prevPhaseRef.current !== phase) {
+    if (phase === 'tournament' && prevPhaseRef.current !== 'tournament') {
       self.__VM = self.__VM || []
       self.__VM.push((admanager, scope) => {
         removeAds()
