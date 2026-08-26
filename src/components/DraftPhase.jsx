@@ -437,6 +437,8 @@ export default function DraftPhase({ onComplete, onFirstSpinDone, onShowHeader, 
             </>
           )}
 
+          <div id="draft-pool-ad" style={{ margin: '4px auto 0', minHeight: subPhase === 'pool' ? 50 : 0, width: 320, maxWidth: '100%', display: subPhase === 'pool' && window.innerWidth <= 768 ? 'flex' : 'none', justifyContent: 'center' }} />
+
           {subPhase === 'pool' && (
             <div className="draft-pool-wrap">
               <div className="draft-pool-badge-row">
@@ -471,7 +473,7 @@ export default function DraftPhase({ onComplete, onFirstSpinDone, onShowHeader, 
                   ↺ Era {eraRerolls > 0 ? `(${eraRerolls})` : '(0)'}
                 </button>
               </div>
-              <div id="draft-pool-ad" style={{ margin: '4px auto 0', minHeight: 50, width: 320, maxWidth: '100%', display: window.innerWidth <= 768 ? 'flex' : 'none', justifyContent: 'center' }} />
+
               <PlayerPool
                 players={players}
                 lineup={lineup}
