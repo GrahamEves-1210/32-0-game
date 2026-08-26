@@ -11,7 +11,6 @@ export default function VenatusBanner({ phase, draftSubPhase }) {
     desktopRef.current  = scope.Config.get('horizontal_sticky').displayBody()
     mobileRef.current   = scope.Config.get('mobile_horizontal_sticky').displayBody()
     verticalRef.current = scope.Config.verticalSticky().display()
-    try { scope.Config.get('mobile_banner').display('draft-pool-ad') } catch (_) {}
     if (document.getElementById('tournament-top-ad')) {
       try { scope.Config.get('mobile_banner').display('tournament-top-ad') } catch (_) {}
     }
