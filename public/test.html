@@ -32,15 +32,10 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 24px 0;
-      min-height: 60px;
+      margin: 24px auto;
     }
-    #slot-desktop { display: block; }
-    #slot-mobile  { display: none; }
-    @media (max-width: 768px) {
-      #slot-desktop { display: none; }
-      #slot-mobile  { display: block; }
-    }
+    #slot-desktop { display: block; min-height: 90px; }
+    #slot-mobile  { display: flex; min-height: 50px; width: 320px; max-width: 100%; }
     a { color: #60a5fa; }
   </style>
 </head>
@@ -53,7 +48,7 @@
     <div id="slot-mobile"  class="ad-slot"></div>
 
     <h2>About 32-0</h2>
-    <p>32-0 is a free men's college basketball strategy game. Draft five players across eras and conferences, simulate a full season and NCAA Tournament, and see if your team can go 32-0.</p>
+    <p>32-0 is a free men's college basketball strategy game. Draft five players across eras and conferences, simulate a full season and college tournament, and see if your team can go 32-0.</p>
 
     <h2>How It Works</h2>
     <p>Players spin to receive a random conference and era combination, then draft one player per position — PG, SG, SF, PF, and C — from a pool of hundreds of real college basketball legends.</p>
