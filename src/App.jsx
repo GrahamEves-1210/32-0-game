@@ -489,7 +489,7 @@ export default function App() {
       </div>
 
       {phase === 'draft' && (
-        <button className="btn-reset" onClick={handleReset}>↺ Start Over</button>
+        <button className="btn-reset" onClick={() => { handleReset(); vmRefresh() }}>↺ Start Over</button>
       )}
 
 
