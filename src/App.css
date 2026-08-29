@@ -238,6 +238,18 @@
   color: var(--orange);
 }
 
+.menu-item--bap {
+  text-decoration: none;
+  gap: 8px;
+  background: #0d2b1a;
+  color: #fff;
+}
+
+.menu-item--bap:hover {
+  background: #163d26;
+  color: #7ddc9a;
+}
+
 .menu-item--user {
   gap: 8px;
 }
