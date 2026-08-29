@@ -471,6 +471,16 @@ export default function App() {
                 ℹ️ About
               </button>
               <a
+                href="https://www.build-a-player.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setShowMenu(false)}
+                className="menu-item menu-item--bap"
+              >
+                <img src="/logo.png" alt="Build-A-Player" style={{ width: 20, height: 20, objectFit: 'contain', borderRadius: 4 }} />
+                Try my other game
+              </a>
+              <a
                 href="https://www.buymeacoffee.com/32and0"
                 target="_blank"
                 rel="noopener noreferrer"
