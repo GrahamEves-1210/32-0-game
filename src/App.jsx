@@ -478,7 +478,10 @@ export default function App() {
                 className="menu-item menu-item--bap"
               >
                 <img src="/logo.png" alt="Build-A-Player" style={{ width: 20, height: 20, objectFit: 'contain', borderRadius: 4 }} />
-                Build-A-Player
+                <span style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.2 }}>
+                  <span style={{ fontSize: '10px', opacity: 0.75 }}>Try out my other game</span>
+                  <span>Build-A-Player</span>
+                </span>
               </a>
               <a
                 href="https://www.buymeacoffee.com/32and0"
