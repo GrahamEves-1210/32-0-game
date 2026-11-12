@@ -12685,6 +12685,7 @@ export const ALL_PLAYERS = [
   p('david-ardayfio','David Ardayfio','Army','patriot','era0',1994,18.6,8.6,1.6,1,0.2,0.628,0,["PF","C"]),
   p('dozie-mbonu','Dozie Mbonu','Lehigh','patriot','era0',1992,18.5,8.7,1.4,1.7,1.4,0.584,0,["PF","C"]),
   p('jim-nairus','Jim Nairus','Holy Cross','patriot','era0',1991,18.4,7.8,2.3,0.6,1.2,0.612,4.5,["PF","C"]),
+  p('mike-joseph','Mike Joseph','Bucknell','patriot','era0',1990,18.4,3.3,6.3,1.3,0.1,0.59,1.7,["PG","SG"]),
   p('bruce-stankavage','Bruce Stankavage','Lafayette','patriot','era0',1991,18.2,3.3,3.4,1.5,0,0.546,1.1,["SG","SF"]),
   p('fred-herzog','Fred Herzog','Fordham','patriot','era0',1992,17.9,6.4,1.1,0.9,1.1,0.609,0.4,["SF","PF"]),
   p('damon-lopez','Damon Lopez','Fordham','patriot','era0',1991,17.7,9.5,1.3,2,3,0.657,0,["C","PF"]),
